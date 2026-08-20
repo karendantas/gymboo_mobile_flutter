@@ -11,6 +11,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     required this.backgroundOuter,
     required this.headerBackground,
     required this.surface,
+    required this.surfaceSecondary,
     required this.surfaceAlt,
     required this.goldAccent,
     required this.goldAccentDark,
@@ -32,6 +33,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
   final Color backgroundOuter;
   final Color headerBackground;
   final Color surface;
+  final Color surfaceSecondary;
   final Color surfaceAlt;
   final Color goldAccent;
   final Color goldAccentDark;
@@ -59,6 +61,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     Color? backgroundOuter,
     Color? headerBackground,
     Color? surface,
+    Color? surfaceSecondary,
     Color? surfaceAlt,
     Color? goldAccent,
     Color? goldAccentDark,
@@ -80,6 +83,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       backgroundOuter: backgroundOuter ?? this.backgroundOuter,
       headerBackground: headerBackground ?? this.headerBackground,
       surface: surface ?? this.surface,
+      surfaceSecondary: surfaceSecondary ?? this.surfaceSecondary,
       surfaceAlt: surfaceAlt ?? this.surfaceAlt,
       goldAccent: goldAccent ?? this.goldAccent,
       goldAccentDark: goldAccentDark ?? this.goldAccentDark,
@@ -106,6 +110,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       backgroundOuter: Color.lerp(backgroundOuter, other.backgroundOuter, t)!,
       headerBackground: Color.lerp(headerBackground, other.headerBackground, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
+      surfaceSecondary: Color.lerp(surfaceSecondary, other.surfaceSecondary, t)!,
       surfaceAlt: Color.lerp(surfaceAlt, other.surfaceAlt, t)!,
       goldAccent: Color.lerp(goldAccent, other.goldAccent, t)!,
       goldAccentDark: Color.lerp(goldAccentDark, other.goldAccentDark, t)!,
@@ -134,8 +139,9 @@ const gymbooDefaultPalette = GymbooPalette(
   // ---- Fundos ----
   backgroundOuter: Color(0xFFFDCCD2),   // rosa claro por trás de tudo
   headerBackground: Color(0xFFFDCCD2),  // sem app bar distinta neste layout, mesmo tom
-  surface: Color(0xFFEBE6CC),           // bege do card do pet / pílula de data
-  surfaceAlt: Color(0xFFE0DAB8),        // variação mais escura do bege, p/ trilhos de barra
+  surface: Color(0xFFEBE6CC),   
+  surfaceSecondary: Color(0xFFCDCCAE),        // bege do card do pet / pílula de data
+  surfaceAlt: Color(0xFF969578),        // variação mais escura do bege, p/ trilhos de barra
 
   // ---- Acentos ----
   goldAccent: Color(0xFFF3C371),        // preenchimento da estrela
