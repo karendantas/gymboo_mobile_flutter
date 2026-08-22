@@ -8,12 +8,12 @@ class BottomTabRetro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final theme = Theme.of(context).extension<GymbooPalette>();
+  final theme = Theme.of(context).extension<GymbooPalette>()!;
 
     return Container(
       height: 150,
       decoration: BoxDecoration(
-        color: theme?.backgroundOuter,
+        color: theme.backgroundOuter,
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(30),
           bottomRight: Radius.circular(30)
@@ -28,9 +28,9 @@ class BottomTabRetro extends StatelessWidget {
          
              RetroButton(
                 imagePath: 'assets/icons/home_icon.svg', 
-                color: theme?.primaryPink ?? const Color(0xFFD67398) , 
-                shadowColor: theme?.primaryPinkDark ?? const Color(0xFF91365A), 
-                paddingBottom: 30,
+                color: theme.primaryPink , 
+                shadowColor: theme.primaryPinkDark, 
+                paddingBottom: 40,
                 onTap: () => {}
                 ),
               
@@ -39,8 +39,8 @@ class BottomTabRetro extends StatelessWidget {
            
            RetroButton(
                 imagePath: 'assets/icons/pet_icon.svg', 
-                color: theme?.primaryPink ?? const Color(0xFFD67398) , 
-                shadowColor: theme?.primaryPinkDark ?? const Color(0xFF91365A), 
+                color: theme.primaryPink  , 
+                shadowColor: theme.primaryPinkDark , 
                 paddingTop: 20,
                 onTap: () => {}
                 ),
@@ -58,16 +58,16 @@ class BottomTabRetro extends StatelessWidget {
 
                RetroButton(
                 imagePath: 'assets/icons/dumbell_icon.svg', 
-                color: theme?.primaryPink ?? const Color(0xFFD67398) , 
-                shadowColor: theme?.primaryPinkDark ?? const Color(0xFF91365A), 
+                color: theme.primaryPink , 
+                shadowColor: theme.primaryPinkDark, 
                 paddingTop: 20,
                 onTap: () => {}),
               
            RetroButton(
                 imagePath: 'assets/icons/user_icon.svg', 
-                color: theme?.primaryPink ?? const Color(0xFFD67398) , 
-                shadowColor: theme?.primaryPinkDark ?? const Color(0xFF91365A), 
-                  paddingBottom: 30,
+                color: theme.primaryPink, 
+                shadowColor: theme.primaryPinkDark, 
+                  paddingBottom: 40,
                 onTap: () => {}
                 ),
               

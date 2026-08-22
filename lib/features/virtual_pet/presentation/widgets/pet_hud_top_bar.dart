@@ -9,7 +9,7 @@ class PetHudTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-  final theme = Theme.of(context).extension<GymbooPalette>();
+  final theme = Theme.of(context).extension<GymbooPalette>()!;
 
     return Container(
       height: 40,
@@ -25,7 +25,7 @@ class PetHudTopBar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Row(
           children: [
-            Text(dateLabel, style: textTheme.labelMedium?.copyWith(color: theme?.surfaceAlt)),
+            Text(dateLabel, style: textTheme.labelMedium?.copyWith(color: theme.surfaceAlt)),
           ],
         ),
       ),
