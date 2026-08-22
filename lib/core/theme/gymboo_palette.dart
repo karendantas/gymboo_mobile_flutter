@@ -9,7 +9,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     required this.primaryPink,
     required this.primaryPinkDark,
     required this.backgroundOuter,
-    required this.headerBackground,
+    required this.backgroundDark,
     required this.surface,
     required this.surfaceSecondary,
     required this.surfaceAlt,
@@ -31,7 +31,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
   final Color primaryPink;
   final Color primaryPinkDark;
   final Color backgroundOuter;
-  final Color headerBackground;
+  final Color backgroundDark;
   final Color surface;
   final Color surfaceSecondary;
   final Color surfaceAlt;
@@ -59,7 +59,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     Color? primaryPink,
     Color? primaryPinkDark,
     Color? backgroundOuter,
-    Color? headerBackground,
+    Color? backgroundDark,
     Color? surface,
     Color? surfaceSecondary,
     Color? surfaceAlt,
@@ -81,7 +81,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       primaryPink: primaryPink ?? this.primaryPink,
       primaryPinkDark: primaryPinkDark ?? this.primaryPinkDark,
       backgroundOuter: backgroundOuter ?? this.backgroundOuter,
-      headerBackground: headerBackground ?? this.headerBackground,
+      backgroundDark: backgroundDark ?? this.backgroundDark,
       surface: surface ?? this.surface,
       surfaceSecondary: surfaceSecondary ?? this.surfaceSecondary,
       surfaceAlt: surfaceAlt ?? this.surfaceAlt,
@@ -108,7 +108,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       primaryPink: Color.lerp(primaryPink, other.primaryPink, t)!,
       primaryPinkDark: Color.lerp(primaryPinkDark, other.primaryPinkDark, t)!,
       backgroundOuter: Color.lerp(backgroundOuter, other.backgroundOuter, t)!,
-      headerBackground: Color.lerp(headerBackground, other.headerBackground, t)!,
+      backgroundDark: Color.lerp(backgroundDark, other.backgroundDark, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
       surfaceSecondary: Color.lerp(surfaceSecondary, other.surfaceSecondary, t)!,
       surfaceAlt: Color.lerp(surfaceAlt, other.surfaceAlt, t)!,
@@ -137,8 +137,8 @@ const gymbooDefaultPalette = GymbooPalette(
   primaryPinkDark: Color(0xFFBD597A),   // sombra 3D sob o botão
 
   // ---- Fundos ----
-  backgroundOuter: Color(0xFFFDCCD2),   // rosa claro por trás de tudo
-  headerBackground: Color(0xFFFDCCD2),  // sem app bar distinta neste layout, mesmo tom
+  backgroundOuter: Color.fromARGB(255, 255, 196, 203),   // rosa claro por trás de tudo
+  backgroundDark: Color(0xFFF49DB2),  // sem app bar distinta neste layout, mesmo tom
   surface: Color(0xFFEBE6CC),   
   surfaceSecondary: Color(0xFFCDCCAE),        // bege do card do pet / pílula de data
   surfaceAlt: Color(0xFF969578),        // variação mais escura do bege, p/ trilhos de barra
