@@ -1,14 +1,14 @@
 # Gymboo App
 
-Gymboo é um aplicativo mobile (Flutter) que gamifica a rotina de exercícios físicos por meio de um **pet virtual**: ao registrar atividades e cumprir metas semanais, o usuário ganha pontos e experiência que mantêm o pet saudável e o fazem evoluir de nível. O app também acompanha metas de treino/hidratação e o progresso da semana.
+Gymboo é um aplicativo mobile (Flutter) que gamifica a rotina de exercícios físicos por meio de um **pet virtual**: ao registrar atividades e cumprir metas semanais, o usuário ganha pontos e experiência que mantêm o pet saudável e o fazem evoluir de nível. O app também acompanha metas de treinoe o progresso da semana.
 
 ## Principais funcionalidades
 
 - **Autenticação** de usuário (login).
 - **Home** com visão geral do progresso do usuário.
-- **Pet virtual**: vida, energia, sede, nível e pontos, que evoluem conforme o usuário se exercita.
+- **Pet virtual**: vida, nível e pontos, que evoluem conforme o usuário se exercita.
 - **Atividades**: registro de treinos (tipo, duração, pontos, descrição).
-- **Metas**: meta semanal de treinos e meta diária de hidratação, com acompanhamento de progresso por dia da semana.
+- **Metas**: meta semanal de treinos, com acompanhamento de progresso por dia da semana.
 
 ## Stack
 
