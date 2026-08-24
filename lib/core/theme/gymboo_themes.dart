@@ -44,7 +44,7 @@ class AppGymbooTheme {
         displayColor: palette.textPrimary,
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: palette.headerBackground,
+        backgroundColor: palette.backgroundDark,
         foregroundColor: palette.textPrimary,
         elevation: 0,
         centerTitle: false,
@@ -61,7 +61,7 @@ class AppGymbooTheme {
         circularTrackColor: palette.surfaceAlt,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: palette.headerBackground,
+        backgroundColor: palette.backgroundDark,
         selectedItemColor: palette.textOnDark,
         unselectedItemColor: palette.brandPurpleLight,
         type: BottomNavigationBarType.fixed,

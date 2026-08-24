@@ -9,7 +9,7 @@ abstract final class AppTextStyles {
     final body = GoogleFonts.nunitoTextTheme(base);
 
     return body.copyWith(
-      
+      // ---- Títulos grandes (pixel) — telas de splash, headers grandes ----
       displayLarge: display.displayLarge?.copyWith(
         fontWeight: FontWeight.w700,
         fontSize: 40,
@@ -26,7 +26,7 @@ abstract final class AppTextStyles {
         height: 1.2,
       ),
 
-
+      // ---- Títulos médios (pixel) ----
       headlineLarge: display.headlineLarge?.copyWith(
         fontWeight: FontWeight.w700,
         fontSize: 22,
@@ -37,11 +37,11 @@ abstract final class AppTextStyles {
       ),
       headlineSmall: display.headlineSmall?.copyWith(
         fontWeight: FontWeight.w600,
-        fontSize: 15,
+        fontSize: 16,
         letterSpacing: 0.5,
       ),
 
-    
+      // ---- Títulos de card (Nunito — texto corrido, não pixel) ----
       titleLarge: body.titleLarge?.copyWith(
         fontWeight: FontWeight.w700,
         fontSize: 18,
@@ -55,24 +55,29 @@ abstract final class AppTextStyles {
         fontSize: 13,
       ),
 
+      // ---- Corpo de texto longo (Nunito — legibilidade em parágrafos) ----
       bodyLarge: body.bodyLarge?.copyWith(fontSize: 16, height: 1.4),
       bodyMedium: body.bodyMedium?.copyWith(fontSize: 14, height: 1.4),
       bodySmall: body.bodySmall?.copyWith(fontSize: 12, height: 1.3),
 
-      labelLarge: body.labelLarge?.copyWith(
+      // ---- Rótulos pixel pequenos e médios (HUD: datas, stats, badges) ----
+      labelLarge: display.labelLarge?.copyWith(
         fontWeight: FontWeight.w700,
-        fontSize: 13,
+        fontSize: 12,
         letterSpacing: 0.4,
+        height: 1.4,
       ),
-      labelMedium: body.labelMedium?.copyWith(
-        fontWeight: FontWeight.w700,
-        fontSize: 11,
-        letterSpacing: 0.6,
-      ),
-      labelSmall: body.labelSmall?.copyWith(
+      labelMedium: display.labelMedium?.copyWith(
         fontWeight: FontWeight.w600,
         fontSize: 10,
-        letterSpacing: 0.5,
+        letterSpacing: 0.3,
+        height: 1.4,
+      ),
+      labelSmall: display.labelSmall?.copyWith(
+        fontWeight: FontWeight.w500,
+        fontSize: 9,
+        letterSpacing: 0.2,
+        height: 1.5,
       ),
     );
   }
