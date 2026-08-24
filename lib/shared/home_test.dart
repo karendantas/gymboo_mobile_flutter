@@ -1,85 +1,59 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
-import 'package:gymboo_app/core/theme/gymboo_text_styles.dart';
 import 'package:gymboo_app/features/activities/presentation/widgets/daily_activity_mission.dart';
-import 'package:gymboo_app/features/goal/domain/models/goal.dart';
-import 'package:gymboo_app/features/goal/domain/models/weekly_progress.dart';
 import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracker.dart';
-import 'package:gymboo_app/features/virtual_pet/domain/models/virtual_pet.dart';
+import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
 
-class Home extends StatelessWidget {
+class Home extends ConsumerWidget {
   const Home({super.key});
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).extension<GymbooPalette>()!;
-
-    final petHudMockHealthy = VirtualPet(
-  id: 'mock-1',
-  name: 'Fofurin',
-  life: 100,
-  energy: 80,
-  thirst: 60,
-  level: 4,
-  points: 320,
-  xpToNextLevel: 500,
-);
-
-
-final mockGoal = Goal(
-  id: 'goal-1',
-  weeklyWorkoutTarget: 3,
-  dailyWaterGoalMl: 1000
-);
- 
-
-  final mockWeeklyProgress = WeeklyProgress(
-  completedByDay: {
-    Weekday.seg: true,
-    Weekday.ter: false,
-    Weekday.qua: true,
-    Weekday.qui: true,
-    Weekday.sex: false,
-    Weekday.sab: false,
-    Weekday.dom: false,
-  },
-);
+    final homeAsync = ref.watch(homeDataProvider);
 
     return Scaffold(
-   
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 30),
-        child: Column(
-          children: [
-            Container(
+      body: Column(
+        children: [
+    
+           Center(
+            child: Container(
               width: 100,
               height: 20,
-              color: theme.backgroundDark,
-       
+              decoration: BoxDecoration(
+                color: theme.backgroundDark, 
+                borderRadius: BorderRadius.only(bottomLeft:  Radius.circular(20), bottomRight: Radius.circular(20)),
+              
+              ),
             ),
-            PetHudScreen(
-                pet: petHudMockHealthy,
-                dateLabel: 'QUI - 9 OUT',
-               
+          ),
+
+           Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 30),
+            child: homeAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Erro ao carregar dados: $err')),
+            data: (home) => Column(
+              children: [
+                PetHudScreen(pet: home.pet, dateLabel: 'QUI - 9 OUT'),
+                const SizedBox(height: 20),
+                const DailyActivityMission(),
+                const SizedBox(height: 20),
+                WeeklyGoalTracker(goal: home.goal, weeklyProgress: home.progress),
+              ],
             ),
-
-            const SizedBox(height: 20,),
-
-            DailyActivityMission(),
-
-              const SizedBox(height: 20,),
-
-              WeeklyGoalTracker(goal: mockGoal, weeklyProgress: mockWeeklyProgress,),
-
-       
-          ],
+          ),
         ),
       ),
-      bottomNavigationBar: const   BottomTabRetro(),
+        ],
+      ),
+      
+      bottomNavigationBar: const   BottomTabRetro(), 
     );
   }
 }

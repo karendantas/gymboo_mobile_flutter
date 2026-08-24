@@ -65,8 +65,7 @@ class PetHudScreen extends StatelessWidget {
                 ],
               ),
             ),
-          
-          PetLevelBar(level: pet.level, currentXp: pet.xpProgress, xpToNextLevel: pet.xpToNextLevel),
+          PetLevelBar(level: pet.level, currentXp: pet.points, xpToNextLevel: pet.xpToNextLevel),
         ],
       ),
     );

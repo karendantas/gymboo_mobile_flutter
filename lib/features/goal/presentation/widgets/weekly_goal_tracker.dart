@@ -35,7 +35,7 @@ class WeeklyGoalTracker extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Progesso semanal',
+              'Progresso semanal',
               style: textTheme.labelMedium?.copyWith(color: theme.primaryPink),
             ),
             const SizedBox(height: 3,),
@@ -58,7 +58,7 @@ class WeeklyGoalTracker extends StatelessWidget {
 
             const SizedBox(height: 10,),
 
-            WeeklyProgressBar(value: 3/7)
+            WeeklyProgressBar(value: weeklyProgress.completedCount / 7)
           ],
 
 

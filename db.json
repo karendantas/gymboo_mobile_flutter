@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "id": "mock-user-1",
+      "name": "Karen Dantas",
+      "email": "karen@teste.com",
+      "username": "karen",
+      "height": 165,
+      "weight": 60
+    }
+  ],
+  "virtualPets": [
+    {
+      "id": "pet-1",
+      "userId": "mock-user-1",
+      "name": "Fofurin",
+      "life": 90,
+      "energy": 70,
+      "thirst": 60,
+      "level": 2,
+      "points": 320,
+      "xpToNextLevel": 500
+    }
+  ],
+  "activityTypes": [
+    { "id": "type-1", "title": "Cardio" },
+    { "id": "type-2", "title": "Musculação" }
+  ],
+  "activities": [
+    {
+      "id": "act-1",
+      "userId": "mock-user-1",
+      "title": "Corrida no parque",
+      "date": "2026-08-20",
+      "durationMinutes": 30,
+      "points": 15,
+      "description": null,
+      "type": { "id": "type-1", "title": "Cardio" }
+    },
+    {
+      "id": "act-2",
+      "userId": "mock-user-1",
+      "title": "Treino de força",
+      "date": "2026-08-19",
+      "durationMinutes": 45,
+      "points": 20,
+      "description": "Costas e bíceps",
+      "type": { "id": "type-2", "title": "Musculação" }
+    }
+  ],
+  "goals": [
+    {
+      "id": "goal-1",
+      "userId": "mock-user-1",
+      "weeklyWorkoutTarget": 4,
+      "dailyWaterGoalMl": 2000
+    }
+  ],
+  "weeklyProgress": [
+    {
+      "id": "progress-1",
+      "userId": "mock-user-1",
+      "completedByDay": {
+        "seg": true,
+        "ter": false,
+        "qua": true,
+        "qui": true,
+        "sex": false,
+        "sab": false,
+        "dom": false
+      }
+    }
+  ]
+}
