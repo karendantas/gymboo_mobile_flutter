@@ -1,38 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 
+class RetroBottomButton extends StatefulWidget {
 
-class RetroButton extends StatefulWidget {
-
-  final String imagePath;
+  final String? imagePath;
   final Color color;
   final Color shadowColor;
   final VoidCallback onTap;
   final double? paddingTop;
   final double? paddingBottom;
+  final double? width;
+  final double? height;
 
-  const RetroButton({
+  const RetroBottomButton({
     super.key, 
-    required this.imagePath,
+    this.imagePath,
     required this.color, 
     required this.shadowColor,
     required this.onTap,
     this.paddingTop,
-    this.paddingBottom
+    this.paddingBottom,
+    this.width,
+    this.height
     });
 
   @override
-  State<RetroButton> createState() => _RetroButtonState();
+  State<RetroBottomButton> createState() => _RetroBottomButtonState();
 }
 
-class _RetroButtonState extends State<RetroButton> {
+class _RetroBottomButtonState extends State<RetroBottomButton> {
 
   bool isPressed = false;
 
-  
   @override
   Widget build(BuildContext context) {
-
 
     return Padding(
       padding: EdgeInsets.only(bottom: widget.paddingBottom ?? 0, top: widget.paddingTop ?? 0 ),
@@ -54,8 +56,8 @@ class _RetroButtonState extends State<RetroButton> {
           });
         },
         child: AnimatedContainer(
-          width: 60,
-          height: 60,
+          width: widget.width ?? 60,
+          height: widget.height ?? 60,
        
           duration: const Duration(milliseconds: 100),
       
@@ -70,19 +72,15 @@ class _RetroButtonState extends State<RetroButton> {
                   offset: const Offset(0, 5),
                   blurRadius: 0,
                 )
-      
-              
             ]
           
           ),
           child: Center(
-            child: SvgPicture.asset(
-              widget.imagePath,
-              width: 32,
-              height: 32,
+            child: widget.imagePath != null
+                ? SvgPicture.asset(widget.imagePath!, width: 32, height: 32)
              
-            ),
-          ),
+                : null,
+        ),
         ),
       
         

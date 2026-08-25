@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
-import 'package:gymboo_app/shared/button_retro.dart';
+import 'package:gymboo_app/shared/retro_bottom_button.dart';
 
 class BottomTabRetro extends StatelessWidget {
   const BottomTabRetro({super.key});
@@ -28,7 +28,7 @@ class BottomTabRetro extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
            
-               RetroButton(
+               RetroBottomButton(
                   imagePath: 'assets/icons/home_icon.svg', 
                   color: theme.primaryPink , 
                   shadowColor: theme.primaryPinkDark, 
@@ -36,7 +36,7 @@ class BottomTabRetro extends StatelessWidget {
                   onTap: () => context.go('/home')
                   ),
                 
-             RetroButton(
+             RetroBottomButton(
                   imagePath: 'assets/icons/pet_icon.svg', 
                   color: theme.primaryPink  , 
                   shadowColor: theme.primaryPinkDark , 
@@ -55,14 +55,14 @@ class BottomTabRetro extends StatelessWidget {
                     ),
                   ),
       
-                 RetroButton(
+                 RetroBottomButton(
                   imagePath: 'assets/icons/dumbell_icon.svg', 
                   color: theme.primaryPink , 
                   shadowColor: theme.primaryPinkDark, 
                   paddingTop: 20,
                   onTap: () => context.go('/activities')),
                 
-             RetroButton(
+             RetroBottomButton(
                   imagePath: 'assets/icons/user_icon.svg', 
                   color: theme.primaryPink, 
                   shadowColor: theme.primaryPinkDark, 
@@ -72,17 +72,6 @@ class BottomTabRetro extends StatelessWidget {
                   
             ],
             ),
-           
-            Center(
-            child: Container(
-              width: 100,
-              height: 20,
-              decoration: BoxDecoration(
-                color: theme.backgroundDark, 
-                borderRadius: BorderRadius.only(topLeft:  Radius.circular(20), topRight: Radius.circular(20)),
-              ),
-            ),
-          ),
           ],
         )
       ); 
