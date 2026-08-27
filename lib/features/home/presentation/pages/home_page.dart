@@ -6,6 +6,7 @@ import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracke
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
+import 'package:gymboo_app/shared/vertical_fitbox.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -33,20 +34,25 @@ class Home extends ConsumerWidget {
           ),
 
            Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 30),
-            child: homeAsync.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) => Center(child: Text('Erro ao carregar dados: $err')),
-            data: (home) => Column(
-              children: [
-                PetHudScreen(pet: home.pet, dateLabel: 'QUI - 9 OUT'),
-                const SizedBox(height: 20),
-                const DailyActivityMission(),
-                const SizedBox(height: 20),
-                WeeklyGoalTracker(goal: home.goal, weeklyProgress: home.progress),
-              ],
-            ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 30),
+                  child: homeAsync.when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (err, stack) => Center(child: Text('Erro ao carregar dados: $err')),
+                  data: (home) => VerticalFitBox(
+                    
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PetHudScreen(pet: home.pet, dateLabel: 'QUI - 9 OUT'), //LEMBRAR DE POR A DATA
+                          const SizedBox(height: 20),
+                          const DailyActivityMission(),
+                          const SizedBox(height: 20),
+                          WeeklyGoalTracker(goal: home.goal, weeklyProgress: home.progress),
+                                      ],
+                                  ),
+                    ),
+                  
           ),
         ),
       ),

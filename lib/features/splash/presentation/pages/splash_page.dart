@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -14,22 +13,8 @@ class SplashPage extends ConsumerStatefulWidget {
 }
 
 class _SplashPageState extends ConsumerState<SplashPage> {
-  final _player = AudioPlayer();
+ 
   bool _isNavigating = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _player.setReleaseMode(ReleaseMode.loop);
-    _player.play(AssetSource('audio/theme_song.mp3'), volume: 0.9);
-  }
-
-  @override
-  void dispose() {
-    _player.stop();
-    _player.dispose();
-    super.dispose();
-  }
 
   Future<void> _handleStart() async {
     if (_isNavigating) return;
@@ -42,7 +27,6 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     }
 
     final isLoggedIn = ref.read(authControllerProvider).value != null;
-    await _player.stop();
 
     if (!mounted) return;
     context.go(isLoggedIn ? '/home' : '/login');

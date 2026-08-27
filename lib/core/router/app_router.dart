@@ -5,12 +5,12 @@ import 'package:gymboo_app/features/activities/presentation/pages/activities_pag
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/features/auth/presentation/pages/login_page.dart';
 import 'package:gymboo_app/features/splash/presentation/pages/splash_page.dart';
-import 'package:gymboo_app/shared/home_test.dart';
+import 'package:gymboo_app/features/home/presentation/pages/home_page.dart';
 
 
 class _GoRouterRefreshNotifier extends ChangeNotifier {
   _GoRouterRefreshNotifier(Ref ref) {
-    ref.listen<AsyncValue>(authControllerProvider, (_,__) => notifyListeners());
+    ref.listen<AsyncValue>(authControllerProvider, (_,_) => notifyListeners());
   }
 }
 
@@ -38,7 +38,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     routes: [
         GoRoute(path: '/splash', pageBuilder: ((context, state) => NoTransitionPage(child: const SplashPage()))),
         GoRoute(path: '/login', pageBuilder: (context,state) => NoTransitionPage(child: const LoginPage()) ),
-      GoRoute(path: '/home', pageBuilder: (context,state) => NoTransitionPage(child: const Home())), //MUDAR DEPOIS
+        GoRoute(path: '/home', pageBuilder: (context,state) => NoTransitionPage(child: const Home())), //MUDAR DEPOIS
         GoRoute(path: '/activities', pageBuilder: (context,state) => NoTransitionPage(child: const ActivitiesPage()))
     ]
   );

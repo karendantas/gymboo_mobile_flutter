@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 
 class RetroBottomButton extends StatefulWidget {
 
@@ -78,13 +77,10 @@ class _RetroBottomButtonState extends State<RetroBottomButton> {
           child: Center(
             child: widget.imagePath != null
                 ? SvgPicture.asset(widget.imagePath!, width: 32, height: 32)
-             
                 : null,
         ),
         ),
-      
-        
-      
+
       ),
     );
   }

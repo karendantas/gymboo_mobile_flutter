@@ -23,31 +23,32 @@ class DailyActivityMission extends StatelessWidget {
 
         
       ),
-      child: Row(
-        spacing: 10,
-       children: [
-         Image.asset(
-          'assets/images/star.png',
-          width: 50,
-          height: 54,
-          filterQuality: FilterQuality.none,
+      child: Expanded(
+        child: Row(
+         children: [
+           Image.asset(
+            'assets/images/star.png',
+            width: 50,
+            height: 54,
+            filterQuality: FilterQuality.none,
+          ),
+        
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'MISSÃO DIÁRIA',
+                style: textTheme.labelMedium?.copyWith(color: theme.primaryPink),
+              ),
+              const SizedBox(height: 3,),
+              Text(
+                'Complete sua atividade do dia!',
+                style: textTheme.labelSmall,
+              )
+            ],
+          )
+         ],
         ),
-
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'MISSÃO DIÁRIA',
-              style: textTheme.labelMedium?.copyWith(color: theme.primaryPink),
-            ),
-            const SizedBox(height: 3,),
-            Text(
-              'Complete sua atividade do dia!',
-              style: textTheme.labelSmall,
-            )
-          ],
-        )
-       ],
       ),
     );
   }
