@@ -9,8 +9,6 @@ abstract class VirtualPet with _$VirtualPet {
     required String id,
     required String name,
     required int life,      
-    required int energy,
-    required int thirst,
     required int level,
     required int points,   
     required int xpToNextLevel,

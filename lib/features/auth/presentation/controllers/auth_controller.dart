@@ -16,10 +16,10 @@ class AuthController extends AsyncNotifier<User?> {
     );
   }
 
-  Future<void> register({required String name, required String email, required String password}) async {
+  Future<void> register({required String name, required String email, required String password, required String petName}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).register(name: name, email: email, password: password),
+      () => ref.read(authRepositoryProvider).register(name: name, email: email, password: password, petName: petName),
     );
   }
 

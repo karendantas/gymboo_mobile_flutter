@@ -9,7 +9,6 @@ abstract class User with _$User {
     required String id,
     required String name,
     required String email,
-    required String username,
     required int height,
     required int weight,
   }) = _User;

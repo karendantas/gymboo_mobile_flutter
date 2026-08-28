@@ -117,8 +117,18 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                     color: theme.primaryPinkDark, 
                     shadowColor: theme.textSecondary, 
                     onTap: () => context.go('/register')
-                    )
+                    ),
                       
+                   GestureDetector(
+                    onTap: () => context.push('/register'),
+                    child: Text(
+                      'Cadastro',
+                      style: TextStyle(
+                        color: theme.primaryPink,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  )
                 ],
               ),
             )),

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VirtualPet {
 
- String get id; String get name; int get life; int get energy; int get thirst; int get level; int get points; int get xpToNextLevel;
+ String get id; String get name; int get life; int get level; int get points; int get xpToNextLevel;
 /// Create a copy of VirtualPet
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $VirtualPetCopyWith<VirtualPet> get copyWith => _$VirtualPetCopyWithImpl<Virtual
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.life, life) || other.life == life)&&(identical(other.energy, energy) || other.energy == energy)&&(identical(other.thirst, thirst) || other.thirst == thirst)&&(identical(other.level, level) || other.level == level)&&(identical(other.points, points) || other.points == points)&&(identical(other.xpToNextLevel, xpToNextLevel) || other.xpToNextLevel == xpToNextLevel));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.life, life) || other.life == life)&&(identical(other.level, level) || other.level == level)&&(identical(other.points, points) || other.points == points)&&(identical(other.xpToNextLevel, xpToNextLevel) || other.xpToNextLevel == xpToNextLevel));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,life,energy,thirst,level,points,xpToNextLevel);
+int get hashCode => Object.hash(runtimeType,id,name,life,level,points,xpToNextLevel);
 
 @override
 String toString() {
-  return 'VirtualPet(id: $id, name: $name, life: $life, energy: $energy, thirst: $thirst, level: $level, points: $points, xpToNextLevel: $xpToNextLevel)';
+  return 'VirtualPet(id: $id, name: $name, life: $life, level: $level, points: $points, xpToNextLevel: $xpToNextLevel)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $VirtualPetCopyWith<$Res>  {
   factory $VirtualPetCopyWith(VirtualPet value, $Res Function(VirtualPet) _then) = _$VirtualPetCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, int life, int energy, int thirst, int level, int points, int xpToNextLevel
+ String id, String name, int life, int level, int points, int xpToNextLevel
 });
 
 
@@ -65,13 +65,11 @@ class _$VirtualPetCopyWithImpl<$Res>
 
 /// Create a copy of VirtualPet
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? life = null,Object? energy = null,Object? thirst = null,Object? level = null,Object? points = null,Object? xpToNextLevel = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? life = null,Object? level = null,Object? points = null,Object? xpToNextLevel = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,life: null == life ? _self.life : life // ignore: cast_nullable_to_non_nullable
-as int,energy: null == energy ? _self.energy : energy // ignore: cast_nullable_to_non_nullable
-as int,thirst: null == thirst ? _self.thirst : thirst // ignore: cast_nullable_to_non_nullable
 as int,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as int,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,xpToNextLevel: null == xpToNextLevel ? _self.xpToNextLevel : xpToNextLevel // ignore: cast_nullable_to_non_nullable
@@ -160,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int life,  int energy,  int thirst,  int level,  int points,  int xpToNextLevel)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  int life,  int level,  int points,  int xpToNextLevel)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VirtualPet() when $default != null:
-return $default(_that.id,_that.name,_that.life,_that.energy,_that.thirst,_that.level,_that.points,_that.xpToNextLevel);case _:
+return $default(_that.id,_that.name,_that.life,_that.level,_that.points,_that.xpToNextLevel);case _:
   return orElse();
 
 }
@@ -181,10 +179,10 @@ return $default(_that.id,_that.name,_that.life,_that.energy,_that.thirst,_that.l
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int life,  int energy,  int thirst,  int level,  int points,  int xpToNextLevel)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  int life,  int level,  int points,  int xpToNextLevel)  $default,) {final _that = this;
 switch (_that) {
 case _VirtualPet():
-return $default(_that.id,_that.name,_that.life,_that.energy,_that.thirst,_that.level,_that.points,_that.xpToNextLevel);case _:
+return $default(_that.id,_that.name,_that.life,_that.level,_that.points,_that.xpToNextLevel);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +199,10 @@ return $default(_that.id,_that.name,_that.life,_that.energy,_that.thirst,_that.l
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int life,  int energy,  int thirst,  int level,  int points,  int xpToNextLevel)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  int life,  int level,  int points,  int xpToNextLevel)?  $default,) {final _that = this;
 switch (_that) {
 case _VirtualPet() when $default != null:
-return $default(_that.id,_that.name,_that.life,_that.energy,_that.thirst,_that.level,_that.points,_that.xpToNextLevel);case _:
+return $default(_that.id,_that.name,_that.life,_that.level,_that.points,_that.xpToNextLevel);case _:
   return null;
 
 }
@@ -216,14 +214,12 @@ return $default(_that.id,_that.name,_that.life,_that.energy,_that.thirst,_that.l
 @JsonSerializable()
 
 class _VirtualPet extends VirtualPet {
-  const _VirtualPet({required this.id, required this.name, required this.life, required this.energy, required this.thirst, required this.level, required this.points, required this.xpToNextLevel}): super._();
+  const _VirtualPet({required this.id, required this.name, required this.life, required this.level, required this.points, required this.xpToNextLevel}): super._();
   factory _VirtualPet.fromJson(Map<String, dynamic> json) => _$VirtualPetFromJson(json);
 
 @override final  String id;
 @override final  String name;
 @override final  int life;
-@override final  int energy;
-@override final  int thirst;
 @override final  int level;
 @override final  int points;
 @override final  int xpToNextLevel;
@@ -241,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.life, life) || other.life == life)&&(identical(other.energy, energy) || other.energy == energy)&&(identical(other.thirst, thirst) || other.thirst == thirst)&&(identical(other.level, level) || other.level == level)&&(identical(other.points, points) || other.points == points)&&(identical(other.xpToNextLevel, xpToNextLevel) || other.xpToNextLevel == xpToNextLevel));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.life, life) || other.life == life)&&(identical(other.level, level) || other.level == level)&&(identical(other.points, points) || other.points == points)&&(identical(other.xpToNextLevel, xpToNextLevel) || other.xpToNextLevel == xpToNextLevel));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,life,energy,thirst,level,points,xpToNextLevel);
+int get hashCode => Object.hash(runtimeType,id,name,life,level,points,xpToNextLevel);
 
 @override
 String toString() {
-  return 'VirtualPet(id: $id, name: $name, life: $life, energy: $energy, thirst: $thirst, level: $level, points: $points, xpToNextLevel: $xpToNextLevel)';
+  return 'VirtualPet(id: $id, name: $name, life: $life, level: $level, points: $points, xpToNextLevel: $xpToNextLevel)';
 }
 
 
@@ -261,7 +257,7 @@ abstract mixin class _$VirtualPetCopyWith<$Res> implements $VirtualPetCopyWith<$
   factory _$VirtualPetCopyWith(_VirtualPet value, $Res Function(_VirtualPet) _then) = __$VirtualPetCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, int life, int energy, int thirst, int level, int points, int xpToNextLevel
+ String id, String name, int life, int level, int points, int xpToNextLevel
 });
 
 
@@ -278,13 +274,11 @@ class __$VirtualPetCopyWithImpl<$Res>
 
 /// Create a copy of VirtualPet
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? life = null,Object? energy = null,Object? thirst = null,Object? level = null,Object? points = null,Object? xpToNextLevel = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? life = null,Object? level = null,Object? points = null,Object? xpToNextLevel = null,}) {
   return _then(_VirtualPet(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,life: null == life ? _self.life : life // ignore: cast_nullable_to_non_nullable
-as int,energy: null == energy ? _self.energy : energy // ignore: cast_nullable_to_non_nullable
-as int,thirst: null == thirst ? _self.thirst : thirst // ignore: cast_nullable_to_non_nullable
 as int,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as int,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,xpToNextLevel: null == xpToNextLevel ? _self.xpToNextLevel : xpToNextLevel // ignore: cast_nullable_to_non_nullable
