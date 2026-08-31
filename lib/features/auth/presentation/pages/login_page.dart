@@ -63,7 +63,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
           decoration: BoxDecoration(
             image:  const DecorationImage(
               
-          image: AssetImage('assets/images/login_bg.png'),
+          image: AssetImage('assets/images/bg-login.png'),
           fit: BoxFit.cover,
           filterQuality: FilterQuality.none,
         ),
@@ -77,7 +77,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                 children: [
                 
                   Image.asset(
-                    'assets/images/logo.png',
+                    'assets/images/logo2.png',
                     width: 400,
                     height: 200,
                     filterQuality: FilterQuality.none,

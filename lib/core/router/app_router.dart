@@ -32,7 +32,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final isPublicRoute = state.matchedLocation == '/login' || state.matchedLocation == '/register' || state.matchedLocation == '/splash';
 
       if (!isLoggedIn && !isPublicRoute) return '/login';
-      if (isLoggedIn && state.matchedLocation == '/login') return '/home';
+         if (!isLoggedIn && !isPublicRoute) return '/login';
+      if (isLoggedIn &&
+          (state.matchedLocation == '/login' || state.matchedLocation == '/register')) {
+        return '/home';
+      }
 
       return null;
     }),

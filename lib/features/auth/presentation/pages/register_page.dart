@@ -25,6 +25,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   String? _passwordError;
   String? _confirmPasswordError;
 
+  bool _isSubmitting = false;
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -58,25 +60,24 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         _confirmPasswordError == null;
   }
 
-  void _handleRegister() {
+  Future<void> _handleRegister() async {
+    if (_isSubmitting) return; 
     if (!_validate()) return;
 
-    ref.read(authControllerProvider.notifier).register(
+    setState(() => _isSubmitting = true);
+    await ref.read(authControllerProvider.notifier).register(
           name: _nameController.text.trim(),
           email: _emailController.text.trim(),
           password: _passwordController.text,
-          petName: 'Fofin'
         );
+    if (mounted) setState(() => _isSubmitting = false);
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<GymbooPalette>()!;
 
-    // Mesmo padrão do LoginPage: escuta erro assíncrono (ex.: e-mail já
-    // cadastrado) e mostra num SnackBar, sem redirecionar sozinho — o
-    // redirecionamento pra /home acontece pelo appRouterProvider quando
-    // o AuthController.state deixar de ser null.
+    
     ref.listen<AsyncValue>(authControllerProvider, (previous, next) {
       if (next.hasError && !next.isLoading) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -85,7 +86,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       }
     });
 
-    final isLoading = ref.watch(authControllerProvider).isLoading;
+    final isLoading = ref.watch(authControllerProvider).isLoading || _isSubmitting;
 
     return Scaffold(
       body: Container(

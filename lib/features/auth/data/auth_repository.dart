@@ -2,12 +2,13 @@ import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/data/local/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqlite3/sqlite3.dart' show SqliteException;
 
 import '../domain/models/user.dart';
 
 abstract class AuthRepository {
   Future<User> login({required String email, required String password});
-  Future<User> register({required String name, required String email, required String password, required String petName});
+  Future<User> register({required String name, required String email, required String password});
   Future<void> logout();
   Future<User?> restoreSession(); 
 }
@@ -50,39 +51,59 @@ class LocalAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<User> register({required String name, required String email, required String password, required String petName})  async {
-    
-    
-    final newId = await _db.transaction( 
-      () async { 
+  Future<User> register({
+    required String name,
+    required String email,
+    required String password,
+    String petName = 'Fofurico',
+  }) async {
+    // Transação: se qualquer insert falhar, TODOS são desfeitos — nunca
+    // fica um usuário criado sem pet/meta (que era exatamente o bug).
+    late final int newId;
+    try {
+      newId = await _db.transaction(() async {
         final userId = await _db.into(_db.users).insert(
-          UsersCompanion.insert(
-              name: name,
-              email: email,
-              password: password,
-          )
-        );
+              UsersCompanion.insert(
+                name: name,
+                email: email,
+                password: password,
+              ),
+            );
 
-          await _db.into(_db.petVirtuals).insert(
-            PetVirtualsCompanion.insert(
-              name: petName,
-              userId: userId,
-            ),
-          );
+        await _db.into(_db.petVirtuals).insert(
+              PetVirtualsCompanion.insert(
+                name: petName,
+                userId: userId,
+              ),
+            );
 
-           // Valores padrão iniciais — ajustar quando o onboarding (RF1.1,
-          // segunda etapa) coletar isso do usuário de verdade.
-          await _db.into(_db.goals).insert(
-            GoalsCompanion.insert(
-              weeklyWorkoutTarget: 3,
-              dailyWaterGoalMl: 2000,
-              userId: Value(userId),
-            ),
-          );
- 
-      return userId;
-    
-    });
+        // Valores padrão iniciais — ajustar quando o onboarding (RF1.1,
+        // segunda etapa) coletar isso do usuário de verdade.
+        await _db.into(_db.goals).insert(
+              GoalsCompanion.insert(
+                weeklyWorkoutTarget: 3,
+                dailyWaterGoalMl: 2000,
+                userId: Value(userId),
+              ),
+            );
+
+        return userId;
+      });
+    } catch (e) {
+      // Catch genérico de propósito: como o banco roda numa isolate
+      // separada (NativeDatabase.createInBackground), a exceção que
+      // atravessa de volta nem sempre preserva o tipo exato
+      // SqliteException — então checamos a MENSAGEM (toString), que
+      // sobrevive à travessia entre isolates.
+      final message = e.toString();
+      final isUniqueEmailViolation = message.contains('UNIQUE constraint failed') &&
+          message.contains('users.email');
+
+      if (isUniqueEmailViolation) {
+        throw Exception('Este e-mail já está cadastrado.');
+      }
+      rethrow;
+    }
 
     await _saveSession(newId);
 
@@ -91,7 +112,6 @@ class LocalAuthRepository implements AuthRepository {
     ).getSingle();
 
     return _toDomain(row);
-    
   }
 
   @override
