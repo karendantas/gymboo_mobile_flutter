@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Goal {
 
- String get id; int get weeklyWorkoutTarget; int get dailyWaterGoalMl;
+ String get id; int get weeklyWorkoutTarget;
 /// Create a copy of Goal
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $GoalCopyWith<Goal> get copyWith => _$GoalCopyWithImpl<Goal>(this as Goal, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Goal&&(identical(other.id, id) || other.id == id)&&(identical(other.weeklyWorkoutTarget, weeklyWorkoutTarget) || other.weeklyWorkoutTarget == weeklyWorkoutTarget)&&(identical(other.dailyWaterGoalMl, dailyWaterGoalMl) || other.dailyWaterGoalMl == dailyWaterGoalMl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Goal&&(identical(other.id, id) || other.id == id)&&(identical(other.weeklyWorkoutTarget, weeklyWorkoutTarget) || other.weeklyWorkoutTarget == weeklyWorkoutTarget));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,weeklyWorkoutTarget,dailyWaterGoalMl);
+int get hashCode => Object.hash(runtimeType,id,weeklyWorkoutTarget);
 
 @override
 String toString() {
-  return 'Goal(id: $id, weeklyWorkoutTarget: $weeklyWorkoutTarget, dailyWaterGoalMl: $dailyWaterGoalMl)';
+  return 'Goal(id: $id, weeklyWorkoutTarget: $weeklyWorkoutTarget)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $GoalCopyWith<$Res>  {
   factory $GoalCopyWith(Goal value, $Res Function(Goal) _then) = _$GoalCopyWithImpl;
 @useResult
 $Res call({
- String id, int weeklyWorkoutTarget, int dailyWaterGoalMl
+ String id, int weeklyWorkoutTarget
 });
 
 
@@ -65,11 +65,10 @@ class _$GoalCopyWithImpl<$Res>
 
 /// Create a copy of Goal
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? weeklyWorkoutTarget = null,Object? dailyWaterGoalMl = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? weeklyWorkoutTarget = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,weeklyWorkoutTarget: null == weeklyWorkoutTarget ? _self.weeklyWorkoutTarget : weeklyWorkoutTarget // ignore: cast_nullable_to_non_nullable
-as int,dailyWaterGoalMl: null == dailyWaterGoalMl ? _self.dailyWaterGoalMl : dailyWaterGoalMl // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -155,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int weeklyWorkoutTarget,  int dailyWaterGoalMl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  int weeklyWorkoutTarget)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Goal() when $default != null:
-return $default(_that.id,_that.weeklyWorkoutTarget,_that.dailyWaterGoalMl);case _:
+return $default(_that.id,_that.weeklyWorkoutTarget);case _:
   return orElse();
 
 }
@@ -176,10 +175,10 @@ return $default(_that.id,_that.weeklyWorkoutTarget,_that.dailyWaterGoalMl);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int weeklyWorkoutTarget,  int dailyWaterGoalMl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  int weeklyWorkoutTarget)  $default,) {final _that = this;
 switch (_that) {
 case _Goal():
-return $default(_that.id,_that.weeklyWorkoutTarget,_that.dailyWaterGoalMl);case _:
+return $default(_that.id,_that.weeklyWorkoutTarget);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +195,10 @@ return $default(_that.id,_that.weeklyWorkoutTarget,_that.dailyWaterGoalMl);case 
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int weeklyWorkoutTarget,  int dailyWaterGoalMl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  int weeklyWorkoutTarget)?  $default,) {final _that = this;
 switch (_that) {
 case _Goal() when $default != null:
-return $default(_that.id,_that.weeklyWorkoutTarget,_that.dailyWaterGoalMl);case _:
+return $default(_that.id,_that.weeklyWorkoutTarget);case _:
   return null;
 
 }
@@ -211,12 +210,11 @@ return $default(_that.id,_that.weeklyWorkoutTarget,_that.dailyWaterGoalMl);case 
 @JsonSerializable()
 
 class _Goal implements Goal {
-  const _Goal({required this.id, required this.weeklyWorkoutTarget, required this.dailyWaterGoalMl});
+  const _Goal({required this.id, required this.weeklyWorkoutTarget});
   factory _Goal.fromJson(Map<String, dynamic> json) => _$GoalFromJson(json);
 
 @override final  String id;
 @override final  int weeklyWorkoutTarget;
-@override final  int dailyWaterGoalMl;
 
 /// Create a copy of Goal
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Goal&&(identical(other.id, id) || other.id == id)&&(identical(other.weeklyWorkoutTarget, weeklyWorkoutTarget) || other.weeklyWorkoutTarget == weeklyWorkoutTarget)&&(identical(other.dailyWaterGoalMl, dailyWaterGoalMl) || other.dailyWaterGoalMl == dailyWaterGoalMl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Goal&&(identical(other.id, id) || other.id == id)&&(identical(other.weeklyWorkoutTarget, weeklyWorkoutTarget) || other.weeklyWorkoutTarget == weeklyWorkoutTarget));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,weeklyWorkoutTarget,dailyWaterGoalMl);
+int get hashCode => Object.hash(runtimeType,id,weeklyWorkoutTarget);
 
 @override
 String toString() {
-  return 'Goal(id: $id, weeklyWorkoutTarget: $weeklyWorkoutTarget, dailyWaterGoalMl: $dailyWaterGoalMl)';
+  return 'Goal(id: $id, weeklyWorkoutTarget: $weeklyWorkoutTarget)';
 }
 
 
@@ -251,7 +249,7 @@ abstract mixin class _$GoalCopyWith<$Res> implements $GoalCopyWith<$Res> {
   factory _$GoalCopyWith(_Goal value, $Res Function(_Goal) _then) = __$GoalCopyWithImpl;
 @override @useResult
 $Res call({
- String id, int weeklyWorkoutTarget, int dailyWaterGoalMl
+ String id, int weeklyWorkoutTarget
 });
 
 
@@ -268,11 +266,10 @@ class __$GoalCopyWithImpl<$Res>
 
 /// Create a copy of Goal
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? weeklyWorkoutTarget = null,Object? dailyWaterGoalMl = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? weeklyWorkoutTarget = null,}) {
   return _then(_Goal(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,weeklyWorkoutTarget: null == weeklyWorkoutTarget ? _self.weeklyWorkoutTarget : weeklyWorkoutTarget // ignore: cast_nullable_to_non_nullable
-as int,dailyWaterGoalMl: null == dailyWaterGoalMl ? _self.dailyWaterGoalMl : dailyWaterGoalMl // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

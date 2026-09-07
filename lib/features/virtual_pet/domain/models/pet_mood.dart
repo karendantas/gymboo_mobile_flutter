@@ -1,0 +1,1 @@
+enum PetMood { happy, neutral, tired, sad }

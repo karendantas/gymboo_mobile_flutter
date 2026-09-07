@@ -1,0 +1,1 @@
+enum PetColorVariant { purple, pink, green, yellow }

@@ -6,6 +6,7 @@ import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracke
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
+import 'package:gymboo_app/shared/retro_button.dart';
 import 'package:gymboo_app/shared/vertical_fitbox.dart';
 
 class Home extends ConsumerWidget {
@@ -44,6 +45,7 @@ class Home extends ConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                     
                           PetHudScreen(pet: home.pet, dateLabel: 'QUI - 9 OUT'), //LEMBRAR DE POR A DATA
                           const SizedBox(height: 20),
                           const DailyActivityMission(),

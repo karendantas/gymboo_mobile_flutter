@@ -137,7 +137,7 @@ const gymbooDefaultPalette = GymbooPalette(
   primaryPinkDark: Color(0xFFBD597A),   // sombra 3D sob o botão
 
   // ---- Fundos ----
-  backgroundOuter: Color.fromARGB(255, 255, 196, 203),   // rosa claro por trás de tudo
+  backgroundOuter: Color(0xFFFDC5CE),   // rosa claro por trás de tudo
   backgroundDark: Color(0xFFF49DB2),  // sem app bar distinta neste layout, mesmo tom
   surface: Color(0xFFEBE6CC),   
   surfaceSecondary: Color(0xFFCDCCAE),        // bege do card do pet / pílula de data

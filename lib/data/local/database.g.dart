@@ -21,6 +21,17 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _googleIdMeta = const VerificationMeta(
+    'googleId',
+  );
+  @override
+  late final GeneratedColumn<String> googleId = GeneratedColumn<String>(
+    'google_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -39,29 +50,13 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
     'email',
     aliasedName,
-    false,
+    true,
     additionalChecks: GeneratedColumn.checkTextLength(
       minTextLength: 1,
       maxTextLength: 100,
     ),
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-  );
-  static const VerificationMeta _passwordMeta = const VerificationMeta(
-    'password',
-  );
-  @override
-  late final GeneratedColumn<String> password = GeneratedColumn<String>(
-    'password',
-    aliasedName,
-    false,
-    additionalChecks: GeneratedColumn.checkTextLength(
-      minTextLength: 1,
-      maxTextLength: 30,
-    ),
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _heightMeta = const VerificationMeta('height');
   @override
@@ -84,9 +79,9 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
   @override
   List<GeneratedColumn> get $columns => [
     userId,
+    googleId,
     name,
     email,
-    password,
     height,
     weight,
   ];
@@ -108,6 +103,12 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
         userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
       );
     }
+    if (data.containsKey('google_id')) {
+      context.handle(
+        _googleIdMeta,
+        googleId.isAcceptableOrUnknown(data['google_id']!, _googleIdMeta),
+      );
+    }
     if (data.containsKey('name')) {
       context.handle(
         _nameMeta,
@@ -121,16 +122,6 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
         _emailMeta,
         email.isAcceptableOrUnknown(data['email']!, _emailMeta),
       );
-    } else if (isInserting) {
-      context.missing(_emailMeta);
-    }
-    if (data.containsKey('password')) {
-      context.handle(
-        _passwordMeta,
-        password.isAcceptableOrUnknown(data['password']!, _passwordMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_passwordMeta);
     }
     if (data.containsKey('height')) {
       context.handle(
@@ -157,6 +148,10 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
         DriftSqlType.int,
         data['${effectivePrefix}user_id'],
       )!,
+      googleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}google_id'],
+      ),
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name'],
@@ -164,11 +159,7 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
       email: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}email'],
-      )!,
-      password: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}password'],
-      )!,
+      ),
       height: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}height'],
@@ -188,16 +179,16 @@ class $UsersTable extends Users with TableInfo<$UsersTable, UserRow> {
 
 class UserRow extends DataClass implements Insertable<UserRow> {
   final int userId;
+  final String? googleId;
   final String name;
-  final String email;
-  final String password;
+  final String? email;
   final int? height;
   final int? weight;
   const UserRow({
     required this.userId,
+    this.googleId,
     required this.name,
-    required this.email,
-    required this.password,
+    this.email,
     this.height,
     this.weight,
   });
@@ -205,9 +196,13 @@ class UserRow extends DataClass implements Insertable<UserRow> {
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['user_id'] = Variable<int>(userId);
+    if (!nullToAbsent || googleId != null) {
+      map['google_id'] = Variable<String>(googleId);
+    }
     map['name'] = Variable<String>(name);
-    map['email'] = Variable<String>(email);
-    map['password'] = Variable<String>(password);
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
+    }
     if (!nullToAbsent || height != null) {
       map['height'] = Variable<int>(height);
     }
@@ -220,9 +215,13 @@ class UserRow extends DataClass implements Insertable<UserRow> {
   UsersCompanion toCompanion(bool nullToAbsent) {
     return UsersCompanion(
       userId: Value(userId),
+      googleId: googleId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(googleId),
       name: Value(name),
-      email: Value(email),
-      password: Value(password),
+      email: email == null && nullToAbsent
+          ? const Value.absent()
+          : Value(email),
       height: height == null && nullToAbsent
           ? const Value.absent()
           : Value(height),
@@ -239,9 +238,9 @@ class UserRow extends DataClass implements Insertable<UserRow> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserRow(
       userId: serializer.fromJson<int>(json['userId']),
+      googleId: serializer.fromJson<String?>(json['googleId']),
       name: serializer.fromJson<String>(json['name']),
-      email: serializer.fromJson<String>(json['email']),
-      password: serializer.fromJson<String>(json['password']),
+      email: serializer.fromJson<String?>(json['email']),
       height: serializer.fromJson<int?>(json['height']),
       weight: serializer.fromJson<int?>(json['weight']),
     );
@@ -251,9 +250,9 @@ class UserRow extends DataClass implements Insertable<UserRow> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'userId': serializer.toJson<int>(userId),
+      'googleId': serializer.toJson<String?>(googleId),
       'name': serializer.toJson<String>(name),
-      'email': serializer.toJson<String>(email),
-      'password': serializer.toJson<String>(password),
+      'email': serializer.toJson<String?>(email),
       'height': serializer.toJson<int?>(height),
       'weight': serializer.toJson<int?>(weight),
     };
@@ -261,25 +260,25 @@ class UserRow extends DataClass implements Insertable<UserRow> {
 
   UserRow copyWith({
     int? userId,
+    Value<String?> googleId = const Value.absent(),
     String? name,
-    String? email,
-    String? password,
+    Value<String?> email = const Value.absent(),
     Value<int?> height = const Value.absent(),
     Value<int?> weight = const Value.absent(),
   }) => UserRow(
     userId: userId ?? this.userId,
+    googleId: googleId.present ? googleId.value : this.googleId,
     name: name ?? this.name,
-    email: email ?? this.email,
-    password: password ?? this.password,
+    email: email.present ? email.value : this.email,
     height: height.present ? height.value : this.height,
     weight: weight.present ? weight.value : this.weight,
   );
   UserRow copyWithCompanion(UsersCompanion data) {
     return UserRow(
       userId: data.userId.present ? data.userId.value : this.userId,
+      googleId: data.googleId.present ? data.googleId.value : this.googleId,
       name: data.name.present ? data.name.value : this.name,
       email: data.email.present ? data.email.value : this.email,
-      password: data.password.present ? data.password.value : this.password,
       height: data.height.present ? data.height.value : this.height,
       weight: data.weight.present ? data.weight.value : this.weight,
     );
@@ -289,9 +288,9 @@ class UserRow extends DataClass implements Insertable<UserRow> {
   String toString() {
     return (StringBuffer('UserRow(')
           ..write('userId: $userId, ')
+          ..write('googleId: $googleId, ')
           ..write('name: $name, ')
           ..write('email: $email, ')
-          ..write('password: $password, ')
           ..write('height: $height, ')
           ..write('weight: $weight')
           ..write(')'))
@@ -300,57 +299,55 @@ class UserRow extends DataClass implements Insertable<UserRow> {
 
   @override
   int get hashCode =>
-      Object.hash(userId, name, email, password, height, weight);
+      Object.hash(userId, googleId, name, email, height, weight);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UserRow &&
           other.userId == this.userId &&
+          other.googleId == this.googleId &&
           other.name == this.name &&
           other.email == this.email &&
-          other.password == this.password &&
           other.height == this.height &&
           other.weight == this.weight);
 }
 
 class UsersCompanion extends UpdateCompanion<UserRow> {
   final Value<int> userId;
+  final Value<String?> googleId;
   final Value<String> name;
-  final Value<String> email;
-  final Value<String> password;
+  final Value<String?> email;
   final Value<int?> height;
   final Value<int?> weight;
   const UsersCompanion({
     this.userId = const Value.absent(),
+    this.googleId = const Value.absent(),
     this.name = const Value.absent(),
     this.email = const Value.absent(),
-    this.password = const Value.absent(),
     this.height = const Value.absent(),
     this.weight = const Value.absent(),
   });
   UsersCompanion.insert({
     this.userId = const Value.absent(),
+    this.googleId = const Value.absent(),
     required String name,
-    required String email,
-    required String password,
+    this.email = const Value.absent(),
     this.height = const Value.absent(),
     this.weight = const Value.absent(),
-  }) : name = Value(name),
-       email = Value(email),
-       password = Value(password);
+  }) : name = Value(name);
   static Insertable<UserRow> custom({
     Expression<int>? userId,
+    Expression<String>? googleId,
     Expression<String>? name,
     Expression<String>? email,
-    Expression<String>? password,
     Expression<int>? height,
     Expression<int>? weight,
   }) {
     return RawValuesInsertable({
       if (userId != null) 'user_id': userId,
+      if (googleId != null) 'google_id': googleId,
       if (name != null) 'name': name,
       if (email != null) 'email': email,
-      if (password != null) 'password': password,
       if (height != null) 'height': height,
       if (weight != null) 'weight': weight,
     });
@@ -358,17 +355,17 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
 
   UsersCompanion copyWith({
     Value<int>? userId,
+    Value<String?>? googleId,
     Value<String>? name,
-    Value<String>? email,
-    Value<String>? password,
+    Value<String?>? email,
     Value<int?>? height,
     Value<int?>? weight,
   }) {
     return UsersCompanion(
       userId: userId ?? this.userId,
+      googleId: googleId ?? this.googleId,
       name: name ?? this.name,
       email: email ?? this.email,
-      password: password ?? this.password,
       height: height ?? this.height,
       weight: weight ?? this.weight,
     );
@@ -380,14 +377,14 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
     }
+    if (googleId.present) {
+      map['google_id'] = Variable<String>(googleId.value);
+    }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
     if (email.present) {
       map['email'] = Variable<String>(email.value);
-    }
-    if (password.present) {
-      map['password'] = Variable<String>(password.value);
     }
     if (height.present) {
       map['height'] = Variable<int>(height.value);
@@ -402,9 +399,9 @@ class UsersCompanion extends UpdateCompanion<UserRow> {
   String toString() {
     return (StringBuffer('UsersCompanion(')
           ..write('userId: $userId, ')
+          ..write('googleId: $googleId, ')
           ..write('name: $name, ')
           ..write('email: $email, ')
-          ..write('password: $password, ')
           ..write('height: $height, ')
           ..write('weight: $weight')
           ..write(')'))
@@ -627,12 +624,12 @@ class ActivityTypesCompanion extends UpdateCompanion<ActivityTypeRow> {
   }
 }
 
-class $PetVirtualsTable extends PetVirtuals
-    with TableInfo<$PetVirtualsTable, PetVirtual> {
+class $VirtualPetTable extends VirtualPet
+    with TableInfo<$VirtualPetTable, VirtualPetData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $PetVirtualsTable(this.attachedDatabase, [this._alias]);
+  $VirtualPetTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _petvIdMeta = const VerificationMeta('petvId');
   @override
   late final GeneratedColumn<int> petvId = GeneratedColumn<int>(
@@ -689,6 +686,18 @@ class $PetVirtualsTable extends PetVirtuals
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
+  static const VerificationMeta _colorVariantMeta = const VerificationMeta(
+    'colorVariant',
+  );
+  @override
+  late final GeneratedColumn<String> colorVariant = GeneratedColumn<String>(
+    'color_variant',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('purple'),
+  );
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
   late final GeneratedColumn<int> userId = GeneratedColumn<int>(
@@ -708,16 +717,17 @@ class $PetVirtualsTable extends PetVirtuals
     life,
     level,
     points,
+    colorVariant,
     userId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'pet_virtuals';
+  static const String $name = 'virtual_pet';
   @override
   VerificationContext validateIntegrity(
-    Insertable<PetVirtual> instance, {
+    Insertable<VirtualPetData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -754,6 +764,15 @@ class $PetVirtualsTable extends PetVirtuals
         points.isAcceptableOrUnknown(data['points']!, _pointsMeta),
       );
     }
+    if (data.containsKey('color_variant')) {
+      context.handle(
+        _colorVariantMeta,
+        colorVariant.isAcceptableOrUnknown(
+          data['color_variant']!,
+          _colorVariantMeta,
+        ),
+      );
+    }
     if (data.containsKey('user_id')) {
       context.handle(
         _userIdMeta,
@@ -768,9 +787,9 @@ class $PetVirtualsTable extends PetVirtuals
   @override
   Set<GeneratedColumn> get $primaryKey => {petvId};
   @override
-  PetVirtual map(Map<String, dynamic> data, {String? tablePrefix}) {
+  VirtualPetData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return PetVirtual(
+    return VirtualPetData(
       petvId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}petv_id'],
@@ -791,6 +810,10 @@ class $PetVirtualsTable extends PetVirtuals
         DriftSqlType.int,
         data['${effectivePrefix}points'],
       )!,
+      colorVariant: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}color_variant'],
+      )!,
       userId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}user_id'],
@@ -799,24 +822,26 @@ class $PetVirtualsTable extends PetVirtuals
   }
 
   @override
-  $PetVirtualsTable createAlias(String alias) {
-    return $PetVirtualsTable(attachedDatabase, alias);
+  $VirtualPetTable createAlias(String alias) {
+    return $VirtualPetTable(attachedDatabase, alias);
   }
 }
 
-class PetVirtual extends DataClass implements Insertable<PetVirtual> {
+class VirtualPetData extends DataClass implements Insertable<VirtualPetData> {
   final int petvId;
   final String name;
   final int life;
   final int level;
   final int points;
+  final String colorVariant;
   final int userId;
-  const PetVirtual({
+  const VirtualPetData({
     required this.petvId,
     required this.name,
     required this.life,
     required this.level,
     required this.points,
+    required this.colorVariant,
     required this.userId,
   });
   @override
@@ -827,32 +852,35 @@ class PetVirtual extends DataClass implements Insertable<PetVirtual> {
     map['life'] = Variable<int>(life);
     map['level'] = Variable<int>(level);
     map['points'] = Variable<int>(points);
+    map['color_variant'] = Variable<String>(colorVariant);
     map['user_id'] = Variable<int>(userId);
     return map;
   }
 
-  PetVirtualsCompanion toCompanion(bool nullToAbsent) {
-    return PetVirtualsCompanion(
+  VirtualPetCompanion toCompanion(bool nullToAbsent) {
+    return VirtualPetCompanion(
       petvId: Value(petvId),
       name: Value(name),
       life: Value(life),
       level: Value(level),
       points: Value(points),
+      colorVariant: Value(colorVariant),
       userId: Value(userId),
     );
   }
 
-  factory PetVirtual.fromJson(
+  factory VirtualPetData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return PetVirtual(
+    return VirtualPetData(
       petvId: serializer.fromJson<int>(json['petvId']),
       name: serializer.fromJson<String>(json['name']),
       life: serializer.fromJson<int>(json['life']),
       level: serializer.fromJson<int>(json['level']),
       points: serializer.fromJson<int>(json['points']),
+      colorVariant: serializer.fromJson<String>(json['colorVariant']),
       userId: serializer.fromJson<int>(json['userId']),
     );
   }
@@ -865,93 +893,106 @@ class PetVirtual extends DataClass implements Insertable<PetVirtual> {
       'life': serializer.toJson<int>(life),
       'level': serializer.toJson<int>(level),
       'points': serializer.toJson<int>(points),
+      'colorVariant': serializer.toJson<String>(colorVariant),
       'userId': serializer.toJson<int>(userId),
     };
   }
 
-  PetVirtual copyWith({
+  VirtualPetData copyWith({
     int? petvId,
     String? name,
     int? life,
     int? level,
     int? points,
+    String? colorVariant,
     int? userId,
-  }) => PetVirtual(
+  }) => VirtualPetData(
     petvId: petvId ?? this.petvId,
     name: name ?? this.name,
     life: life ?? this.life,
     level: level ?? this.level,
     points: points ?? this.points,
+    colorVariant: colorVariant ?? this.colorVariant,
     userId: userId ?? this.userId,
   );
-  PetVirtual copyWithCompanion(PetVirtualsCompanion data) {
-    return PetVirtual(
+  VirtualPetData copyWithCompanion(VirtualPetCompanion data) {
+    return VirtualPetData(
       petvId: data.petvId.present ? data.petvId.value : this.petvId,
       name: data.name.present ? data.name.value : this.name,
       life: data.life.present ? data.life.value : this.life,
       level: data.level.present ? data.level.value : this.level,
       points: data.points.present ? data.points.value : this.points,
+      colorVariant: data.colorVariant.present
+          ? data.colorVariant.value
+          : this.colorVariant,
       userId: data.userId.present ? data.userId.value : this.userId,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('PetVirtual(')
+    return (StringBuffer('VirtualPetData(')
           ..write('petvId: $petvId, ')
           ..write('name: $name, ')
           ..write('life: $life, ')
           ..write('level: $level, ')
           ..write('points: $points, ')
+          ..write('colorVariant: $colorVariant, ')
           ..write('userId: $userId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(petvId, name, life, level, points, userId);
+  int get hashCode =>
+      Object.hash(petvId, name, life, level, points, colorVariant, userId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is PetVirtual &&
+      (other is VirtualPetData &&
           other.petvId == this.petvId &&
           other.name == this.name &&
           other.life == this.life &&
           other.level == this.level &&
           other.points == this.points &&
+          other.colorVariant == this.colorVariant &&
           other.userId == this.userId);
 }
 
-class PetVirtualsCompanion extends UpdateCompanion<PetVirtual> {
+class VirtualPetCompanion extends UpdateCompanion<VirtualPetData> {
   final Value<int> petvId;
   final Value<String> name;
   final Value<int> life;
   final Value<int> level;
   final Value<int> points;
+  final Value<String> colorVariant;
   final Value<int> userId;
-  const PetVirtualsCompanion({
+  const VirtualPetCompanion({
     this.petvId = const Value.absent(),
     this.name = const Value.absent(),
     this.life = const Value.absent(),
     this.level = const Value.absent(),
     this.points = const Value.absent(),
+    this.colorVariant = const Value.absent(),
     this.userId = const Value.absent(),
   });
-  PetVirtualsCompanion.insert({
+  VirtualPetCompanion.insert({
     this.petvId = const Value.absent(),
     required String name,
     this.life = const Value.absent(),
     this.level = const Value.absent(),
     this.points = const Value.absent(),
+    this.colorVariant = const Value.absent(),
     required int userId,
   }) : name = Value(name),
        userId = Value(userId);
-  static Insertable<PetVirtual> custom({
+  static Insertable<VirtualPetData> custom({
     Expression<int>? petvId,
     Expression<String>? name,
     Expression<int>? life,
     Expression<int>? level,
     Expression<int>? points,
+    Expression<String>? colorVariant,
     Expression<int>? userId,
   }) {
     return RawValuesInsertable({
@@ -960,24 +1001,27 @@ class PetVirtualsCompanion extends UpdateCompanion<PetVirtual> {
       if (life != null) 'life': life,
       if (level != null) 'level': level,
       if (points != null) 'points': points,
+      if (colorVariant != null) 'color_variant': colorVariant,
       if (userId != null) 'user_id': userId,
     });
   }
 
-  PetVirtualsCompanion copyWith({
+  VirtualPetCompanion copyWith({
     Value<int>? petvId,
     Value<String>? name,
     Value<int>? life,
     Value<int>? level,
     Value<int>? points,
+    Value<String>? colorVariant,
     Value<int>? userId,
   }) {
-    return PetVirtualsCompanion(
+    return VirtualPetCompanion(
       petvId: petvId ?? this.petvId,
       name: name ?? this.name,
       life: life ?? this.life,
       level: level ?? this.level,
       points: points ?? this.points,
+      colorVariant: colorVariant ?? this.colorVariant,
       userId: userId ?? this.userId,
     );
   }
@@ -1000,6 +1044,9 @@ class PetVirtualsCompanion extends UpdateCompanion<PetVirtual> {
     if (points.present) {
       map['points'] = Variable<int>(points.value);
     }
+    if (colorVariant.present) {
+      map['color_variant'] = Variable<String>(colorVariant.value);
+    }
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
     }
@@ -1008,12 +1055,13 @@ class PetVirtualsCompanion extends UpdateCompanion<PetVirtual> {
 
   @override
   String toString() {
-    return (StringBuffer('PetVirtualsCompanion(')
+    return (StringBuffer('VirtualPetCompanion(')
           ..write('petvId: $petvId, ')
           ..write('name: $name, ')
           ..write('life: $life, ')
           ..write('level: $level, ')
           ..write('points: $points, ')
+          ..write('colorVariant: $colorVariant, ')
           ..write('userId: $userId')
           ..write(')'))
         .toString();
@@ -1990,17 +2038,6 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, GoalRow> {
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _dailyWaterGoalMlMeta = const VerificationMeta(
-    'dailyWaterGoalMl',
-  );
-  @override
-  late final GeneratedColumn<int> dailyWaterGoalMl = GeneratedColumn<int>(
-    'daily_water_goal_ml',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
   late final GeneratedColumn<int> userId = GeneratedColumn<int>(
@@ -2014,12 +2051,7 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, GoalRow> {
     ),
   );
   @override
-  List<GeneratedColumn> get $columns => [
-    goalId,
-    weeklyWorkoutTarget,
-    dailyWaterGoalMl,
-    userId,
-  ];
+  List<GeneratedColumn> get $columns => [goalId, weeklyWorkoutTarget, userId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -2049,17 +2081,6 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, GoalRow> {
     } else if (isInserting) {
       context.missing(_weeklyWorkoutTargetMeta);
     }
-    if (data.containsKey('daily_water_goal_ml')) {
-      context.handle(
-        _dailyWaterGoalMlMeta,
-        dailyWaterGoalMl.isAcceptableOrUnknown(
-          data['daily_water_goal_ml']!,
-          _dailyWaterGoalMlMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_dailyWaterGoalMlMeta);
-    }
     if (data.containsKey('user_id')) {
       context.handle(
         _userIdMeta,
@@ -2083,10 +2104,6 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, GoalRow> {
         DriftSqlType.int,
         data['${effectivePrefix}weekly_workout_target'],
       )!,
-      dailyWaterGoalMl: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}daily_water_goal_ml'],
-      )!,
       userId: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}user_id'],
@@ -2103,12 +2120,10 @@ class $GoalsTable extends Goals with TableInfo<$GoalsTable, GoalRow> {
 class GoalRow extends DataClass implements Insertable<GoalRow> {
   final int goalId;
   final int weeklyWorkoutTarget;
-  final int dailyWaterGoalMl;
   final int? userId;
   const GoalRow({
     required this.goalId,
     required this.weeklyWorkoutTarget,
-    required this.dailyWaterGoalMl,
     this.userId,
   });
   @override
@@ -2116,7 +2131,6 @@ class GoalRow extends DataClass implements Insertable<GoalRow> {
     final map = <String, Expression>{};
     map['goal_id'] = Variable<int>(goalId);
     map['weekly_workout_target'] = Variable<int>(weeklyWorkoutTarget);
-    map['daily_water_goal_ml'] = Variable<int>(dailyWaterGoalMl);
     if (!nullToAbsent || userId != null) {
       map['user_id'] = Variable<int>(userId);
     }
@@ -2127,7 +2141,6 @@ class GoalRow extends DataClass implements Insertable<GoalRow> {
     return GoalsCompanion(
       goalId: Value(goalId),
       weeklyWorkoutTarget: Value(weeklyWorkoutTarget),
-      dailyWaterGoalMl: Value(dailyWaterGoalMl),
       userId: userId == null && nullToAbsent
           ? const Value.absent()
           : Value(userId),
@@ -2144,7 +2157,6 @@ class GoalRow extends DataClass implements Insertable<GoalRow> {
       weeklyWorkoutTarget: serializer.fromJson<int>(
         json['weeklyWorkoutTarget'],
       ),
-      dailyWaterGoalMl: serializer.fromJson<int>(json['dailyWaterGoalMl']),
       userId: serializer.fromJson<int?>(json['userId']),
     );
   }
@@ -2154,7 +2166,6 @@ class GoalRow extends DataClass implements Insertable<GoalRow> {
     return <String, dynamic>{
       'goalId': serializer.toJson<int>(goalId),
       'weeklyWorkoutTarget': serializer.toJson<int>(weeklyWorkoutTarget),
-      'dailyWaterGoalMl': serializer.toJson<int>(dailyWaterGoalMl),
       'userId': serializer.toJson<int?>(userId),
     };
   }
@@ -2162,12 +2173,10 @@ class GoalRow extends DataClass implements Insertable<GoalRow> {
   GoalRow copyWith({
     int? goalId,
     int? weeklyWorkoutTarget,
-    int? dailyWaterGoalMl,
     Value<int?> userId = const Value.absent(),
   }) => GoalRow(
     goalId: goalId ?? this.goalId,
     weeklyWorkoutTarget: weeklyWorkoutTarget ?? this.weeklyWorkoutTarget,
-    dailyWaterGoalMl: dailyWaterGoalMl ?? this.dailyWaterGoalMl,
     userId: userId.present ? userId.value : this.userId,
   );
   GoalRow copyWithCompanion(GoalsCompanion data) {
@@ -2176,9 +2185,6 @@ class GoalRow extends DataClass implements Insertable<GoalRow> {
       weeklyWorkoutTarget: data.weeklyWorkoutTarget.present
           ? data.weeklyWorkoutTarget.value
           : this.weeklyWorkoutTarget,
-      dailyWaterGoalMl: data.dailyWaterGoalMl.present
-          ? data.dailyWaterGoalMl.value
-          : this.dailyWaterGoalMl,
       userId: data.userId.present ? data.userId.value : this.userId,
     );
   }
@@ -2188,54 +2194,45 @@ class GoalRow extends DataClass implements Insertable<GoalRow> {
     return (StringBuffer('GoalRow(')
           ..write('goalId: $goalId, ')
           ..write('weeklyWorkoutTarget: $weeklyWorkoutTarget, ')
-          ..write('dailyWaterGoalMl: $dailyWaterGoalMl, ')
           ..write('userId: $userId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(goalId, weeklyWorkoutTarget, dailyWaterGoalMl, userId);
+  int get hashCode => Object.hash(goalId, weeklyWorkoutTarget, userId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is GoalRow &&
           other.goalId == this.goalId &&
           other.weeklyWorkoutTarget == this.weeklyWorkoutTarget &&
-          other.dailyWaterGoalMl == this.dailyWaterGoalMl &&
           other.userId == this.userId);
 }
 
 class GoalsCompanion extends UpdateCompanion<GoalRow> {
   final Value<int> goalId;
   final Value<int> weeklyWorkoutTarget;
-  final Value<int> dailyWaterGoalMl;
   final Value<int?> userId;
   const GoalsCompanion({
     this.goalId = const Value.absent(),
     this.weeklyWorkoutTarget = const Value.absent(),
-    this.dailyWaterGoalMl = const Value.absent(),
     this.userId = const Value.absent(),
   });
   GoalsCompanion.insert({
     this.goalId = const Value.absent(),
     required int weeklyWorkoutTarget,
-    required int dailyWaterGoalMl,
     this.userId = const Value.absent(),
-  }) : weeklyWorkoutTarget = Value(weeklyWorkoutTarget),
-       dailyWaterGoalMl = Value(dailyWaterGoalMl);
+  }) : weeklyWorkoutTarget = Value(weeklyWorkoutTarget);
   static Insertable<GoalRow> custom({
     Expression<int>? goalId,
     Expression<int>? weeklyWorkoutTarget,
-    Expression<int>? dailyWaterGoalMl,
     Expression<int>? userId,
   }) {
     return RawValuesInsertable({
       if (goalId != null) 'goal_id': goalId,
       if (weeklyWorkoutTarget != null)
         'weekly_workout_target': weeklyWorkoutTarget,
-      if (dailyWaterGoalMl != null) 'daily_water_goal_ml': dailyWaterGoalMl,
       if (userId != null) 'user_id': userId,
     });
   }
@@ -2243,13 +2240,11 @@ class GoalsCompanion extends UpdateCompanion<GoalRow> {
   GoalsCompanion copyWith({
     Value<int>? goalId,
     Value<int>? weeklyWorkoutTarget,
-    Value<int>? dailyWaterGoalMl,
     Value<int?>? userId,
   }) {
     return GoalsCompanion(
       goalId: goalId ?? this.goalId,
       weeklyWorkoutTarget: weeklyWorkoutTarget ?? this.weeklyWorkoutTarget,
-      dailyWaterGoalMl: dailyWaterGoalMl ?? this.dailyWaterGoalMl,
       userId: userId ?? this.userId,
     );
   }
@@ -2263,9 +2258,6 @@ class GoalsCompanion extends UpdateCompanion<GoalRow> {
     if (weeklyWorkoutTarget.present) {
       map['weekly_workout_target'] = Variable<int>(weeklyWorkoutTarget.value);
     }
-    if (dailyWaterGoalMl.present) {
-      map['daily_water_goal_ml'] = Variable<int>(dailyWaterGoalMl.value);
-    }
     if (userId.present) {
       map['user_id'] = Variable<int>(userId.value);
     }
@@ -2277,7 +2269,6 @@ class GoalsCompanion extends UpdateCompanion<GoalRow> {
     return (StringBuffer('GoalsCompanion(')
           ..write('goalId: $goalId, ')
           ..write('weeklyWorkoutTarget: $weeklyWorkoutTarget, ')
-          ..write('dailyWaterGoalMl: $dailyWaterGoalMl, ')
           ..write('userId: $userId')
           ..write(')'))
         .toString();
@@ -2289,7 +2280,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $UsersTable users = $UsersTable(this);
   late final $ActivityTypesTable activityTypes = $ActivityTypesTable(this);
-  late final $PetVirtualsTable petVirtuals = $PetVirtualsTable(this);
+  late final $VirtualPetTable virtualPet = $VirtualPetTable(this);
   late final $ActivitiesTable activities = $ActivitiesTable(this);
   late final $SkillsTable skills = $SkillsTable(this);
   late final $GoalsTable goals = $GoalsTable(this);
@@ -2300,7 +2291,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     users,
     activityTypes,
-    petVirtuals,
+    virtualPet,
     activities,
     skills,
     goals,
@@ -2310,18 +2301,18 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 typedef $$UsersTableCreateCompanionBuilder =
     UsersCompanion Function({
       Value<int> userId,
+      Value<String?> googleId,
       required String name,
-      required String email,
-      required String password,
+      Value<String?> email,
       Value<int?> height,
       Value<int?> weight,
     });
 typedef $$UsersTableUpdateCompanionBuilder =
     UsersCompanion Function({
       Value<int> userId,
+      Value<String?> googleId,
       Value<String> name,
-      Value<String> email,
-      Value<String> password,
+      Value<String?> email,
       Value<int?> height,
       Value<int?> weight,
     });
@@ -2330,19 +2321,19 @@ final class $$UsersTableReferences
     extends BaseReferences<_$AppDatabase, $UsersTable, UserRow> {
   $$UsersTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static MultiTypedResultKey<$PetVirtualsTable, List<PetVirtual>>
-  _petVirtualsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.petVirtuals,
-    aliasName: 'users__user_id__pet_virtuals__user_id',
+  static MultiTypedResultKey<$VirtualPetTable, List<VirtualPetData>>
+  _virtualPetRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.virtualPet,
+    aliasName: 'users__user_id__virtual_pet__user_id',
   );
 
-  $$PetVirtualsTableProcessedTableManager get petVirtualsRefs {
-    final manager = $$PetVirtualsTableTableManager(
+  $$VirtualPetTableProcessedTableManager get virtualPetRefs {
+    final manager = $$VirtualPetTableTableManager(
       $_db,
-      $_db.petVirtuals,
+      $_db.virtualPet,
     ).filter((f) => f.userId.userId.sqlEquals($_itemColumn<int>('user_id')!));
 
-    final cache = $_typedResult.readTableOrNull(_petVirtualsRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(_virtualPetRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -2418,6 +2409,11 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get googleId => $composableBuilder(
+    column: $table.googleId,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnFilters(column),
@@ -2425,11 +2421,6 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
 
   ColumnFilters<String> get email => $composableBuilder(
     column: $table.email,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get password => $composableBuilder(
-    column: $table.password,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2443,22 +2434,22 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> petVirtualsRefs(
-    Expression<bool> Function($$PetVirtualsTableFilterComposer f) f,
+  Expression<bool> virtualPetRefs(
+    Expression<bool> Function($$VirtualPetTableFilterComposer f) f,
   ) {
-    final $$PetVirtualsTableFilterComposer composer = $composerBuilder(
+    final $$VirtualPetTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.userId,
-      referencedTable: $db.petVirtuals,
+      referencedTable: $db.virtualPet,
       getReferencedColumn: (t) => t.userId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$PetVirtualsTableFilterComposer(
+          }) => $$VirtualPetTableFilterComposer(
             $db: $db,
-            $table: $db.petVirtuals,
+            $table: $db.virtualPet,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2558,6 +2549,11 @@ class $$UsersTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get googleId => $composableBuilder(
+    column: $table.googleId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
@@ -2565,11 +2561,6 @@ class $$UsersTableOrderingComposer
 
   ColumnOrderings<String> get email => $composableBuilder(
     column: $table.email,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get password => $composableBuilder(
-    column: $table.password,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -2596,14 +2587,14 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<int> get userId =>
       $composableBuilder(column: $table.userId, builder: (column) => column);
 
+  GeneratedColumn<String> get googleId =>
+      $composableBuilder(column: $table.googleId, builder: (column) => column);
+
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<String> get email =>
       $composableBuilder(column: $table.email, builder: (column) => column);
-
-  GeneratedColumn<String> get password =>
-      $composableBuilder(column: $table.password, builder: (column) => column);
 
   GeneratedColumn<int> get height =>
       $composableBuilder(column: $table.height, builder: (column) => column);
@@ -2611,22 +2602,22 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<int> get weight =>
       $composableBuilder(column: $table.weight, builder: (column) => column);
 
-  Expression<T> petVirtualsRefs<T extends Object>(
-    Expression<T> Function($$PetVirtualsTableAnnotationComposer a) f,
+  Expression<T> virtualPetRefs<T extends Object>(
+    Expression<T> Function($$VirtualPetTableAnnotationComposer a) f,
   ) {
-    final $$PetVirtualsTableAnnotationComposer composer = $composerBuilder(
+    final $$VirtualPetTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.userId,
-      referencedTable: $db.petVirtuals,
+      referencedTable: $db.virtualPet,
       getReferencedColumn: (t) => t.userId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$PetVirtualsTableAnnotationComposer(
+          }) => $$VirtualPetTableAnnotationComposer(
             $db: $db,
-            $table: $db.petVirtuals,
+            $table: $db.virtualPet,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -2726,7 +2717,7 @@ class $$UsersTableTableManager
           (UserRow, $$UsersTableReferences),
           UserRow,
           PrefetchHooks Function({
-            bool petVirtualsRefs,
+            bool virtualPetRefs,
             bool activitiesRefs,
             bool skillsRefs,
             bool goalsRefs,
@@ -2746,32 +2737,32 @@ class $$UsersTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> userId = const Value.absent(),
+                Value<String?> googleId = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<String> email = const Value.absent(),
-                Value<String> password = const Value.absent(),
+                Value<String?> email = const Value.absent(),
                 Value<int?> height = const Value.absent(),
                 Value<int?> weight = const Value.absent(),
               }) => UsersCompanion(
                 userId: userId,
+                googleId: googleId,
                 name: name,
                 email: email,
-                password: password,
                 height: height,
                 weight: weight,
               ),
           createCompanionCallback:
               ({
                 Value<int> userId = const Value.absent(),
+                Value<String?> googleId = const Value.absent(),
                 required String name,
-                required String email,
-                required String password,
+                Value<String?> email = const Value.absent(),
                 Value<int?> height = const Value.absent(),
                 Value<int?> weight = const Value.absent(),
               }) => UsersCompanion.insert(
                 userId: userId,
+                googleId: googleId,
                 name: name,
                 email: email,
-                password: password,
                 height: height,
                 weight: weight,
               ),
@@ -2783,7 +2774,7 @@ class $$UsersTableTableManager
               .toList(),
           prefetchHooksCallback:
               ({
-                petVirtualsRefs = false,
+                virtualPetRefs = false,
                 activitiesRefs = false,
                 skillsRefs = false,
                 goalsRefs = false,
@@ -2791,7 +2782,7 @@ class $$UsersTableTableManager
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
-                    if (petVirtualsRefs) db.petVirtuals,
+                    if (virtualPetRefs) db.virtualPet,
                     if (activitiesRefs) db.activities,
                     if (skillsRefs) db.skills,
                     if (goalsRefs) db.goals,
@@ -2799,21 +2790,21 @@ class $$UsersTableTableManager
                   addJoins: null,
                   getPrefetchedDataCallback: (items) async {
                     return [
-                      if (petVirtualsRefs)
+                      if (virtualPetRefs)
                         await $_getPrefetchedData<
                           UserRow,
                           $UsersTable,
-                          PetVirtual
+                          VirtualPetData
                         >(
                           currentTable: table,
                           referencedTable: $$UsersTableReferences
-                              ._petVirtualsRefsTable(db),
+                              ._virtualPetRefsTable(db),
                           managerFromTypedResult: (p0) =>
                               $$UsersTableReferences(
                                 db,
                                 table,
                                 p0,
-                              ).petVirtualsRefs,
+                              ).virtualPetRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
                                 (e) => e.userId == item.userId,
@@ -2892,7 +2883,7 @@ typedef $$UsersTableProcessedTableManager =
       (UserRow, $$UsersTableReferences),
       UserRow,
       PrefetchHooks Function({
-        bool petVirtualsRefs,
+        bool virtualPetRefs,
         bool activitiesRefs,
         bool skillsRefs,
         bool goalsRefs,
@@ -3241,31 +3232,33 @@ typedef $$ActivityTypesTableProcessedTableManager =
       ActivityTypeRow,
       PrefetchHooks Function({bool activitiesRefs, bool skillsRefs})
     >;
-typedef $$PetVirtualsTableCreateCompanionBuilder =
-    PetVirtualsCompanion Function({
+typedef $$VirtualPetTableCreateCompanionBuilder =
+    VirtualPetCompanion Function({
       Value<int> petvId,
       required String name,
       Value<int> life,
       Value<int> level,
       Value<int> points,
+      Value<String> colorVariant,
       required int userId,
     });
-typedef $$PetVirtualsTableUpdateCompanionBuilder =
-    PetVirtualsCompanion Function({
+typedef $$VirtualPetTableUpdateCompanionBuilder =
+    VirtualPetCompanion Function({
       Value<int> petvId,
       Value<String> name,
       Value<int> life,
       Value<int> level,
       Value<int> points,
+      Value<String> colorVariant,
       Value<int> userId,
     });
 
-final class $$PetVirtualsTableReferences
-    extends BaseReferences<_$AppDatabase, $PetVirtualsTable, PetVirtual> {
-  $$PetVirtualsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$VirtualPetTableReferences
+    extends BaseReferences<_$AppDatabase, $VirtualPetTable, VirtualPetData> {
+  $$VirtualPetTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $UsersTable _userIdTable(_$AppDatabase db) =>
-      db.users.createAlias('pet_virtuals__user_id__users__user_id');
+      db.users.createAlias('virtual_pet__user_id__users__user_id');
 
   $$UsersTableProcessedTableManager get userId {
     final $_column = $_itemColumn<int>('user_id')!;
@@ -3282,9 +3275,9 @@ final class $$PetVirtualsTableReferences
   }
 }
 
-class $$PetVirtualsTableFilterComposer
-    extends Composer<_$AppDatabase, $PetVirtualsTable> {
-  $$PetVirtualsTableFilterComposer({
+class $$VirtualPetTableFilterComposer
+    extends Composer<_$AppDatabase, $VirtualPetTable> {
+  $$VirtualPetTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -3316,6 +3309,11 @@ class $$PetVirtualsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get colorVariant => $composableBuilder(
+    column: $table.colorVariant,
+    builder: (column) => ColumnFilters(column),
+  );
+
   $$UsersTableFilterComposer get userId {
     final $$UsersTableFilterComposer composer = $composerBuilder(
       composer: this,
@@ -3340,9 +3338,9 @@ class $$PetVirtualsTableFilterComposer
   }
 }
 
-class $$PetVirtualsTableOrderingComposer
-    extends Composer<_$AppDatabase, $PetVirtualsTable> {
-  $$PetVirtualsTableOrderingComposer({
+class $$VirtualPetTableOrderingComposer
+    extends Composer<_$AppDatabase, $VirtualPetTable> {
+  $$VirtualPetTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -3374,6 +3372,11 @@ class $$PetVirtualsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get colorVariant => $composableBuilder(
+    column: $table.colorVariant,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$UsersTableOrderingComposer get userId {
     final $$UsersTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -3398,9 +3401,9 @@ class $$PetVirtualsTableOrderingComposer
   }
 }
 
-class $$PetVirtualsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $PetVirtualsTable> {
-  $$PetVirtualsTableAnnotationComposer({
+class $$VirtualPetTableAnnotationComposer
+    extends Composer<_$AppDatabase, $VirtualPetTable> {
+  $$VirtualPetTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -3421,6 +3424,11 @@ class $$PetVirtualsTableAnnotationComposer
 
   GeneratedColumn<int> get points =>
       $composableBuilder(column: $table.points, builder: (column) => column);
+
+  GeneratedColumn<String> get colorVariant => $composableBuilder(
+    column: $table.colorVariant,
+    builder: (column) => column,
+  );
 
   $$UsersTableAnnotationComposer get userId {
     final $$UsersTableAnnotationComposer composer = $composerBuilder(
@@ -3446,32 +3454,32 @@ class $$PetVirtualsTableAnnotationComposer
   }
 }
 
-class $$PetVirtualsTableTableManager
+class $$VirtualPetTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $PetVirtualsTable,
-          PetVirtual,
-          $$PetVirtualsTableFilterComposer,
-          $$PetVirtualsTableOrderingComposer,
-          $$PetVirtualsTableAnnotationComposer,
-          $$PetVirtualsTableCreateCompanionBuilder,
-          $$PetVirtualsTableUpdateCompanionBuilder,
-          (PetVirtual, $$PetVirtualsTableReferences),
-          PetVirtual,
+          $VirtualPetTable,
+          VirtualPetData,
+          $$VirtualPetTableFilterComposer,
+          $$VirtualPetTableOrderingComposer,
+          $$VirtualPetTableAnnotationComposer,
+          $$VirtualPetTableCreateCompanionBuilder,
+          $$VirtualPetTableUpdateCompanionBuilder,
+          (VirtualPetData, $$VirtualPetTableReferences),
+          VirtualPetData,
           PrefetchHooks Function({bool userId})
         > {
-  $$PetVirtualsTableTableManager(_$AppDatabase db, $PetVirtualsTable table)
+  $$VirtualPetTableTableManager(_$AppDatabase db, $VirtualPetTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$PetVirtualsTableFilterComposer($db: db, $table: table),
+              $$VirtualPetTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$PetVirtualsTableOrderingComposer($db: db, $table: table),
+              $$VirtualPetTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$PetVirtualsTableAnnotationComposer($db: db, $table: table),
+              $$VirtualPetTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> petvId = const Value.absent(),
@@ -3479,13 +3487,15 @@ class $$PetVirtualsTableTableManager
                 Value<int> life = const Value.absent(),
                 Value<int> level = const Value.absent(),
                 Value<int> points = const Value.absent(),
+                Value<String> colorVariant = const Value.absent(),
                 Value<int> userId = const Value.absent(),
-              }) => PetVirtualsCompanion(
+              }) => VirtualPetCompanion(
                 petvId: petvId,
                 name: name,
                 life: life,
                 level: level,
                 points: points,
+                colorVariant: colorVariant,
                 userId: userId,
               ),
           createCompanionCallback:
@@ -3495,20 +3505,22 @@ class $$PetVirtualsTableTableManager
                 Value<int> life = const Value.absent(),
                 Value<int> level = const Value.absent(),
                 Value<int> points = const Value.absent(),
+                Value<String> colorVariant = const Value.absent(),
                 required int userId,
-              }) => PetVirtualsCompanion.insert(
+              }) => VirtualPetCompanion.insert(
                 petvId: petvId,
                 name: name,
                 life: life,
                 level: level,
                 points: points,
+                colorVariant: colorVariant,
                 userId: userId,
               ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
                   e.readTable(table),
-                  $$PetVirtualsTableReferences(db, table, e),
+                  $$VirtualPetTableReferences(db, table, e),
                 ),
               )
               .toList(),
@@ -3537,9 +3549,9 @@ class $$PetVirtualsTableTableManager
                           state.withJoin(
                                 currentTable: table,
                                 currentColumn: table.userId,
-                                referencedTable: $$PetVirtualsTableReferences
+                                referencedTable: $$VirtualPetTableReferences
                                     ._userIdTable(db),
-                                referencedColumn: $$PetVirtualsTableReferences
+                                referencedColumn: $$VirtualPetTableReferences
                                     ._userIdTable(db)
                                     .userId,
                               )
@@ -3557,18 +3569,18 @@ class $$PetVirtualsTableTableManager
       );
 }
 
-typedef $$PetVirtualsTableProcessedTableManager =
+typedef $$VirtualPetTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $PetVirtualsTable,
-      PetVirtual,
-      $$PetVirtualsTableFilterComposer,
-      $$PetVirtualsTableOrderingComposer,
-      $$PetVirtualsTableAnnotationComposer,
-      $$PetVirtualsTableCreateCompanionBuilder,
-      $$PetVirtualsTableUpdateCompanionBuilder,
-      (PetVirtual, $$PetVirtualsTableReferences),
-      PetVirtual,
+      $VirtualPetTable,
+      VirtualPetData,
+      $$VirtualPetTableFilterComposer,
+      $$VirtualPetTableOrderingComposer,
+      $$VirtualPetTableAnnotationComposer,
+      $$VirtualPetTableCreateCompanionBuilder,
+      $$VirtualPetTableUpdateCompanionBuilder,
+      (VirtualPetData, $$VirtualPetTableReferences),
+      VirtualPetData,
       PrefetchHooks Function({bool userId})
     >;
 typedef $$ActivitiesTableCreateCompanionBuilder =
@@ -4453,14 +4465,12 @@ typedef $$GoalsTableCreateCompanionBuilder =
     GoalsCompanion Function({
       Value<int> goalId,
       required int weeklyWorkoutTarget,
-      required int dailyWaterGoalMl,
       Value<int?> userId,
     });
 typedef $$GoalsTableUpdateCompanionBuilder =
     GoalsCompanion Function({
       Value<int> goalId,
       Value<int> weeklyWorkoutTarget,
-      Value<int> dailyWaterGoalMl,
       Value<int?> userId,
     });
 
@@ -4501,11 +4511,6 @@ class $$GoalsTableFilterComposer extends Composer<_$AppDatabase, $GoalsTable> {
 
   ColumnFilters<int> get weeklyWorkoutTarget => $composableBuilder(
     column: $table.weeklyWorkoutTarget,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get dailyWaterGoalMl => $composableBuilder(
-    column: $table.dailyWaterGoalMl,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4552,11 +4557,6 @@ class $$GoalsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get dailyWaterGoalMl => $composableBuilder(
-    column: $table.dailyWaterGoalMl,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   $$UsersTableOrderingComposer get userId {
     final $$UsersTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -4595,11 +4595,6 @@ class $$GoalsTableAnnotationComposer
 
   GeneratedColumn<int> get weeklyWorkoutTarget => $composableBuilder(
     column: $table.weeklyWorkoutTarget,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<int> get dailyWaterGoalMl => $composableBuilder(
-    column: $table.dailyWaterGoalMl,
     builder: (column) => column,
   );
 
@@ -4657,24 +4652,20 @@ class $$GoalsTableTableManager
               ({
                 Value<int> goalId = const Value.absent(),
                 Value<int> weeklyWorkoutTarget = const Value.absent(),
-                Value<int> dailyWaterGoalMl = const Value.absent(),
                 Value<int?> userId = const Value.absent(),
               }) => GoalsCompanion(
                 goalId: goalId,
                 weeklyWorkoutTarget: weeklyWorkoutTarget,
-                dailyWaterGoalMl: dailyWaterGoalMl,
                 userId: userId,
               ),
           createCompanionCallback:
               ({
                 Value<int> goalId = const Value.absent(),
                 required int weeklyWorkoutTarget,
-                required int dailyWaterGoalMl,
                 Value<int?> userId = const Value.absent(),
               }) => GoalsCompanion.insert(
                 goalId: goalId,
                 weeklyWorkoutTarget: weeklyWorkoutTarget,
-                dailyWaterGoalMl: dailyWaterGoalMl,
                 userId: userId,
               ),
           withReferenceMapper: (p0) => p0
@@ -4750,8 +4741,8 @@ class $AppDatabaseManager {
       $$UsersTableTableManager(_db, _db.users);
   $$ActivityTypesTableTableManager get activityTypes =>
       $$ActivityTypesTableTableManager(_db, _db.activityTypes);
-  $$PetVirtualsTableTableManager get petVirtuals =>
-      $$PetVirtualsTableTableManager(_db, _db.petVirtuals);
+  $$VirtualPetTableTableManager get virtualPet =>
+      $$VirtualPetTableTableManager(_db, _db.virtualPet);
   $$ActivitiesTableTableManager get activities =>
       $$ActivitiesTableTableManager(_db, _db.activities);
   $$SkillsTableTableManager get skills =>

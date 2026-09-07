@@ -20,6 +20,8 @@ class PetHudScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = Theme.of(context).extension<GymbooPalette>()!;
     final textTheme = Theme.of(context).textTheme;
+    
+    final petSprite = pet.spritePath;
 
     return Container(
       margin: const EdgeInsets.only(top: 40),
@@ -56,7 +58,7 @@ class PetHudScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   Image.asset(
-                    'assets/images/pet_purple_default.png',
+                    petSprite,
                     width: 220,
                     height: 225,
                     fit: BoxFit.cover,

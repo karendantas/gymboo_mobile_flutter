@@ -8,7 +8,6 @@ abstract class Goal with _$Goal {
   const factory Goal({
     required String id,
     required int weeklyWorkoutTarget,
-    required int dailyWaterGoalMl,
   }) = _Goal;
 
   factory Goal.fromJson(Map<String, dynamic> json) => _$GoalFromJson(json);

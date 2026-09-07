@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 
 class RetroTextField extends StatefulWidget {
@@ -11,6 +12,7 @@ class RetroTextField extends StatefulWidget {
     this.keyboardType,
     this.errorText,
     this.prefixIcon,
+    this.inputFormatters,
     this.onChanged,
   });
 
@@ -21,6 +23,7 @@ class RetroTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final String? errorText;
   final Widget? prefixIcon;
+  final List<TextInputFormatter>? inputFormatters;
   final ValueChanged<String>? onChanged;
 
   @override
@@ -57,7 +60,7 @@ class _RetroTextFieldState extends State<RetroTextField> {
         ? palette.coral
         : _isFocused
             ? palette.primaryPink
-            : palette.divider;
+            : Color.fromARGB(255, 175, 179, 147);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,14 +76,15 @@ class _RetroTextFieldState extends State<RetroTextField> {
         AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           decoration: BoxDecoration(
-            color: palette.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: borderColor, width: 3),
+            color: Color.fromARGB(255, 245, 249, 215),
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: borderColor, width: 2),
             boxShadow: [
               BoxShadow(
                 color: hasError ? palette.coral : palette.primaryPinkDark,
                 offset: Offset(0, _isFocused ? 2 : 4),
                 blurRadius: 0,
+             
               ),
             ],
           ),
@@ -97,6 +101,7 @@ class _RetroTextFieldState extends State<RetroTextField> {
                   focusNode: _focusNode,
                   obscureText: _obscure,
                   keyboardType: widget.keyboardType,
+                  inputFormatters: widget.inputFormatters,
                   onChanged: widget.onChanged,
                   style: textTheme.bodyMedium?.copyWith(color: palette.textPrimary),
                   cursorColor: palette.primaryPink,

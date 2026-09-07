@@ -4,9 +4,9 @@ import 'package:drift/drift.dart';
 @DataClassName('UserRow')
 class Users extends Table {
   IntColumn get userId => integer().autoIncrement()();
+  TextColumn get googleId => text().nullable()(); 
   TextColumn get name => text().withLength(min: 1, max: 70)();
-  TextColumn get email => text().withLength(min: 1, max: 100).unique()();
-  TextColumn get password => text().withLength(min: 1, max: 30)();
+  TextColumn get email => text().withLength(min: 1, max: 100).nullable()();
   IntColumn get height => integer().nullable()(); // cm
   IntColumn get weight => integer().nullable()(); // kg
 }
@@ -17,12 +17,13 @@ class ActivityTypes extends Table {
   TextColumn get title => text().withLength(min: 1, max: 70)();
 }
 
-class PetVirtuals extends Table {
+class VirtualPet extends Table {
   IntColumn get petvId => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 30)();
   IntColumn get life => integer().withDefault(const Constant(100))();
   IntColumn get level => integer().withDefault(const Constant(1))();
   IntColumn get points => integer().withDefault(const Constant(0))();
+   TextColumn get colorVariant => text().withDefault(const Constant('purple'))();
   IntColumn get userId => integer().references(Users, #userId)();
 }
 
@@ -54,7 +55,6 @@ class Skills extends Table {
 class Goals extends Table {
   IntColumn get goalId => integer().autoIncrement()();
   IntColumn get weeklyWorkoutTarget =>integer()();
-  IntColumn get dailyWaterGoalMl => integer()();
   IntColumn get userId => integer().nullable().references(Users, #userId)();
 }
 

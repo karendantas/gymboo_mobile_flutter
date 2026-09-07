@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/audio/music_controller.dart';
 import 'package:gymboo_app/core/router/app_router.dart';
 import 'package:gymboo_app/core/theme/theme_notifier.dart';
+import 'package:gymboo_app/core/backup/backup_controller.dart';
 
 class GymbooApp extends ConsumerStatefulWidget {
   const GymbooApp({super.key});
@@ -17,8 +18,9 @@ class _GymbooAppState extends ConsumerState<GymbooApp> {
   @override
   void initState(){
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
       ref.read(musicControllerProvider.notifier).playBackgroundMusic();
+      await ref.read(backupControllerProvider.notifier).restoreIfNeeded();
     });
   }
 

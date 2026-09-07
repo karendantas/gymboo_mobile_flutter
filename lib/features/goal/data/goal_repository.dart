@@ -7,6 +7,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 abstract class GoalRepository {
   Future<Goal> getMyGoal(String userId);
   Future<WeeklyProgress> getWeeklyProgress(String userId);
+   Future<Goal> createGoal({
+    required String userId,
+    required int weeklyWorkoutTarget,
+  });
 }
 
 class LocalGoalRepository implements GoalRepository {
@@ -24,9 +28,27 @@ class LocalGoalRepository implements GoalRepository {
     return Goal(
       id: row.goalId.toString(),
       weeklyWorkoutTarget: target,
-      dailyWaterGoalMl: row.dailyWaterGoalMl,
     );
   }
+
+  @override
+Future<Goal> createGoal({
+  required String userId,
+  required int weeklyWorkoutTarget,
+}) async {
+  final newId = await _db.into(_db.goals).insert(
+    GoalsCompanion.insert(
+      userId: Value(int.parse(userId)),
+      weeklyWorkoutTarget: weeklyWorkoutTarget,
+   
+    ),
+  );
+  final row = await (_db.select(_db.goals)..where((t) => t.goalId.equals(newId))).getSingle();
+  return Goal(
+    id: row.goalId.toString(),
+    weeklyWorkoutTarget: row.weeklyWorkoutTarget,
+  );
+}
 
    @override
   Future<WeeklyProgress> getWeeklyProgress(String userId) async {

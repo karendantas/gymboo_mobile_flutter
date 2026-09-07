@@ -13,6 +13,7 @@ _VirtualPet _$VirtualPetFromJson(Map<String, dynamic> json) => _VirtualPet(
   level: (json['level'] as num).toInt(),
   points: (json['points'] as num).toInt(),
   xpToNextLevel: (json['xpToNextLevel'] as num).toInt(),
+  colorVariant: $enumDecode(_$PetColorVariantEnumMap, json['colorVariant']),
 );
 
 Map<String, dynamic> _$VirtualPetToJson(_VirtualPet instance) =>
@@ -23,4 +24,12 @@ Map<String, dynamic> _$VirtualPetToJson(_VirtualPet instance) =>
       'level': instance.level,
       'points': instance.points,
       'xpToNextLevel': instance.xpToNextLevel,
+      'colorVariant': _$PetColorVariantEnumMap[instance.colorVariant]!,
     };
+
+const _$PetColorVariantEnumMap = {
+  PetColorVariant.purple: 'purple',
+  PetColorVariant.pink: 'pink',
+  PetColorVariant.green: 'green',
+  PetColorVariant.yellow: 'yellow',
+};

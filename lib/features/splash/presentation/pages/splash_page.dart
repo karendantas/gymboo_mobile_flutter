@@ -66,7 +66,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                
                   const SizedBox(height: 6),
                     Image.asset(
-                    'assets/images/pet_purple_default.png',
+                    'assets/images/pet_purple_neutral.png',
                     width: 250,
                     height: 290,
                     fit: BoxFit.contain,

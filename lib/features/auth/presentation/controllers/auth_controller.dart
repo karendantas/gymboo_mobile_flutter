@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gymboo_app/features/goal/data/goal_repository.dart';
+import 'package:gymboo_app/features/virtual_pet/data/pet_repository.dart';
 import '../../data/auth_repository.dart';
 import '../../domain/models/user.dart';
 
@@ -9,24 +11,35 @@ class AuthController extends AsyncNotifier<User?> {
     return ref.read(authRepositoryProvider).restoreSession();
   }
 
-  Future<void> login({required String email, required String password}) async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).login(email: email, password: password),
-    );
-  }
+  Future<void> createLocalProfile({
+  required String name,
+  required String petName,
+  required int weeklyWorkoutTarget,
+  int? height,
+  int? weight,
+  String? googleId,
+  String? googleEmail,
+}) async {
+  state = const AsyncLoading();
+  state = await AsyncValue.guard(() async {
+    final user = await ref.read(authRepositoryProvider).createLocalProfile(
+          name: name,
+          height: height,
+          weight: weight,
+          googleId: googleId, 
+          email: googleEmail,
+        );
 
-  Future<void> register({required String name, required String email, required String password}) async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).register(name: name, email: email, password: password),
-    );
-  }
+    await ref.read(petRepositoryProvider).createPet(userId: user.id, name: petName);
 
-  Future<void> logout() async {
-    await ref.read(authRepositoryProvider).logout();
-    state = const AsyncData(null);
-  }
+    await ref.read(goalRepositoryProvider).createGoal(
+          userId: user.id,
+          weeklyWorkoutTarget: weeklyWorkoutTarget,
+        );
+
+    return user;
+  });
+}
 }
 
 final authControllerProvider = AsyncNotifierProvider<AuthController, User?>(AuthController.new);
