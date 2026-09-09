@@ -1,5 +1,5 @@
-import 'activity_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'activity_category.dart';
 
 part 'activity.freezed.dart';
 part 'activity.g.dart';
@@ -7,13 +7,15 @@ part 'activity.g.dart';
 @freezed
 abstract class Activity with _$Activity {
   const factory Activity({
-    required String id,
+    required int id,
     required String title,
-    required DateTime date,
-    required int durationMinutes,
-    required int points,
     String? description,
-    required ActivityType type,
+    required ActivityCategory category,
+    String? affectedSkill,
+    required int durationMinutes,
+    required String activityDate,
+    String? activityTime,
+    required int pointsEarned,
   }) = _Activity;
 
   factory Activity.fromJson(Map<String, dynamic> json) => _$ActivityFromJson(json);

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Activity {
 
- String get id; String get title; DateTime get date; int get durationMinutes; int get points; String? get description; ActivityType get type;
+ int get id; String get title; String? get description; ActivityCategory get category; String? get affectedSkill; int get durationMinutes; String get activityDate; String? get activityTime; int get pointsEarned;
 /// Create a copy of Activity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ActivityCopyWith<Activity> get copyWith => _$ActivityCopyWithImpl<Activity>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Activity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.points, points) || other.points == points)&&(identical(other.description, description) || other.description == description)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Activity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.category, category) || other.category == category)&&(identical(other.affectedSkill, affectedSkill) || other.affectedSkill == affectedSkill)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.activityDate, activityDate) || other.activityDate == activityDate)&&(identical(other.activityTime, activityTime) || other.activityTime == activityTime)&&(identical(other.pointsEarned, pointsEarned) || other.pointsEarned == pointsEarned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,date,durationMinutes,points,description,type);
+int get hashCode => Object.hash(runtimeType,id,title,description,category,affectedSkill,durationMinutes,activityDate,activityTime,pointsEarned);
 
 @override
 String toString() {
-  return 'Activity(id: $id, title: $title, date: $date, durationMinutes: $durationMinutes, points: $points, description: $description, type: $type)';
+  return 'Activity(id: $id, title: $title, description: $description, category: $category, affectedSkill: $affectedSkill, durationMinutes: $durationMinutes, activityDate: $activityDate, activityTime: $activityTime, pointsEarned: $pointsEarned)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $ActivityCopyWith<$Res>  {
   factory $ActivityCopyWith(Activity value, $Res Function(Activity) _then) = _$ActivityCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, DateTime date, int durationMinutes, int points, String? description, ActivityType type
+ int id, String title, String? description, ActivityCategory category, String? affectedSkill, int durationMinutes, String activityDate, String? activityTime, int pointsEarned
 });
 
 
-$ActivityTypeCopyWith<$Res> get type;
+
 
 }
 /// @nodoc
@@ -65,28 +65,21 @@ class _$ActivityCopyWithImpl<$Res>
 
 /// Create a copy of Activity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? date = null,Object? durationMinutes = null,Object? points = null,Object? description = freezed,Object? type = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? description = freezed,Object? category = null,Object? affectedSkill = freezed,Object? durationMinutes = null,Object? activityDate = null,Object? activityTime = freezed,Object? pointsEarned = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
-as DateTime,durationMinutes: null == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
-as int,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
-as int,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as ActivityType,
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as ActivityCategory,affectedSkill: freezed == affectedSkill ? _self.affectedSkill : affectedSkill // ignore: cast_nullable_to_non_nullable
+as String?,durationMinutes: null == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
+as int,activityDate: null == activityDate ? _self.activityDate : activityDate // ignore: cast_nullable_to_non_nullable
+as String,activityTime: freezed == activityTime ? _self.activityTime : activityTime // ignore: cast_nullable_to_non_nullable
+as String?,pointsEarned: null == pointsEarned ? _self.pointsEarned : pointsEarned // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
-/// Create a copy of Activity
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ActivityTypeCopyWith<$Res> get type {
-  
-  return $ActivityTypeCopyWith<$Res>(_self.type, (value) {
-    return _then(_self.copyWith(type: value));
-  });
-}
+
 }
 
 
@@ -168,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  DateTime date,  int durationMinutes,  int points,  String? description,  ActivityType type)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  String activityDate,  String? activityTime,  int pointsEarned)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Activity() when $default != null:
-return $default(_that.id,_that.title,_that.date,_that.durationMinutes,_that.points,_that.description,_that.type);case _:
+return $default(_that.id,_that.title,_that.description,_that.category,_that.affectedSkill,_that.durationMinutes,_that.activityDate,_that.activityTime,_that.pointsEarned);case _:
   return orElse();
 
 }
@@ -189,10 +182,10 @@ return $default(_that.id,_that.title,_that.date,_that.durationMinutes,_that.poin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  DateTime date,  int durationMinutes,  int points,  String? description,  ActivityType type)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  String activityDate,  String? activityTime,  int pointsEarned)  $default,) {final _that = this;
 switch (_that) {
 case _Activity():
-return $default(_that.id,_that.title,_that.date,_that.durationMinutes,_that.points,_that.description,_that.type);case _:
+return $default(_that.id,_that.title,_that.description,_that.category,_that.affectedSkill,_that.durationMinutes,_that.activityDate,_that.activityTime,_that.pointsEarned);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +202,10 @@ return $default(_that.id,_that.title,_that.date,_that.durationMinutes,_that.poin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  DateTime date,  int durationMinutes,  int points,  String? description,  ActivityType type)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  String activityDate,  String? activityTime,  int pointsEarned)?  $default,) {final _that = this;
 switch (_that) {
 case _Activity() when $default != null:
-return $default(_that.id,_that.title,_that.date,_that.durationMinutes,_that.points,_that.description,_that.type);case _:
+return $default(_that.id,_that.title,_that.description,_that.category,_that.affectedSkill,_that.durationMinutes,_that.activityDate,_that.activityTime,_that.pointsEarned);case _:
   return null;
 
 }
@@ -224,16 +217,18 @@ return $default(_that.id,_that.title,_that.date,_that.durationMinutes,_that.poin
 @JsonSerializable()
 
 class _Activity implements Activity {
-  const _Activity({required this.id, required this.title, required this.date, required this.durationMinutes, required this.points, this.description, required this.type});
+  const _Activity({required this.id, required this.title, this.description, required this.category, this.affectedSkill, required this.durationMinutes, required this.activityDate, this.activityTime, required this.pointsEarned});
   factory _Activity.fromJson(Map<String, dynamic> json) => _$ActivityFromJson(json);
 
-@override final  String id;
+@override final  int id;
 @override final  String title;
-@override final  DateTime date;
-@override final  int durationMinutes;
-@override final  int points;
 @override final  String? description;
-@override final  ActivityType type;
+@override final  ActivityCategory category;
+@override final  String? affectedSkill;
+@override final  int durationMinutes;
+@override final  String activityDate;
+@override final  String? activityTime;
+@override final  int pointsEarned;
 
 /// Create a copy of Activity
 /// with the given fields replaced by the non-null parameter values.
@@ -248,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Activity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.date, date) || other.date == date)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.points, points) || other.points == points)&&(identical(other.description, description) || other.description == description)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Activity&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.category, category) || other.category == category)&&(identical(other.affectedSkill, affectedSkill) || other.affectedSkill == affectedSkill)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.activityDate, activityDate) || other.activityDate == activityDate)&&(identical(other.activityTime, activityTime) || other.activityTime == activityTime)&&(identical(other.pointsEarned, pointsEarned) || other.pointsEarned == pointsEarned));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,date,durationMinutes,points,description,type);
+int get hashCode => Object.hash(runtimeType,id,title,description,category,affectedSkill,durationMinutes,activityDate,activityTime,pointsEarned);
 
 @override
 String toString() {
-  return 'Activity(id: $id, title: $title, date: $date, durationMinutes: $durationMinutes, points: $points, description: $description, type: $type)';
+  return 'Activity(id: $id, title: $title, description: $description, category: $category, affectedSkill: $affectedSkill, durationMinutes: $durationMinutes, activityDate: $activityDate, activityTime: $activityTime, pointsEarned: $pointsEarned)';
 }
 
 
@@ -268,11 +263,11 @@ abstract mixin class _$ActivityCopyWith<$Res> implements $ActivityCopyWith<$Res>
   factory _$ActivityCopyWith(_Activity value, $Res Function(_Activity) _then) = __$ActivityCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, DateTime date, int durationMinutes, int points, String? description, ActivityType type
+ int id, String title, String? description, ActivityCategory category, String? affectedSkill, int durationMinutes, String activityDate, String? activityTime, int pointsEarned
 });
 
 
-@override $ActivityTypeCopyWith<$Res> get type;
+
 
 }
 /// @nodoc
@@ -285,29 +280,22 @@ class __$ActivityCopyWithImpl<$Res>
 
 /// Create a copy of Activity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? date = null,Object? durationMinutes = null,Object? points = null,Object? description = freezed,Object? type = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? description = freezed,Object? category = null,Object? affectedSkill = freezed,Object? durationMinutes = null,Object? activityDate = null,Object? activityTime = freezed,Object? pointsEarned = null,}) {
   return _then(_Activity(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
-as DateTime,durationMinutes: null == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
-as int,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
-as int,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as ActivityType,
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as ActivityCategory,affectedSkill: freezed == affectedSkill ? _self.affectedSkill : affectedSkill // ignore: cast_nullable_to_non_nullable
+as String?,durationMinutes: null == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
+as int,activityDate: null == activityDate ? _self.activityDate : activityDate // ignore: cast_nullable_to_non_nullable
+as String,activityTime: freezed == activityTime ? _self.activityTime : activityTime // ignore: cast_nullable_to_non_nullable
+as String?,pointsEarned: null == pointsEarned ? _self.pointsEarned : pointsEarned // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
-/// Create a copy of Activity
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ActivityTypeCopyWith<$Res> get type {
-  
-  return $ActivityTypeCopyWith<$Res>(_self.type, (value) {
-    return _then(_self.copyWith(type: value));
-  });
-}
+
 }
 
 // dart format on
