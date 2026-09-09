@@ -1,139 +1,153 @@
-import 'package:drift/drift.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gymboo_app/data/local/database.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqlite3/sqlite3.dart' show SqliteException;
-
+import 'package:gymboo_app/core/network/dio_client.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:gymboo_app/core/network/secure_storage.dart';
 import '../domain/models/user.dart';
+import 'package:gymboo_app/features/goal/domain/models/weekday.dart';
 
+class RegisterPayload {
+  const RegisterPayload({
+    required this.fullName,
+    required this.email,
+    required this.password,
+    this.username,
+    required this.workoutDays,
+    required this.weightKg,
+    required this.heightCm,
+    required this.petType,
+    required this.petName,
+  });
+
+  final String fullName;
+  final String email;
+  final String password;
+  final String? username;
+  final List<Weekday> workoutDays;
+  final int weightKg;
+  final int heightCm;
+  final String petType;
+  final String petName;
+
+  Map<String, dynamic> toJson() => {
+        'fullName': fullName,
+        'email': email,
+        'password': password,
+        'username': username,
+        'workoutDays': workoutDays.map((d) => d.name).toList(),
+        'weightKg': weightKg,
+        'heightCm': heightCm,
+        'petType': petType,
+        'petName': petName,
+      };
+}
 abstract class AuthRepository {
+  Future<User> register(RegisterPayload payload);
+  Future<User> completeProfile({required String name, required int heightCm, required int weightKg});
   Future<User> login({required String email, required String password});
-  Future<User> register({required String name, required String email, required String password});
+  Future<User> loginWithGoogle();
+  Future<User?> restoreSession();
   Future<void> logout();
-  Future<User?> restoreSession(); 
 }
 
-class LocalAuthRepository implements AuthRepository {
+class ApiAuthRepository implements AuthRepository {
+  ApiAuthRepository(this._dio);
+  final Dio _dio;
 
-  LocalAuthRepository(this._db);
-  
-  final AppDatabase _db;
+  static const _googleWebClientId =
+      '790878229192-ovkq18404gmvb065gqqq241u04oa5u9i.apps.googleusercontent.com';
 
-  static const _sessionKey = 'gymboo_current_user_id';
+  static const _googleAndroidClientId =
+      '790878229192-nuujild9s6djog7dm08u4m5keh4f5krs.apps.googleusercontent.com';
+  bool _googleInitialized = false;
 
-  User _toDomain(UserRow row){
-    return User(
-       id: row.userId.toString(),
-      name: row.name,
-      email: row.email,
-      height: row.height ?? 0,
-      weight: row.weight ?? 0,
+  Future<void> _ensureGoogleInitialized() async {
+    if (_googleInitialized) return;
+    await GoogleSignIn.instance.initialize(
+      clientId: _googleAndroidClientId,
+      serverClientId: _googleWebClientId,
     );
+    _googleInitialized = true;
   }
 
-  Future<void> _saveSession(int userId) async{
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(_sessionKey, userId);
+  Future<User> _handleAuthResponse(Map<String, dynamic> data) async {
+    await SecureStorage.saveToken(data['token'] as String);
+    return User.fromJson(data['user'] as Map<String, dynamic>);
+  }
+
+  @override
+  Future<User> register(RegisterPayload payload) async {
+    final response = await _dio.post('/api/auth/register', data: payload.toJson());
+    return _handleAuthResponse(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<User> completeProfile({required String name, required int heightCm, required int weightKg}) async {
+    final response = await _dio.put('/api/users/me', data: {
+      'name': name,
+      'heightCm': heightCm,
+      'weightKg': weightKg,
+    });
+    return User.fromJson(response.data as Map<String, dynamic>);
   }
 
   @override
   Future<User> login({required String email, required String password}) async {
-    //lembrar de criptografar
-    final row = await (_db.select(_db.users)
-    ..where((table) => table.email.equals(email) & table.password.equals(password))).getSingleOrNull();
-
-    if (row == null) {
-      throw Exception('E-mail ou senha inválidos.');
-    }
-
-    await _saveSession(row.userId);
-    return _toDomain(row);
+    final response = await _dio.post('/api/auth/login', data: {'email': email, 'password': password});
+    return _handleAuthResponse(response.data as Map<String, dynamic>);
   }
 
   @override
-  Future<User> register({
-    required String name,
-    required String email,
-    required String password,
-    String petName = 'Fofurico',
-  }) async {
-    // Transação: se qualquer insert falhar, TODOS são desfeitos — nunca
-    // fica um usuário criado sem pet/meta (que era exatamente o bug).
-    late final int newId;
+  Future<User> loginWithGoogle() async {
+    await _ensureGoogleInitialized();
+    final googleSignIn = GoogleSignIn.instance;
+
+    GoogleSignInAccount? account;
     try {
-      newId = await _db.transaction(() async {
-        final userId = await _db.into(_db.users).insert(
-              UsersCompanion.insert(
-                name: name,
-                email: email,
-                password: password,
-              ),
-            );
-
-        await _db.into(_db.petVirtuals).insert(
-              PetVirtualsCompanion.insert(
-                name: petName,
-                userId: userId,
-              ),
-            );
-
-        // Valores padrão iniciais — ajustar quando o onboarding (RF1.1,
-        // segunda etapa) coletar isso do usuário de verdade.
-        await _db.into(_db.goals).insert(
-              GoalsCompanion.insert(
-                weeklyWorkoutTarget: 3,
-                dailyWaterGoalMl: 2000,
-                userId: Value(userId),
-              ),
-            );
-
-        return userId;
-      });
-    } catch (e) {
-      // Catch genérico de propósito: como o banco roda numa isolate
-      // separada (NativeDatabase.createInBackground), a exceção que
-      // atravessa de volta nem sempre preserva o tipo exato
-      // SqliteException — então checamos a MENSAGEM (toString), que
-      // sobrevive à travessia entre isolates.
-      final message = e.toString();
-      final isUniqueEmailViolation = message.contains('UNIQUE constraint failed') &&
-          message.contains('users.email');
-
-      if (isUniqueEmailViolation) {
-        throw Exception('Este e-mail já está cadastrado.');
-      }
-      rethrow;
+      account = await googleSignIn.attemptLightweightAuthentication();
+    } catch (_) {
+      account = null;
     }
 
-    await _saveSession(newId);
+    if (account == null) {
+      try {
+        account = await googleSignIn.authenticate();
+      } on GoogleSignInException catch (e) {
+        throw Exception('Login com Google cancelado ou falhou: ${e.description}');
+      }
+    }
 
-    final row = await (_db.select(_db.users)
-      ..where((table) => table.userId.equals(newId))
-    ).getSingle();
+    final auth = await account.authentication;
+    final idToken = auth.idToken;
+    if (idToken == null) throw Exception('Não foi possível obter o ID Token do Google');
 
-    return _toDomain(row);
-  }
-
-  @override
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_sessionKey);
+    final response = await _dio.post('/api/auth/google', data: {'idToken': idToken});
+    return _handleAuthResponse(response.data as Map<String, dynamic>);
   }
 
   @override
   Future<User?> restoreSession() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedUserId = prefs.getInt(_sessionKey);
+    final token = await SecureStorage.getToken();
+    if (token == null) return null;
 
-    if (savedUserId == null) return null;
-
-    final row = await (_db.select(_db.users)..where((table) => table.userId.equals(savedUserId))).getSingle();
-
-    return _toDomain(row);
+    try {
+      final response = await _dio.get('/api/users/me');
+      return User.fromJson(response.data as Map<String, dynamic>);
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401 || e.response?.statusCode == 404) {
+        await SecureStorage.clearToken();
+        return null;
+      }
+      rethrow;
+    }
   }
 
+  @override
+  Future<void> logout() async {
+    await SecureStorage.clearToken();
+  }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return LocalAuthRepository(ref.watch(databaseProvider));
+  return ApiAuthRepository(ref.watch(dioProvider));
 });

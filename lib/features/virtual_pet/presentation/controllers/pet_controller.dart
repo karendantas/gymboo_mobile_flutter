@@ -6,5 +6,5 @@ import '../../domain/models/virtual_pet.dart';
 final petControllerProvider = FutureProvider<VirtualPet>((ref) async {
   final user = ref.watch(authControllerProvider).value;
   if (user == null) throw StateError('Sem usuário logado');
-  return ref.watch(petRepositoryProvider).getMyPet(user.id);
+  return ref.watch(petRepositoryProvider).getMyPet();
 });
