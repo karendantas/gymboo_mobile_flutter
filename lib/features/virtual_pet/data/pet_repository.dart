@@ -4,21 +4,32 @@ import 'package:gymboo_app/core/network/dio_client.dart';
 import '../domain/models/virtual_pet.dart';
 
 abstract class PetRepository {
-  Future<VirtualPet> getMyPet(String userId);
+  Future<VirtualPet> getMyPet();
+  Future<VirtualPet> rename(String name);
+  Future<VirtualPet> interact(String action); 
 }
 
-class DioPetRepository implements PetRepository {
-  DioPetRepository(this._dio);
+class ApiPetRepository implements PetRepository {
+  ApiPetRepository(this._dio);
   final Dio _dio;
 
   @override
-  Future<VirtualPet> getMyPet(String userId) async {
-    final response = await _dio.get('/virtualPets', queryParameters: {'userId': userId});
-    final list = response.data as List;
-    return VirtualPet.fromJson(list.first as Map<String, dynamic>);
+  Future<VirtualPet> getMyPet() async {
+    final response = await _dio.get('/api/pet');
+    return VirtualPet.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<VirtualPet> rename(String name) async {
+    final response = await _dio.patch('/api/pet/name', data: {'name': name});
+    return VirtualPet.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<VirtualPet> interact(String action) async {
+    final response = await _dio.post('/api/pet/interactions', data: {'action': action});
+    return VirtualPet.fromJson(response.data as Map<String, dynamic>);
   }
 }
 
-final petRepositoryProvider = Provider<PetRepository>((ref) {
-  return DioPetRepository(ref.watch(dioProvider));
-});
+final petRepositoryProvider = Provider<PetRepository>((ref) => ApiPetRepository(ref.watch(dioProvider)));

@@ -1,0 +1,1 @@
+enum ActivityCategory { CARDIO, MUSCULACAO, FLEXIBILIDADE, OUTRO }

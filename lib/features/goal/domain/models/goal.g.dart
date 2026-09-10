@@ -7,13 +7,11 @@ part of 'goal.dart';
 // **************************************************************************
 
 _Goal _$GoalFromJson(Map<String, dynamic> json) => _Goal(
-  id: json['id'] as String,
+  id: (json['id'] as num).toInt(),
   weeklyWorkoutTarget: (json['weeklyWorkoutTarget'] as num).toInt(),
-  dailyWaterGoalMl: (json['dailyWaterGoalMl'] as num).toInt(),
 );
 
 Map<String, dynamic> _$GoalToJson(_Goal instance) => <String, dynamic>{
   'id': instance.id,
   'weeklyWorkoutTarget': instance.weeklyWorkoutTarget,
-  'dailyWaterGoalMl': instance.dailyWaterGoalMl,
 };

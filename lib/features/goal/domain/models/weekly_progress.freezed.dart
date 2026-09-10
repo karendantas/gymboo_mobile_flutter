@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$WeeklyProgress {
 
- Map<Weekday, bool> get completedByDay;
+ String get weekStart; String get weekEnd; List<Weekday> get plannedDays; List<Weekday> get completedDays; int get plannedDaysTotal; int get plannedDaysCompleted; int get totalActivities; int get totalMinutes; double get completionRate; List<WeeklyDayDetail> get days;
 /// Create a copy of WeeklyProgress
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $WeeklyProgressCopyWith<WeeklyProgress> get copyWith => _$WeeklyProgressCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WeeklyProgress&&const DeepCollectionEquality().equals(other.completedByDay, completedByDay));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WeeklyProgress&&(identical(other.weekStart, weekStart) || other.weekStart == weekStart)&&(identical(other.weekEnd, weekEnd) || other.weekEnd == weekEnd)&&const DeepCollectionEquality().equals(other.plannedDays, plannedDays)&&const DeepCollectionEquality().equals(other.completedDays, completedDays)&&(identical(other.plannedDaysTotal, plannedDaysTotal) || other.plannedDaysTotal == plannedDaysTotal)&&(identical(other.plannedDaysCompleted, plannedDaysCompleted) || other.plannedDaysCompleted == plannedDaysCompleted)&&(identical(other.totalActivities, totalActivities) || other.totalActivities == totalActivities)&&(identical(other.totalMinutes, totalMinutes) || other.totalMinutes == totalMinutes)&&(identical(other.completionRate, completionRate) || other.completionRate == completionRate)&&const DeepCollectionEquality().equals(other.days, days));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(completedByDay));
+int get hashCode => Object.hash(runtimeType,weekStart,weekEnd,const DeepCollectionEquality().hash(plannedDays),const DeepCollectionEquality().hash(completedDays),plannedDaysTotal,plannedDaysCompleted,totalActivities,totalMinutes,completionRate,const DeepCollectionEquality().hash(days));
 
 @override
 String toString() {
-  return 'WeeklyProgress(completedByDay: $completedByDay)';
+  return 'WeeklyProgress(weekStart: $weekStart, weekEnd: $weekEnd, plannedDays: $plannedDays, completedDays: $completedDays, plannedDaysTotal: $plannedDaysTotal, plannedDaysCompleted: $plannedDaysCompleted, totalActivities: $totalActivities, totalMinutes: $totalMinutes, completionRate: $completionRate, days: $days)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $WeeklyProgressCopyWith<$Res>  {
   factory $WeeklyProgressCopyWith(WeeklyProgress value, $Res Function(WeeklyProgress) _then) = _$WeeklyProgressCopyWithImpl;
 @useResult
 $Res call({
- Map<Weekday, bool> completedByDay
+ String weekStart, String weekEnd, List<Weekday> plannedDays, List<Weekday> completedDays, int plannedDaysTotal, int plannedDaysCompleted, int totalActivities, int totalMinutes, double completionRate, List<WeeklyDayDetail> days
 });
 
 
@@ -65,10 +65,19 @@ class _$WeeklyProgressCopyWithImpl<$Res>
 
 /// Create a copy of WeeklyProgress
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? completedByDay = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? weekStart = null,Object? weekEnd = null,Object? plannedDays = null,Object? completedDays = null,Object? plannedDaysTotal = null,Object? plannedDaysCompleted = null,Object? totalActivities = null,Object? totalMinutes = null,Object? completionRate = null,Object? days = null,}) {
   return _then(_self.copyWith(
-completedByDay: null == completedByDay ? _self.completedByDay : completedByDay // ignore: cast_nullable_to_non_nullable
-as Map<Weekday, bool>,
+weekStart: null == weekStart ? _self.weekStart : weekStart // ignore: cast_nullable_to_non_nullable
+as String,weekEnd: null == weekEnd ? _self.weekEnd : weekEnd // ignore: cast_nullable_to_non_nullable
+as String,plannedDays: null == plannedDays ? _self.plannedDays : plannedDays // ignore: cast_nullable_to_non_nullable
+as List<Weekday>,completedDays: null == completedDays ? _self.completedDays : completedDays // ignore: cast_nullable_to_non_nullable
+as List<Weekday>,plannedDaysTotal: null == plannedDaysTotal ? _self.plannedDaysTotal : plannedDaysTotal // ignore: cast_nullable_to_non_nullable
+as int,plannedDaysCompleted: null == plannedDaysCompleted ? _self.plannedDaysCompleted : plannedDaysCompleted // ignore: cast_nullable_to_non_nullable
+as int,totalActivities: null == totalActivities ? _self.totalActivities : totalActivities // ignore: cast_nullable_to_non_nullable
+as int,totalMinutes: null == totalMinutes ? _self.totalMinutes : totalMinutes // ignore: cast_nullable_to_non_nullable
+as int,completionRate: null == completionRate ? _self.completionRate : completionRate // ignore: cast_nullable_to_non_nullable
+as double,days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
+as List<WeeklyDayDetail>,
   ));
 }
 
@@ -153,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<Weekday, bool> completedByDay)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String weekStart,  String weekEnd,  List<Weekday> plannedDays,  List<Weekday> completedDays,  int plannedDaysTotal,  int plannedDaysCompleted,  int totalActivities,  int totalMinutes,  double completionRate,  List<WeeklyDayDetail> days)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _WeeklyProgress() when $default != null:
-return $default(_that.completedByDay);case _:
+return $default(_that.weekStart,_that.weekEnd,_that.plannedDays,_that.completedDays,_that.plannedDaysTotal,_that.plannedDaysCompleted,_that.totalActivities,_that.totalMinutes,_that.completionRate,_that.days);case _:
   return orElse();
 
 }
@@ -174,10 +183,10 @@ return $default(_that.completedByDay);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<Weekday, bool> completedByDay)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String weekStart,  String weekEnd,  List<Weekday> plannedDays,  List<Weekday> completedDays,  int plannedDaysTotal,  int plannedDaysCompleted,  int totalActivities,  int totalMinutes,  double completionRate,  List<WeeklyDayDetail> days)  $default,) {final _that = this;
 switch (_that) {
 case _WeeklyProgress():
-return $default(_that.completedByDay);case _:
+return $default(_that.weekStart,_that.weekEnd,_that.plannedDays,_that.completedDays,_that.plannedDaysTotal,_that.plannedDaysCompleted,_that.totalActivities,_that.totalMinutes,_that.completionRate,_that.days);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +203,10 @@ return $default(_that.completedByDay);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<Weekday, bool> completedByDay)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String weekStart,  String weekEnd,  List<Weekday> plannedDays,  List<Weekday> completedDays,  int plannedDaysTotal,  int plannedDaysCompleted,  int totalActivities,  int totalMinutes,  double completionRate,  List<WeeklyDayDetail> days)?  $default,) {final _that = this;
 switch (_that) {
 case _WeeklyProgress() when $default != null:
-return $default(_that.completedByDay);case _:
+return $default(_that.weekStart,_that.weekEnd,_that.plannedDays,_that.completedDays,_that.plannedDaysTotal,_that.plannedDaysCompleted,_that.totalActivities,_that.totalMinutes,_that.completionRate,_that.days);case _:
   return null;
 
 }
@@ -208,15 +217,36 @@ return $default(_that.completedByDay);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _WeeklyProgress extends WeeklyProgress {
-  const _WeeklyProgress({required final  Map<Weekday, bool> completedByDay}): _completedByDay = completedByDay,super._();
+class _WeeklyProgress implements WeeklyProgress {
+  const _WeeklyProgress({required this.weekStart, required this.weekEnd, required final  List<Weekday> plannedDays, required final  List<Weekday> completedDays, required this.plannedDaysTotal, required this.plannedDaysCompleted, required this.totalActivities, required this.totalMinutes, required this.completionRate, required final  List<WeeklyDayDetail> days}): _plannedDays = plannedDays,_completedDays = completedDays,_days = days;
   factory _WeeklyProgress.fromJson(Map<String, dynamic> json) => _$WeeklyProgressFromJson(json);
 
- final  Map<Weekday, bool> _completedByDay;
-@override Map<Weekday, bool> get completedByDay {
-  if (_completedByDay is EqualUnmodifiableMapView) return _completedByDay;
+@override final  String weekStart;
+@override final  String weekEnd;
+ final  List<Weekday> _plannedDays;
+@override List<Weekday> get plannedDays {
+  if (_plannedDays is EqualUnmodifiableListView) return _plannedDays;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(_completedByDay);
+  return EqualUnmodifiableListView(_plannedDays);
+}
+
+ final  List<Weekday> _completedDays;
+@override List<Weekday> get completedDays {
+  if (_completedDays is EqualUnmodifiableListView) return _completedDays;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_completedDays);
+}
+
+@override final  int plannedDaysTotal;
+@override final  int plannedDaysCompleted;
+@override final  int totalActivities;
+@override final  int totalMinutes;
+@override final  double completionRate;
+ final  List<WeeklyDayDetail> _days;
+@override List<WeeklyDayDetail> get days {
+  if (_days is EqualUnmodifiableListView) return _days;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_days);
 }
 
 
@@ -233,16 +263,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WeeklyProgress&&const DeepCollectionEquality().equals(other._completedByDay, _completedByDay));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _WeeklyProgress&&(identical(other.weekStart, weekStart) || other.weekStart == weekStart)&&(identical(other.weekEnd, weekEnd) || other.weekEnd == weekEnd)&&const DeepCollectionEquality().equals(other._plannedDays, _plannedDays)&&const DeepCollectionEquality().equals(other._completedDays, _completedDays)&&(identical(other.plannedDaysTotal, plannedDaysTotal) || other.plannedDaysTotal == plannedDaysTotal)&&(identical(other.plannedDaysCompleted, plannedDaysCompleted) || other.plannedDaysCompleted == plannedDaysCompleted)&&(identical(other.totalActivities, totalActivities) || other.totalActivities == totalActivities)&&(identical(other.totalMinutes, totalMinutes) || other.totalMinutes == totalMinutes)&&(identical(other.completionRate, completionRate) || other.completionRate == completionRate)&&const DeepCollectionEquality().equals(other._days, _days));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_completedByDay));
+int get hashCode => Object.hash(runtimeType,weekStart,weekEnd,const DeepCollectionEquality().hash(_plannedDays),const DeepCollectionEquality().hash(_completedDays),plannedDaysTotal,plannedDaysCompleted,totalActivities,totalMinutes,completionRate,const DeepCollectionEquality().hash(_days));
 
 @override
 String toString() {
-  return 'WeeklyProgress(completedByDay: $completedByDay)';
+  return 'WeeklyProgress(weekStart: $weekStart, weekEnd: $weekEnd, plannedDays: $plannedDays, completedDays: $completedDays, plannedDaysTotal: $plannedDaysTotal, plannedDaysCompleted: $plannedDaysCompleted, totalActivities: $totalActivities, totalMinutes: $totalMinutes, completionRate: $completionRate, days: $days)';
 }
 
 
@@ -253,7 +283,7 @@ abstract mixin class _$WeeklyProgressCopyWith<$Res> implements $WeeklyProgressCo
   factory _$WeeklyProgressCopyWith(_WeeklyProgress value, $Res Function(_WeeklyProgress) _then) = __$WeeklyProgressCopyWithImpl;
 @override @useResult
 $Res call({
- Map<Weekday, bool> completedByDay
+ String weekStart, String weekEnd, List<Weekday> plannedDays, List<Weekday> completedDays, int plannedDaysTotal, int plannedDaysCompleted, int totalActivities, int totalMinutes, double completionRate, List<WeeklyDayDetail> days
 });
 
 
@@ -270,10 +300,19 @@ class __$WeeklyProgressCopyWithImpl<$Res>
 
 /// Create a copy of WeeklyProgress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? completedByDay = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? weekStart = null,Object? weekEnd = null,Object? plannedDays = null,Object? completedDays = null,Object? plannedDaysTotal = null,Object? plannedDaysCompleted = null,Object? totalActivities = null,Object? totalMinutes = null,Object? completionRate = null,Object? days = null,}) {
   return _then(_WeeklyProgress(
-completedByDay: null == completedByDay ? _self._completedByDay : completedByDay // ignore: cast_nullable_to_non_nullable
-as Map<Weekday, bool>,
+weekStart: null == weekStart ? _self.weekStart : weekStart // ignore: cast_nullable_to_non_nullable
+as String,weekEnd: null == weekEnd ? _self.weekEnd : weekEnd // ignore: cast_nullable_to_non_nullable
+as String,plannedDays: null == plannedDays ? _self._plannedDays : plannedDays // ignore: cast_nullable_to_non_nullable
+as List<Weekday>,completedDays: null == completedDays ? _self._completedDays : completedDays // ignore: cast_nullable_to_non_nullable
+as List<Weekday>,plannedDaysTotal: null == plannedDaysTotal ? _self.plannedDaysTotal : plannedDaysTotal // ignore: cast_nullable_to_non_nullable
+as int,plannedDaysCompleted: null == plannedDaysCompleted ? _self.plannedDaysCompleted : plannedDaysCompleted // ignore: cast_nullable_to_non_nullable
+as int,totalActivities: null == totalActivities ? _self.totalActivities : totalActivities // ignore: cast_nullable_to_non_nullable
+as int,totalMinutes: null == totalMinutes ? _self.totalMinutes : totalMinutes // ignore: cast_nullable_to_non_nullable
+as int,completionRate: null == completionRate ? _self.completionRate : completionRate // ignore: cast_nullable_to_non_nullable
+as double,days: null == days ? _self._days : days // ignore: cast_nullable_to_non_nullable
+as List<WeeklyDayDetail>,
   ));
 }
 

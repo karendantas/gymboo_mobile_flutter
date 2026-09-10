@@ -7,12 +7,14 @@ part of 'user.dart';
 // **************************************************************************
 
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
-  id: json['id'] as String,
+  id: (json['id'] as num).toInt(),
   name: json['name'] as String,
   email: json['email'] as String,
-  username: json['username'] as String,
-  height: (json['height'] as num).toInt(),
-  weight: (json['weight'] as num).toInt(),
+  username: json['username'] as String?,
+  provider: $enumDecode(_$AuthProviderEnumMap, json['provider']),
+  age: (json['age'] as num?)?.toInt(),
+  heightCm: (json['heightCm'] as num?)?.toInt(),
+  weightKg: (json['weightKg'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -20,6 +22,13 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'name': instance.name,
   'email': instance.email,
   'username': instance.username,
-  'height': instance.height,
-  'weight': instance.weight,
+  'provider': _$AuthProviderEnumMap[instance.provider]!,
+  'age': instance.age,
+  'heightCm': instance.heightCm,
+  'weightKg': instance.weightKg,
+};
+
+const _$AuthProviderEnumMap = {
+  AuthProvider.LOCAL: 'LOCAL',
+  AuthProvider.GOOGLE: 'GOOGLE',
 };
