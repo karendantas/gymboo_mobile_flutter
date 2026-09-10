@@ -24,7 +24,10 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     required this.textSecondary,
     required this.textOnDark,
     required this.divider,
-  });
+    required this.googleButton,
+    required this.googleButtonBorder,
+    required this.input,
+});
 
   final Color brandPurple;
   final Color brandPurpleLight;
@@ -46,9 +49,10 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
   final Color textSecondary;
   final Color textOnDark;
   final Color divider;
+  final Color googleButton;
+  final Color googleButtonBorder;
+  final Color input;
 
-  // Antes eram campos separados no GymbooColors (petFrameGradient, xpBarFill).
-  // Agora são derivados — se a paleta muda, o gradiente acompanha sozinho.
   List<Color> get petFrameGradient => [primaryPink, primaryPinkDark];
   List<Color> get xpBarFill => [primaryPink, blueAccent];
 
@@ -74,6 +78,9 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     Color? textSecondary,
     Color? textOnDark,
     Color? divider,
+    Color? googleButton,
+  Color? googleButtonBorder,
+  Color? input,
   }) {
     return GymbooPalette(
       brandPurple: brandPurple ?? this.brandPurple,
@@ -96,6 +103,9 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       textSecondary: textSecondary ?? this.textSecondary,
       textOnDark: textOnDark ?? this.textOnDark,
       divider: divider ?? this.divider,
+      googleButton: googleButton ?? this.googleButton,
+      googleButtonBorder: googleButtonBorder ?? this.googleButtonBorder,
+      input: input ?? this.input,
     );
   }
 
@@ -123,40 +133,49 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
       textOnDark: Color.lerp(textOnDark, other.textOnDark, t)!,
       divider: Color.lerp(divider, other.divider, t)!,
+      googleButton: Color.lerp(googleButton, other.googleButton, t)!,
+      googleButtonBorder: Color.lerp(googleButtonBorder, other.googleButtonBorder, t)!,
+      input: Color.lerp(input, other.input, t)!,
     );
   }
 }
 
 const gymbooDefaultPalette = GymbooPalette(
-  // ---- Marca / texto de destaque  ----
-  brandPurple: Color(0xFF66073A),       // vinho escuro do título
-  brandPurpleLight: Color(0xFFA5406A),  // interpolado entre brandPurple e primaryPink
+  // ---- Marca / títulos ----
+  brandPurple: Color(0xFF792B48),
+  brandPurpleLight: Color(0xFFC0466C),
 
-  // ---- Rosa principal (botões, checkboxes, nav selecionada) ----
-  primaryPink: Color(0xFFE47B9A),       // face do botão/checkbox ativo
-  primaryPinkDark: Color(0xFFBD597A),   // sombra 3D sob o botão
+  // ---- Rosa principal ----
+  primaryPink: Color(0xFFE86C93),
+  primaryPinkDark: Color(0xFFC2466C),
 
   // ---- Fundos ----
-  backgroundOuter: Color.fromARGB(255, 255, 196, 203),   // rosa claro por trás de tudo
-  backgroundDark: Color(0xFFF49DB2),  // sem app bar distinta neste layout, mesmo tom
-  surface: Color(0xFFEBE6CC),   
-  surfaceSecondary: Color(0xFFCDCCAE),        // bege do card do pet / pílula de data
-  surfaceAlt: Color(0xFF969578),        // variação mais escura do bege, p/ trilhos de barra
+  backgroundOuter: Color.fromARGB(255, 245, 189, 201),
+  backgroundDark: Color(0xFFF9A5B8),
+
+  // ---- Superfícies / HUD ----
+  surface: Color(0xFFF0DFC1),
+  surfaceSecondary: Color(0xFFCCC2A0),
+  surfaceAlt: Color(0xFF98826D),
 
   // ---- Acentos ----
-  goldAccent: Color(0xFFF3C371),        // preenchimento da estrela
-  goldAccentDark: Color(0xFFDFA824),    // contorno da estrela
-  orangeAccent: Color(0xFFFF9D66),      // não aparece no mockup — harmonizado c/ gold
-  blueAccent: Color(0xFF6FA8E0),        // não aparece separado do pet — tom mais saturado
+  goldAccent: Color(0xFFFCC45B),
+  goldAccentDark: Color(0xFFCF702C),
+  orangeAccent: Color(0xFFCF702C),
+  blueAccent: Color(0xFF8980DA),
 
   // ---- Pet & indicadores ----
-  petBodyColor: Color(0xFF8FBBF3),      // azul do corpo do pet
-  coral: Color(0xFFDF5E85),             // coração (vida)
-  cream: Color(0xFFEBE6CC),             // mesmo bege do surface (badges/pílulas)
+  petBodyColor: Color(0xFF8980DA),
+  coral: Color(0xFFC0466C),
+  cream: Color(0xFFF0DFC1),
 
   // ---- Texto ----
-  textPrimary: Color(0xFF66073A),       // título, textos fortes
-  textSecondary: Color(0xFF8B3B57),     // "Complete sua atividade do dia!"
-  textOnDark: Color(0xFFFFFFFF),        // ícones brancos sobre rosa escuro
-  divider: Color(0xFF9B9A7D),           // borda khaki da pílula/badge
+  textPrimary: Color(0xFF31193A),
+  textSecondary: Color(0xFF792B48),
+  textOnDark: Color(0xFFFFFFFF),
+  divider: Color(0xFF98826D),
+
+  googleButton: Color(0xFFFFFDF7),
+  googleButtonBorder: Color(0xFFD5CDB5),
+  input: Color.fromARGB(255, 245, 249, 215),
 );

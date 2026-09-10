@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'api_endpoints.dart';
-import 'secure_storage.dart';
+import '../storage/secure_storage.dart';
 
 class AuthExpiredException implements Exception {}
 

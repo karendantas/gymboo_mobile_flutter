@@ -63,7 +63,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
           decoration: BoxDecoration(
             image:  const DecorationImage(
               
-          image: AssetImage('assets/images/bg-login.png'),
+          image: AssetImage('assets/images/login_bg.png'),
           fit: BoxFit.cover,
           filterQuality: FilterQuality.none,
         ),
@@ -77,7 +77,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                 children: [
                 
                   Image.asset(
-                    'assets/images/logo2.png',
+                    'assets/images/logo3.png',
                     width: 400,
                     height: 200,
                     filterQuality: FilterQuality.none,
@@ -110,7 +110,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                       onTap: _handleLogin,
                     ),
               
-                     const SizedBox(height: 30,),
+                     const SizedBox(height: 20,),
                      RetroButton(
                     width: double.infinity,
                     title: 'Criar conta', 
@@ -119,16 +119,7 @@ class _LoginPageState extends ConsumerState<LoginPage>{
                     onTap: () => context.go('/register')
                     ),
                       
-                   GestureDetector(
-                    onTap: () => context.push('/register'),
-                    child: Text(
-                      'Cadastro',
-                      style: TextStyle(
-                        color: theme.primaryPink,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  )
+                 
                 ],
               ),
             )),

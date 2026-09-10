@@ -44,11 +44,11 @@ class Home extends ConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          PetHudScreen(pet: home.pet, dateLabel: 'QUI - 9 OUT'), //LEMBRAR DE POR A DATA
+                          PetHudScreen(pet: home.pet), 
                           const SizedBox(height: 20),
                           const DailyActivityMission(),
                           const SizedBox(height: 20),
-                          WeeklyGoalTracker(goal: home.goal, weeklyProgress: home.progress),
+                          WeeklyGoalTracker(progress: home.progress),
                                       ],
                                   ),
                     ),

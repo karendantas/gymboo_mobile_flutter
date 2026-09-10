@@ -57,7 +57,7 @@ class _RetroTextFieldState extends State<RetroTextField> {
         ? palette.coral
         : _isFocused
             ? palette.primaryPink
-            : palette.divider;
+            :  Color.fromARGB(255, 175, 179, 147);;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +73,7 @@ class _RetroTextFieldState extends State<RetroTextField> {
         AnimatedContainer(
           duration: const Duration(milliseconds: 150),
           decoration: BoxDecoration(
-            color: palette.surface,
+            color: palette.input,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: borderColor, width: 3),
             boxShadow: [

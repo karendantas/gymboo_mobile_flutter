@@ -70,7 +70,7 @@ class BottomTabRetro extends StatelessWidget {
                     color: theme.primaryPink, 
                     shadowColor: theme.primaryPinkDark, 
                       paddingBottom: 40,
-                    onTap: () => {}
+                    onTap: () => {context.go('/profile')},
                     ),
                     
               ],

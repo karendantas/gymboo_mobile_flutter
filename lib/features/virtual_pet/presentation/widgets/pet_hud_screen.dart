@@ -7,12 +7,10 @@ import 'pet_level_bar.dart';
 
 class PetHudScreen extends StatelessWidget {
   final VirtualPet pet;
-    final String dateLabel;
 
   const PetHudScreen({
     super.key,
     required this.pet,
-    required this.dateLabel
   });
 
 
@@ -39,7 +37,7 @@ class PetHudScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          PetHudTopBar(dateLabel: dateLabel),
+          PetHudTopBar(),
           const SizedBox(height: 16),
 
           Text(pet.name, style: textTheme.headlineSmall?.copyWith(color: palette.textPrimary)),

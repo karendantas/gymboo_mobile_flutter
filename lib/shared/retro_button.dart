@@ -55,6 +55,10 @@ class _RetroButtonState extends State<RetroButton> {
         decoration: BoxDecoration(
           color: widget.color,
           borderRadius: radius,
+          border: Border.all(
+            color: widget.shadowColor,
+            width: 2,
+          ),
           boxShadow: [
             if (!isPressed)
               BoxShadow(

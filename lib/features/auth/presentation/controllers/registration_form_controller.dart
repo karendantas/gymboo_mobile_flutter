@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/features/goal/domain/models/weekday.dart';
 
-enum PetColorOption { blue, pink, green, yellow }
+enum PetColorOption { purple, green, yellow }
 
 class RegistrationFormState {
   const RegistrationFormState({
@@ -12,7 +12,7 @@ class RegistrationFormState {
     this.heightCm,
     this.workoutDays = const {},
     this.petName = '',
-    this.petColor = PetColorOption.blue,
+    this.petColor = PetColorOption.purple,
   });
 
   final String name;
