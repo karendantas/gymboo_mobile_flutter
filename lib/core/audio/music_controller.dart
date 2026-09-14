@@ -8,13 +8,16 @@ class MusicController extends Notifier<bool> {
   bool build() {
     _player = AudioPlayer();
     _player.setReleaseMode(ReleaseMode.loop);
-    ref.onDispose(_player.dispose); 
-    return false; 
+    ref.onDispose(_player.dispose);
+    return false;
   }
 
   Future<void> playBackgroundMusic() async {
-    if (_player.state == PlayerState.playing) return; 
-    await _player.play(AssetSource('audio/theme_song.mp3'), volume: state ? 0.0 : 0.5);
+    if (_player.state == PlayerState.playing) return;
+    await _player.play(
+      AssetSource('audio/theme_song.mp3'),
+      volume: state ? 0.0 : 0.5,
+    );
   }
 
   Future<void> toggleMute() async {
@@ -23,4 +26,6 @@ class MusicController extends Notifier<bool> {
   }
 }
 
-final musicControllerProvider = NotifierProvider<MusicController, bool>(MusicController.new);
+final musicControllerProvider = NotifierProvider<MusicController, bool>(
+  MusicController.new,
+);

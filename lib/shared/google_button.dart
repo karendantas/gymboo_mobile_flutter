@@ -29,10 +29,7 @@ class GoogleButton extends StatelessWidget {
 
           borderRadius: BorderRadius.circular(10),
 
-          border: Border.all(
-            color: palette.googleButtonBorder,
-            width: 2,
-          ),
+          border: Border.all(color: palette.googleButtonBorder, width: 2),
 
           boxShadow: [
             BoxShadow(

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/audio/music_controller.dart';
@@ -13,19 +12,16 @@ class GymbooApp extends ConsumerStatefulWidget {
 }
 
 class _GymbooAppState extends ConsumerState<GymbooApp> {
-  
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(musicControllerProvider.notifier).playBackgroundMusic();
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final themeController = ref.watch(themeNotifierProvider);
     final router = ref.watch(appRouterProvider);
 
@@ -34,8 +30,6 @@ class _GymbooAppState extends ConsumerState<GymbooApp> {
       debugShowCheckedModeBanner: false,
       theme: themeController.themeData,
       routerConfig: router,
-      
     );
   }
-
 }

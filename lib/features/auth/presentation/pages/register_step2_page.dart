@@ -25,8 +25,13 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
   String? _daysError;
 
   static const _weekOrder = [
-    Weekday.MONDAY, Weekday.TUESDAY, Weekday.WEDNESDAY, Weekday.THURSDAY,
-    Weekday.FRIDAY, Weekday.SATURDAY, Weekday.SUNDAY,
+    Weekday.MONDAY,
+    Weekday.TUESDAY,
+    Weekday.WEDNESDAY,
+    Weekday.THURSDAY,
+    Weekday.FRIDAY,
+    Weekday.SATURDAY,
+    Weekday.SUNDAY,
   ];
   static const _dayLabels = ['SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SÁB', 'DOM'];
 
@@ -51,8 +56,12 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
     final height = int.tryParse(_heightController.text.trim());
 
     setState(() {
-      _weightError = (weight == null || weight < 20 || weight > 400) ? 'Peso inválido (20–400 kg)' : null;
-      _heightError = (height == null || height < 50 || height > 260) ? 'Altura inválida (50–260 cm)' : null;
+      _weightError = (weight == null || weight < 20 || weight > 400)
+          ? 'Peso inválido (20–400 kg)'
+          : null;
+      _heightError = (height == null || height < 50 || height > 260)
+          ? 'Altura inválida (50–260 cm)'
+          : null;
       _daysError = _selectedDays.isEmpty ? 'Selecione ao menos 1 dia' : null;
     });
 
@@ -62,7 +71,9 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
   void _handleNext() {
     if (!_validate()) return;
 
-    ref.read(registrationFormControllerProvider.notifier).updateStep2(
+    ref
+        .read(registrationFormControllerProvider.notifier)
+        .updateStep2(
           weightKg: int.parse(_weightController.text.trim()),
           heightCm: int.parse(_heightController.text.trim()),
           workoutDays: _selectedDays,
@@ -81,7 +92,11 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/images/login_bg.png'), fit: BoxFit.cover, filterQuality: FilterQuality.none),
+          image: DecorationImage(
+            image: AssetImage('assets/images/login_bg.png'),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -123,7 +138,12 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
                 ),
                 const SizedBox(height: 20),
 
-                Text('Dias que pretende treinar', style: textTheme.labelMedium?.copyWith(color: palette.textPrimary)),
+                Text(
+                  'Dias que pretende treinar',
+                  style: textTheme.labelMedium?.copyWith(
+                    color: palette.textPrimary,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Row(
                   children: List.generate(7, (i) {
@@ -144,11 +164,23 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: isSelected ? palette.primaryPink : palette.input,
+                              color: isSelected
+                                  ? palette.primaryPink
+                                  : palette.input,
                               borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: palette.primaryPinkDark, width: 2),
+                              border: Border.all(
+                                color: palette.primaryPinkDark,
+                                width: 2,
+                              ),
                             ),
-                            child: Text(_dayLabels[i], style: textTheme.labelSmall?.copyWith(color: isSelected ? Colors.white : palette.textPrimary)),
+                            child: Text(
+                              _dayLabels[i],
+                              style: textTheme.labelSmall?.copyWith(
+                                color: isSelected
+                                    ? Colors.white
+                                    : palette.textPrimary,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -157,7 +189,10 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
                 ),
                 if (_daysError != null) ...[
                   const SizedBox(height: 4),
-                  Text(_daysError!, style: textTheme.labelSmall?.copyWith(color: palette.coral)),
+                  Text(
+                    _daysError!,
+                    style: textTheme.labelSmall?.copyWith(color: palette.coral),
+                  ),
                 ],
                 const SizedBox(height: 28),
 

@@ -18,5 +18,6 @@ abstract class Activity with _$Activity {
     required int pointsEarned,
   }) = _Activity;
 
-  factory Activity.fromJson(Map<String, dynamic> json) => _$ActivityFromJson(json);
+  factory Activity.fromJson(Map<String, dynamic> json) =>
+      _$ActivityFromJson(json);
 }

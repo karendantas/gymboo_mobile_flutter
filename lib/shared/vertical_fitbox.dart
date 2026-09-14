@@ -13,7 +13,8 @@ class _VerticalFitBoxState extends State<VerticalFitBox> {
   double _scale = 0.9;
 
   void _recalculate(double maxHeight) {
-    final renderBox = _contentKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox =
+        _contentKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null || !renderBox.hasSize) return;
 
     final naturalHeight = renderBox.size.height;
@@ -32,14 +33,16 @@ class _VerticalFitBoxState extends State<VerticalFitBox> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => _recalculate(constraints.maxHeight));
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _recalculate(constraints.maxHeight),
+        );
 
         return Align(
           alignment: Alignment.topCenter,
           heightFactor: _scale,
           child: OverflowBox(
             minHeight: 0,
-            maxHeight: double.infinity, 
+            maxHeight: double.infinity,
             alignment: Alignment.topCenter,
             child: Transform(
               alignment: Alignment.topCenter,

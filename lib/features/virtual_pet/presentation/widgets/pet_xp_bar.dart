@@ -23,7 +23,7 @@ class PetXpBar extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: trackColor ?? palette.surfaceSecondary,
-        borderRadius: BorderRadius.circular(2), 
+        borderRadius: BorderRadius.circular(2),
         border: Border.all(color: palette.divider, width: 2),
       ),
       padding: const EdgeInsets.all(2),

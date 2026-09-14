@@ -15,5 +15,6 @@ abstract class WeeklyDayDetail with _$WeeklyDayDetail {
     required int minutes,
   }) = _WeeklyDayDetail;
 
-  factory WeeklyDayDetail.fromJson(Map<String, dynamic> json) => _$WeeklyDayDetailFromJson(json);
+  factory WeeklyDayDetail.fromJson(Map<String, dynamic> json) =>
+      _$WeeklyDayDetailFromJson(json);
 }

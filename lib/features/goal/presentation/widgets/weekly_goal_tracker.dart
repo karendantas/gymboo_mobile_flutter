@@ -20,7 +20,13 @@ class WeeklyGoalTracker extends StatelessWidget {
         color: theme.backgroundOuter,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: theme.backgroundDark, width: 4),
-        boxShadow: [BoxShadow(color: theme.backgroundDark, offset: const Offset(0, 4), blurRadius: 0)],
+        boxShadow: [
+          BoxShadow(
+            color: theme.backgroundDark,
+            offset: const Offset(0, 4),
+            blurRadius: 0,
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,8 +39,12 @@ class WeeklyGoalTracker extends StatelessWidget {
                   Text(
                     day.dayOfWeek.shortLabel,
                     style: textTheme.labelSmall?.copyWith(
-                      color: day.planned ? theme.primaryPinkDark : theme.textSecondary,
-                      fontWeight: day.planned ? FontWeight.bold : FontWeight.normal,
+                      color: day.planned
+                          ? theme.primaryPinkDark
+                          : theme.textSecondary,
+                      fontWeight: day.planned
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                   ),
                   const SizedBox(height: 4),

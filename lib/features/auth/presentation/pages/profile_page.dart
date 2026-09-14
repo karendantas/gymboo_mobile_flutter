@@ -8,13 +8,18 @@ class ProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     final authController = ref.watch(authControllerProvider.notifier);
 
     return Scaffold(
-      body: 
-      Center(child: ElevatedButton(onPressed: () {authController.logout();}, child: Text('Deslogar')),),
-          bottomNavigationBar: const   BottomTabRetro(),
-      );
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            authController.logout();
+          },
+          child: const Text('Deslogar'),
+        ),
+      ),
+      bottomNavigationBar: const BottomTabRetro(),
+    );
   }
 }

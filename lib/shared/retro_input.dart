@@ -56,8 +56,8 @@ class _RetroTextFieldState extends State<RetroTextField> {
     final borderColor = hasError
         ? palette.coral
         : _isFocused
-            ? palette.primaryPink
-            :  Color.fromARGB(255, 175, 179, 147);;
+        ? palette.primaryPink
+        : const Color.fromARGB(255, 175, 179, 147);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,14 +98,18 @@ class _RetroTextFieldState extends State<RetroTextField> {
                   obscureText: _obscure,
                   keyboardType: widget.keyboardType,
                   onChanged: widget.onChanged,
-                  style: textTheme.bodyMedium?.copyWith(color: palette.textPrimary),
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: palette.textPrimary,
+                  ),
                   cursorColor: palette.primaryPink,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: const EdgeInsets.symmetric(vertical: 14),
                     hintText: widget.hintText,
-                    hintStyle: textTheme.bodyMedium?.copyWith(color: palette.textSecondary),
+                    hintStyle: textTheme.bodyMedium?.copyWith(
+                      color: palette.textSecondary,
+                    ),
                   ),
                 ),
               ),

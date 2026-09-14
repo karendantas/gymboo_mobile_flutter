@@ -51,15 +51,30 @@ class RegistrationFormController extends Notifier<RegistrationFormState> {
   @override
   RegistrationFormState build() => const RegistrationFormState();
 
-  void updateStep1({required String name, required String email, required String password}) {
+  void updateStep1({
+    required String name,
+    required String email,
+    required String password,
+  }) {
     state = state.copyWith(name: name, email: email, password: password);
   }
 
-  void updateStep2({required int weightKg, required int heightCm, required Set<Weekday> workoutDays}) {
-    state = state.copyWith(weightKg: weightKg, heightCm: heightCm, workoutDays: workoutDays);
+  void updateStep2({
+    required int weightKg,
+    required int heightCm,
+    required Set<Weekday> workoutDays,
+  }) {
+    state = state.copyWith(
+      weightKg: weightKg,
+      heightCm: heightCm,
+      workoutDays: workoutDays,
+    );
   }
 
-  void updateStep3({required String petName, required PetColorOption petColor}) {
+  void updateStep3({
+    required String petName,
+    required PetColorOption petColor,
+  }) {
     state = state.copyWith(petName: petName, petColor: petColor);
   }
 
@@ -67,4 +82,6 @@ class RegistrationFormController extends Notifier<RegistrationFormState> {
 }
 
 final registrationFormControllerProvider =
-    NotifierProvider<RegistrationFormController, RegistrationFormState>(RegistrationFormController.new);
+    NotifierProvider<RegistrationFormController, RegistrationFormState>(
+      RegistrationFormController.new,
+    );

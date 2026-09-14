@@ -8,11 +8,7 @@ import 'pet_level_bar.dart';
 class PetHudScreen extends StatelessWidget {
   final VirtualPet pet;
 
-  const PetHudScreen({
-    super.key,
-    required this.pet,
-  });
-
+  const PetHudScreen({super.key, required this.pet});
 
   @override
   Widget build(BuildContext context) {
@@ -37,33 +33,41 @@ class PetHudScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          PetHudTopBar(),
+          const PetHudTopBar(),
           const SizedBox(height: 16),
 
-          Text(pet.name, style: textTheme.headlineSmall?.copyWith(color: palette.textPrimary)),
-          
+          Text(
+            pet.name,
+            style: textTheme.headlineSmall?.copyWith(
+              color: palette.textPrimary,
+            ),
+          ),
+
           const SizedBox(height: 10),
 
           PetHeartsRow(filledHearts: pet.filledHearts),
-     
 
-    SizedBox(
-              height: 280,
-              width: 240,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/pet_purple_default.png',
-                    width: 220,
-                    height: 225,
-                    fit: BoxFit.cover,
-                    filterQuality: FilterQuality.none,
-                  ),
-                ],
-              ),
+          SizedBox(
+            height: 280,
+            width: 240,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/pet_purple_default.png',
+                  width: 220,
+                  height: 225,
+                  fit: BoxFit.cover,
+                  filterQuality: FilterQuality.none,
+                ),
+              ],
             ),
-          PetLevelBar(level: pet.level, currentXp: pet.points, xpToNextLevel: pet.xpToNextLevel),
+          ),
+          PetLevelBar(
+            level: pet.level,
+            currentXp: pet.xpIntoCurrentLevel,
+            xpToNextLevel: pet.xpToNextLevel,
+          ),
         ],
       ),
     );

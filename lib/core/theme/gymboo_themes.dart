@@ -19,10 +19,10 @@ class AppGymbooTheme {
   final ThemeData themeData;
 
   List<Color> get previewSwatch => [
-        palette.primaryPink,
-        palette.brandPurple,
-        palette.goldAccent,
-      ];
+    palette.primaryPink,
+    palette.brandPurple,
+    palette.goldAccent,
+  ];
 
   static ThemeData _build(GymbooPalette palette, Brightness brightness) {
     final base = ThemeData(brightness: brightness, useMaterial3: true);
@@ -80,7 +80,6 @@ class AppGymbooTheme {
   }
 }
 
-
 abstract final class ThemeRegistry {
   static final defaultPallete = AppGymbooTheme(
     id: 'gymboo_default_pallete',
@@ -89,10 +88,8 @@ abstract final class ThemeRegistry {
     palette: gymbooDefaultPalette,
   );
 
-
-
   static final AppGymbooTheme defaultTheme = defaultPallete;
-  static final List<AppGymbooTheme> all = [defaultPallete ];
+  static final List<AppGymbooTheme> all = [defaultPallete];
 
   static AppGymbooTheme byId(String id) =>
       all.firstWhere((t) => t.id == id, orElse: () => defaultTheme);

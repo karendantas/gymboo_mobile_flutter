@@ -29,5 +29,6 @@ class ThemeNotifier extends Notifier<AppGymbooTheme> {
   }
 }
 
-final themeNotifierProvider =
-    NotifierProvider<ThemeNotifier, AppGymbooTheme>(ThemeNotifier.new);
+final themeNotifierProvider = NotifierProvider<ThemeNotifier, AppGymbooTheme>(
+  ThemeNotifier.new,
+);

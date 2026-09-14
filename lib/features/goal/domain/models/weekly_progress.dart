@@ -20,5 +20,6 @@ abstract class WeeklyProgress with _$WeeklyProgress {
     required List<WeeklyDayDetail> days,
   }) = _WeeklyProgress;
 
-  factory WeeklyProgress.fromJson(Map<String, dynamic> json) => _$WeeklyProgressFromJson(json);
+  factory WeeklyProgress.fromJson(Map<String, dynamic> json) =>
+      _$WeeklyProgressFromJson(json);
 }

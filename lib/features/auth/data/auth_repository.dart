@@ -30,20 +30,25 @@ class RegisterPayload {
   final String petName;
 
   Map<String, dynamic> toJson() => {
-        'fullName': fullName,
-        'email': email,
-        'password': password,
-        'username': username,
-        'workoutDays': workoutDays.map((d) => d.name).toList(),
-        'weightKg': weightKg,
-        'heightCm': heightCm,
-        'petType': petType,
-        'petName': petName,
-      };
+    'fullName': fullName,
+    'email': email,
+    'password': password,
+    'username': username,
+    'workoutDays': workoutDays.map((d) => d.name).toList(),
+    'weightKg': weightKg,
+    'heightCm': heightCm,
+    'petType': petType,
+    'petName': petName,
+  };
 }
+
 abstract class AuthRepository {
   Future<User> register(RegisterPayload payload);
-  Future<User> completeProfile({required String name, required int heightCm, required int weightKg});
+  Future<User> completeProfile({
+    required String name,
+    required int heightCm,
+    required int weightKg,
+  });
   Future<User> login({required String email, required String password});
   Future<User> loginWithGoogle();
   Future<User?> restoreSession();
@@ -77,23 +82,32 @@ class ApiAuthRepository implements AuthRepository {
 
   @override
   Future<User> register(RegisterPayload payload) async {
-    final response = await _dio.post('/api/auth/register', data: payload.toJson());
+    final response = await _dio.post(
+      '/api/auth/register',
+      data: payload.toJson(),
+    );
     return _handleAuthResponse(response.data as Map<String, dynamic>);
   }
 
   @override
-  Future<User> completeProfile({required String name, required int heightCm, required int weightKg}) async {
-    final response = await _dio.put('/api/users/me', data: {
-      'name': name,
-      'heightCm': heightCm,
-      'weightKg': weightKg,
-    });
+  Future<User> completeProfile({
+    required String name,
+    required int heightCm,
+    required int weightKg,
+  }) async {
+    final response = await _dio.put(
+      '/api/users/me',
+      data: {'name': name, 'heightCm': heightCm, 'weightKg': weightKg},
+    );
     return User.fromJson(response.data as Map<String, dynamic>);
   }
 
   @override
   Future<User> login({required String email, required String password}) async {
-    final response = await _dio.post('/api/auth/login', data: {'email': email, 'password': password});
+    final response = await _dio.post(
+      '/api/auth/login',
+      data: {'email': email, 'password': password},
+    );
     return _handleAuthResponse(response.data as Map<String, dynamic>);
   }
 
@@ -113,15 +127,22 @@ class ApiAuthRepository implements AuthRepository {
       try {
         account = await googleSignIn.authenticate();
       } on GoogleSignInException catch (e) {
-        throw Exception('Login com Google cancelado ou falhou: ${e.description}');
+        throw Exception(
+          'Login com Google cancelado ou falhou: ${e.description}',
+        );
       }
     }
 
-    final auth = await account.authentication;
+    final auth = account.authentication;
     final idToken = auth.idToken;
-    if (idToken == null) throw Exception('Não foi possível obter o ID Token do Google');
+    if (idToken == null) {
+      throw Exception('Não foi possível obter o ID Token do Google');
+    }
 
-    final response = await _dio.post('/api/auth/google', data: {'idToken': idToken});
+    final response = await _dio.post(
+      '/api/auth/google',
+      data: {'idToken': idToken},
+    );
     return _handleAuthResponse(response.data as Map<String, dynamic>);
   }
 

@@ -47,25 +47,36 @@ class _RegisterStep1PageState extends ConsumerState<RegisterStep1Page> {
 
   bool _validate() {
     setState(() {
-      _nameError = _nameController.text.trim().isEmpty ? 'Informe seu nome' : null;
+      _nameError = _nameController.text.trim().isEmpty
+          ? 'Informe seu nome'
+          : null;
 
       final email = _emailController.text.trim();
       _emailError = email.isEmpty
           ? 'Informe seu e-mail'
-          : (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email) ? 'E-mail inválido' : null);
+          : (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email)
+                ? 'E-mail inválido'
+                : null);
 
       _passwordError = validatePassword(_passwordController.text);
       _confirmPasswordError =
-          _confirmPasswordController.text != _passwordController.text ? 'As senhas não coincidem' : null;
+          _confirmPasswordController.text != _passwordController.text
+          ? 'As senhas não coincidem'
+          : null;
     });
 
-    return _nameError == null && _emailError == null && _passwordError == null && _confirmPasswordError == null;
+    return _nameError == null &&
+        _emailError == null &&
+        _passwordError == null &&
+        _confirmPasswordError == null;
   }
 
   void _handleNext() {
     if (!_validate()) return;
 
-    ref.read(registrationFormControllerProvider.notifier).updateStep1(
+    ref
+        .read(registrationFormControllerProvider.notifier)
+        .updateStep1(
           name: _nameController.text.trim(),
           email: _emailController.text.trim(),
           password: _passwordController.text,
@@ -83,7 +94,11 @@ class _RegisterStep1PageState extends ConsumerState<RegisterStep1Page> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/images/login_bg.png'), fit: BoxFit.cover, filterQuality: FilterQuality.none),
+          image: DecorationImage(
+            image: AssetImage('assets/images/login_bg.png'),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -97,7 +112,12 @@ class _RegisterStep1PageState extends ConsumerState<RegisterStep1Page> {
                   title: 'REGISTRO',
                   subtitle: 'Vamos começar! Conte um pouco\nsobre você.',
                 ),
-                RetroTextField(controller: _nameController, label: 'Nome', hintText: 'Seu nome completo', errorText: _nameError),
+                RetroTextField(
+                  controller: _nameController,
+                  label: 'Nome',
+                  hintText: 'Seu nome completo',
+                  errorText: _nameError,
+                ),
                 const SizedBox(height: 16),
                 RetroTextField(
                   controller: _emailController,
@@ -107,7 +127,13 @@ class _RegisterStep1PageState extends ConsumerState<RegisterStep1Page> {
                   errorText: _emailError,
                 ),
                 const SizedBox(height: 16),
-                RetroTextField(controller: _passwordController, label: 'Senha', hintText: '••••••••', obscureText: true, errorText: _passwordError),
+                RetroTextField(
+                  controller: _passwordController,
+                  label: 'Senha',
+                  hintText: '••••••••',
+                  obscureText: true,
+                  errorText: _passwordError,
+                ),
                 const SizedBox(height: 16),
                 RetroTextField(
                   controller: _confirmPasswordController,

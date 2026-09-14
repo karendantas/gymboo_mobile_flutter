@@ -32,7 +32,12 @@ class RegistrationStepHeader extends StatelessWidget {
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
             ),
-            Text('$currentStep/3', style: textTheme.labelMedium?.copyWith(color: palette.textSecondary)),
+            Text(
+              '$currentStep/3',
+              style: textTheme.labelMedium?.copyWith(
+                color: palette.textSecondary,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 16),
@@ -67,7 +72,11 @@ class RegistrationStepHeader extends StatelessWidget {
               child: SizedBox(
                 height: 2,
                 child: CustomPaint(
-                  painter: _DashedLinePainter(color: lineActive ? palette.primaryPinkDark : palette.divider),
+                  painter: _DashedLinePainter(
+                    color: lineActive
+                        ? palette.primaryPinkDark
+                        : palette.divider,
+                  ),
                 ),
               ),
             );
@@ -76,7 +85,12 @@ class RegistrationStepHeader extends StatelessWidget {
         const SizedBox(height: 24),
 
         Center(
-          child: Text(title, style: textTheme.headlineMedium?.copyWith(color: palette.primaryPinkDark)),
+          child: Text(
+            title,
+            style: textTheme.headlineMedium?.copyWith(
+              color: palette.primaryPinkDark,
+            ),
+          ),
         ),
         const SizedBox(height: 8),
         Center(
@@ -98,16 +112,23 @@ class _DashedLinePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color..strokeWidth = 2;
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2;
     const dashWidth = 4.0;
     const dashSpace = 3.0;
     double x = 0;
     while (x < size.width) {
-      canvas.drawLine(Offset(x, size.height / 2), Offset(x + dashWidth, size.height / 2), paint);
+      canvas.drawLine(
+        Offset(x, size.height / 2),
+        Offset(x + dashWidth, size.height / 2),
+        paint,
+      );
       x += dashWidth + dashSpace;
     }
   }
 
   @override
-  bool shouldRepaint(covariant _DashedLinePainter oldDelegate) => oldDelegate.color != color;
+  bool shouldRepaint(covariant _DashedLinePainter oldDelegate) =>
+      oldDelegate.color != color;
 }
