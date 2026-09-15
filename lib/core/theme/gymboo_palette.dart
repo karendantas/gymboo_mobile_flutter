@@ -27,7 +27,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     required this.googleButton,
     required this.googleButtonBorder,
     required this.input,
-});
+  });
 
   final Color brandPurple;
   final Color brandPurpleLight;
@@ -79,8 +79,8 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     Color? textOnDark,
     Color? divider,
     Color? googleButton,
-  Color? googleButtonBorder,
-  Color? input,
+    Color? googleButtonBorder,
+    Color? input,
   }) {
     return GymbooPalette(
       brandPurple: brandPurple ?? this.brandPurple,
@@ -114,13 +114,21 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     if (other is! GymbooPalette) return this;
     return GymbooPalette(
       brandPurple: Color.lerp(brandPurple, other.brandPurple, t)!,
-      brandPurpleLight: Color.lerp(brandPurpleLight, other.brandPurpleLight, t)!,
+      brandPurpleLight: Color.lerp(
+        brandPurpleLight,
+        other.brandPurpleLight,
+        t,
+      )!,
       primaryPink: Color.lerp(primaryPink, other.primaryPink, t)!,
       primaryPinkDark: Color.lerp(primaryPinkDark, other.primaryPinkDark, t)!,
       backgroundOuter: Color.lerp(backgroundOuter, other.backgroundOuter, t)!,
       backgroundDark: Color.lerp(backgroundDark, other.backgroundDark, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
-      surfaceSecondary: Color.lerp(surfaceSecondary, other.surfaceSecondary, t)!,
+      surfaceSecondary: Color.lerp(
+        surfaceSecondary,
+        other.surfaceSecondary,
+        t,
+      )!,
       surfaceAlt: Color.lerp(surfaceAlt, other.surfaceAlt, t)!,
       goldAccent: Color.lerp(goldAccent, other.goldAccent, t)!,
       goldAccentDark: Color.lerp(goldAccentDark, other.goldAccentDark, t)!,
@@ -134,7 +142,11 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       textOnDark: Color.lerp(textOnDark, other.textOnDark, t)!,
       divider: Color.lerp(divider, other.divider, t)!,
       googleButton: Color.lerp(googleButton, other.googleButton, t)!,
-      googleButtonBorder: Color.lerp(googleButtonBorder, other.googleButtonBorder, t)!,
+      googleButtonBorder: Color.lerp(
+        googleButtonBorder,
+        other.googleButtonBorder,
+        t,
+      )!,
       input: Color.lerp(input, other.input, t)!,
     );
   }
@@ -151,7 +163,7 @@ const gymbooDefaultPalette = GymbooPalette(
 
   // ---- Fundos ----
   backgroundOuter: Color.fromARGB(255, 245, 189, 201),
-  backgroundDark: Color(0xFFF9A5B8),
+  backgroundDark: Color.fromARGB(255, 235, 135, 158),
 
   // ---- Superfícies / HUD ----
   surface: Color(0xFFF0DFC1),

@@ -13,38 +13,45 @@ class AuthController extends AsyncNotifier<User?> {
 
   Future<void> register(RegisterPayload payload) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => ref.read(authRepositoryProvider).register(payload));
+    state = await AsyncValue.guard(
+      () => ref.read(authRepositoryProvider).register(payload),
+    );
   }
 
   Future<void> completeProfile({
-  required String name,
-  required int heightCm,
-  required int weightKg,
-  required List<Weekday> workoutDays,
-  required String petName,
-}) async {
-  state = const AsyncLoading();
-  state = await AsyncValue.guard(() async {
-    final updatedUser = await ref.read(authRepositoryProvider).completeProfile(
-          name: name,
-          heightCm: heightCm,
-          weightKg: weightKg,
-        );
-    await ref.read(goalRepositoryProvider).updateGoal(workoutDays: workoutDays);
-    await ref.read(petRepositoryProvider).rename(petName);
-    return updatedUser;
-  });
-}
+    required String name,
+    required int heightCm,
+    required int weightKg,
+    required List<Weekday> workoutDays,
+    required String petName,
+  }) async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final updatedUser = await ref
+          .read(authRepositoryProvider)
+          .completeProfile(name: name, heightCm: heightCm, weightKg: weightKg);
+      await ref
+          .read(goalRepositoryProvider)
+          .updateGoal(workoutDays: workoutDays);
+      await ref.read(petRepositoryProvider).rename(petName);
+      return updatedUser;
+    });
+  }
+
   Future<void> login({required String email, required String password}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(
-      () => ref.read(authRepositoryProvider).login(email: email, password: password),
+      () => ref
+          .read(authRepositoryProvider)
+          .login(email: email, password: password),
     );
   }
 
   Future<void> loginWithGoogle() async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => ref.read(authRepositoryProvider).loginWithGoogle());
+    state = await AsyncValue.guard(
+      () => ref.read(authRepositoryProvider).loginWithGoogle(),
+    );
   }
 
   Future<void> logout() async {
@@ -53,4 +60,6 @@ class AuthController extends AsyncNotifier<User?> {
   }
 }
 
-final authControllerProvider = AsyncNotifierProvider<AuthController, User?>(AuthController.new);
+final authControllerProvider = AsyncNotifierProvider<AuthController, User?>(
+  AuthController.new,
+);

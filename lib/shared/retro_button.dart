@@ -4,7 +4,7 @@ import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 
 class RetroButton extends StatefulWidget {
   final String title;
-  final String? imagePath; 
+  final String? imagePath;
   final Color color;
   final Color shadowColor;
   final Color? textColor;
@@ -55,10 +55,7 @@ class _RetroButtonState extends State<RetroButton> {
         decoration: BoxDecoration(
           color: widget.color,
           borderRadius: radius,
-          border: Border.all(
-            color: widget.shadowColor,
-            width: 2,
-          ),
+          border: Border.all(color: widget.shadowColor, width: 2),
           boxShadow: [
             if (!isPressed)
               BoxShadow(
@@ -69,7 +66,9 @@ class _RetroButtonState extends State<RetroButton> {
           ],
         ),
         child: Row(
-          mainAxisSize: widget.width == null ? MainAxisSize.min : MainAxisSize.max,
+          mainAxisSize: widget.width == null
+              ? MainAxisSize.min
+              : MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (widget.imagePath != null) ...[

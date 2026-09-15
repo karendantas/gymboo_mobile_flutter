@@ -21,7 +21,7 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
   PetColorOption _selectedColor = PetColorOption.purple;
   String? _petNameError;
 
-    static const _colorAssets = {
+  static const _colorAssets = {
     PetColorOption.purple: 'assets/images/pet_purple_default.png',
     PetColorOption.green: 'assets/images/pet_green_default.png',
     PetColorOption.yellow: 'assets/images/pet_yellow_default.png',
@@ -49,27 +49,35 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
 
   Future<void> _handleFinish() async {
     setState(() {
-      _petNameError = _petNameController.text.trim().isEmpty ? 'Dê um nome ao seu Gymboo' : null;
+      _petNameError = _petNameController.text.trim().isEmpty
+          ? 'Dê um nome ao seu Gymboo'
+          : null;
     });
     if (_petNameError != null) return;
 
     final formNotifier = ref.read(registrationFormControllerProvider.notifier);
-    formNotifier.updateStep3(petName: _petNameController.text.trim(), petColor: _selectedColor);
+    formNotifier.updateStep3(
+      petName: _petNameController.text.trim(),
+      petColor: _selectedColor,
+    );
     final data = ref.read(registrationFormControllerProvider);
 
     final loggedInUser = ref.read(authControllerProvider).value;
 
-
     if (loggedInUser != null) {
-    await ref.read(authControllerProvider.notifier).completeProfile(
-          name: loggedInUser.name,
-          heightCm: data.heightCm!,
-          weightKg: data.weightKg!,
-          workoutDays: data.workoutDays.toList(),
-          petName: data.petName,
-        );
+      await ref
+          .read(authControllerProvider.notifier)
+          .completeProfile(
+            name: loggedInUser.name,
+            heightCm: data.heightCm!,
+            weightKg: data.weightKg!,
+            workoutDays: data.workoutDays.toList(),
+            petName: data.petName,
+          );
     } else {
-      await ref.read(authControllerProvider.notifier).register(
+      await ref
+          .read(authControllerProvider.notifier)
+          .register(
             RegisterPayload(
               fullName: data.name,
               email: data.email,
@@ -83,7 +91,7 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
           );
     }
     final result = ref.read(authControllerProvider);
-    if (result.hasError) return; 
+    if (result.hasError) return;
     if (result.value != null) formNotifier.reset();
   }
 
@@ -106,7 +114,11 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
         width: double.infinity,
         height: double.infinity,
         decoration: const BoxDecoration(
-          image: DecorationImage(image: AssetImage('assets/images/login_bg.png'), fit: BoxFit.cover, filterQuality: FilterQuality.none),
+          image: DecorationImage(
+            image: AssetImage('assets/images/login_bg.png'),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
+          ),
         ),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -129,7 +141,12 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
                 ),
                 const SizedBox(height: 20),
 
-                Text('Escolha a cor do seu Gymboo', style: textTheme.labelMedium?.copyWith(color: palette.textPrimary)),
+                Text(
+                  'Escolha a cor do seu Gymboo',
+                  style: textTheme.labelMedium?.copyWith(
+                    color: palette.textPrimary,
+                  ),
+                ),
                 const SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -145,9 +162,20 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
                         decoration: BoxDecoration(
                           color: _colorSwatches[option],
                           shape: BoxShape.circle,
-                          border: Border.all(color: isSelected ? palette.primaryPinkDark : Colors.transparent, width: 3),
+                          border: Border.all(
+                            color: isSelected
+                                ? palette.primaryPinkDark
+                                : Colors.transparent,
+                            width: 3,
+                          ),
                         ),
-                        child: isSelected ? const Icon(Icons.check, color: Colors.white, size: 20) : null,
+                        child: isSelected
+                            ? const Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 20,
+                              )
+                            : null,
                       ),
                     );
                   }).toList(),
@@ -155,35 +183,40 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
                 const SizedBox(height: 20),
 
                 Container(
-                   width: double.infinity,
-                    padding:  const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color:  const Color(0xFFFED3D6),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: palette.backgroundDark, width: 2),
-                    ),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          _colorAssets[_selectedColor]!,
-                          width: 200,
-                          height: 200,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.none,
-                        ),
-                        const SizedBox(height: 8),
-                  
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          spacing: 4,
-                          children: List.generate(
-                            5,
-                            (i) => Image.asset('assets/images/heart_filled.png', width: 30, height: 30, filterQuality: FilterQuality.none),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFED3D6),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: palette.backgroundDark, width: 2),
+                  ),
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        _colorAssets[_selectedColor]!,
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.contain,
+                        filterQuality: FilterQuality.none,
+                      ),
+                      const SizedBox(height: 8),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        spacing: 4,
+                        children: List.generate(
+                          5,
+                          (i) => Image.asset(
+                            'assets/images/heart_filled.png',
+                            width: 30,
+                            height: 30,
+                            filterQuality: FilterQuality.none,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
+                ),
                 const SizedBox(height: 32),
 
                 if (isLoading)

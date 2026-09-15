@@ -22,18 +22,27 @@ class PetLevelBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Nível $level', style: textTheme.labelMedium?.copyWith(color: palette.surfaceAlt)),
+        Text(
+          'Nível $level',
+          style: textTheme.labelMedium?.copyWith(color: palette.surfaceAlt),
+        ),
         const SizedBox(width: 8),
         Expanded(
           child: PetXpBar(
-            value: currentXp / xpToNextLevel, 
+            value: currentXp / xpToNextLevel,
             fillColor: palette.surfaceAlt,
           ),
         ),
         const SizedBox(width: 8),
-        Text('xp ', style: textTheme.labelMedium?.copyWith(color: palette.surfaceAlt)),
+        Text(
+          'xp ',
+          style: textTheme.labelMedium?.copyWith(color: palette.surfaceAlt),
+        ),
         const SizedBox(width: 2),
-        Text('$currentXp/$xpToNextLevel', style: textTheme.labelSmall?.copyWith(color: palette.surfaceAlt)),
+        Text(
+          '$currentXp/$xpToNextLevel',
+          style: textTheme.labelSmall?.copyWith(color: palette.surfaceAlt),
+        ),
       ],
     );
   }

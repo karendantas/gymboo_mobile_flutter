@@ -3,15 +3,13 @@ import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 class CheckBox extends StatelessWidget {
-
   final bool isCompleted;
 
   const CheckBox({super.key, this.isCompleted = false});
-  
+
   @override
   Widget build(BuildContext context) {
-        final theme = Theme.of(context).extension<GymbooPalette>()!;
-
+    final theme = Theme.of(context).extension<GymbooPalette>()!;
 
     if (!isCompleted) {
       return DottedBorder(
@@ -32,15 +30,14 @@ class CheckBox extends StatelessWidget {
       );
     }
     return Container(
-          width: 32,
+      width: 32,
       height: 32,
       decoration: BoxDecoration(
         color: theme.primaryPink,
         border: Border.all(color: theme.primaryPink, width: 3),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
       ),
-        child: Icon(Icons.check, color: theme.textOnDark, size: 18),
+      child: Icon(Icons.check, color: theme.textOnDark, size: 18),
     );
   }
 }

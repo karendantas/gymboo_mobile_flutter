@@ -14,7 +14,13 @@ abstract class ActivityRepository {
     String? activityDate,
     String? activityTime,
   });
-  Future<Activity> update(int id, {required String title, String? description, required ActivityCategory category, required int durationMinutes});
+  Future<Activity> update(
+    int id, {
+    required String title,
+    String? description,
+    required ActivityCategory category,
+    required int durationMinutes,
+  });
   Future<void> delete(int id);
 }
 
@@ -24,8 +30,13 @@ class ApiActivityRepository implements ActivityRepository {
 
   @override
   Future<List<Activity>> list({String? date}) async {
-    final response = await _dio.get('/api/activities', queryParameters: date != null ? {'date': date} : null);
-    return (response.data as List).map((e) => Activity.fromJson(e as Map<String, dynamic>)).toList();
+    final response = await _dio.get(
+      '/api/activities',
+      queryParameters: date != null ? {'date': date} : null,
+    );
+    return (response.data as List)
+        .map((e) => Activity.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   @override
@@ -37,25 +48,37 @@ class ApiActivityRepository implements ActivityRepository {
     String? activityDate,
     String? activityTime,
   }) async {
-    final response = await _dio.post('/api/activities', data: {
-      'title': title,
-      'description': description,
-      'category': category.name,
-      'durationMinutes': durationMinutes,
-      'activityDate': activityDate,
-      'activityTime': activityTime,
-    });
+    final response = await _dio.post(
+      '/api/activities',
+      data: {
+        'title': title,
+        'description': description,
+        'category': category.name,
+        'durationMinutes': durationMinutes,
+        'activityDate': activityDate,
+        'activityTime': activityTime,
+      },
+    );
     return Activity.fromJson(response.data as Map<String, dynamic>);
   }
 
   @override
-  Future<Activity> update(int id, {required String title, String? description, required ActivityCategory category, required int durationMinutes}) async {
-    final response = await _dio.put('/api/activities/$id', data: {
-      'title': title,
-      'description': description,
-      'category': category.name,
-      'durationMinutes': durationMinutes,
-    });
+  Future<Activity> update(
+    int id, {
+    required String title,
+    String? description,
+    required ActivityCategory category,
+    required int durationMinutes,
+  }) async {
+    final response = await _dio.put(
+      '/api/activities/$id',
+      data: {
+        'title': title,
+        'description': description,
+        'category': category.name,
+        'durationMinutes': durationMinutes,
+      },
+    );
     return Activity.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -65,4 +88,6 @@ class ApiActivityRepository implements ActivityRepository {
   }
 }
 
-final activityRepositoryProvider = Provider<ActivityRepository>((ref) => ApiActivityRepository(ref.watch(dioProvider)));
+final activityRepositoryProvider = Provider<ActivityRepository>(
+  (ref) => ApiActivityRepository(ref.watch(dioProvider)),
+);

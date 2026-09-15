@@ -23,5 +23,4 @@ abstract class User with _$User {
   bool get isProfileComplete => heightCm != null && weightKg != null;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
 }

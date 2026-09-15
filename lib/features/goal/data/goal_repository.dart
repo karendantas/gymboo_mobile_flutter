@@ -23,9 +23,10 @@ class ApiGoalRepository implements GoalRepository {
 
   @override
   Future<Goal> updateGoal({required List<Weekday> workoutDays}) async {
-    final response = await _dio.put('/api/goals', data: {
-      'workoutDays': workoutDays.map((d) => d.name).toList(),
-    });
+    final response = await _dio.put(
+      '/api/goals',
+      data: {'workoutDays': workoutDays.map((d) => d.name).toList()},
+    );
     return Goal.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -36,4 +37,6 @@ class ApiGoalRepository implements GoalRepository {
   }
 }
 
-final goalRepositoryProvider = Provider<GoalRepository>((ref) => ApiGoalRepository(ref.watch(dioProvider)));
+final goalRepositoryProvider = Provider<GoalRepository>(
+  (ref) => ApiGoalRepository(ref.watch(dioProvider)),
+);

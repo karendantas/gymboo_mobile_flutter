@@ -5,10 +5,8 @@ part 'goal.g.dart';
 
 @freezed
 abstract class Goal with _$Goal {
-  const factory Goal({
-    required int id,
-    required int weeklyWorkoutTarget,
-  }) = _Goal;
+  const factory Goal({required int id, required int weeklyWorkoutTarget}) =
+      _Goal;
 
   factory Goal.fromJson(Map<String, dynamic> json) => _$GoalFromJson(json);
 }

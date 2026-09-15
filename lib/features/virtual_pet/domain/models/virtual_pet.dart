@@ -6,7 +6,7 @@ part 'virtual_pet.g.dart';
 @freezed
 abstract class PetSkill with _$PetSkill {
   const factory PetSkill({
-    required String skill, 
+    required String skill,
     required int level,
     required int xp,
     required int xpIntoCurrentLevel,
@@ -14,7 +14,8 @@ abstract class PetSkill with _$PetSkill {
     required double progress,
   }) = _PetSkill;
 
-  factory PetSkill.fromJson(Map<String, dynamic> json) => _$PetSkillFromJson(json);
+  factory PetSkill.fromJson(Map<String, dynamic> json) =>
+      _$PetSkillFromJson(json);
 }
 
 @freezed
@@ -28,13 +29,18 @@ abstract class VirtualPet with _$VirtualPet {
     required int points,
     required int totalXp,
     required List<PetSkill> skills,
-    
   }) = _VirtualPet;
 
   const VirtualPet._();
 
-  factory VirtualPet.fromJson(Map<String, dynamic> json) => _$VirtualPetFromJson(json);
+  factory VirtualPet.fromJson(Map<String, dynamic> json) =>
+      _$VirtualPetFromJson(json);
+
+  static const int xpPerLevel = 3000;
+
+  int get xpIntoCurrentLevel => totalXp % xpPerLevel;
+  int get xpToNextLevel => xpPerLevel;
+  double get levelProgress => xpIntoCurrentLevel / xpPerLevel;
 
   int get filledHearts => (life / 100 * 5).round().clamp(0, 5);
-  int get xpToNextLevel => level * 100; 
 }

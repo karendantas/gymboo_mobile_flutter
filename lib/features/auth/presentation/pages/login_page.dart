@@ -14,117 +14,109 @@ class LoginPage extends ConsumerStatefulWidget {
   ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage>{
+class _LoginPageState extends ConsumerState<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-    String? _passwordError;
+  String? _passwordError;
 
-  @override 
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-
   void _handleLogin() {
-     setState(() => _passwordError = validatePassword(_passwordController.text));
+    setState(() => _passwordError = validatePassword(_passwordController.text));
     if (_passwordError != null) return;
 
-    ref.read(authControllerProvider.notifier).login(
-      email: _emailController.text.trim(), 
-      password: _passwordController.text
-      );
+    ref
+        .read(authControllerProvider.notifier)
+        .login(
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+        );
   }
 
-
- @override
+  @override
   Widget build(BuildContext context) {
-
-        final theme = Theme.of(context).extension<GymbooPalette>()!;
+    final theme = Theme.of(context).extension<GymbooPalette>()!;
     final textTheme = Theme.of(context).textTheme;
 
     ref.listen<AsyncValue>(authControllerProvider, ((previous, next) {
-        if (next.hasError && !next.isLoading){
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Erro ao entrar: ${next.error}'))
-            );
-        }
+      if (next.hasError && !next.isLoading) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao entrar: ${next.error}')),
+        );
+      }
     }));
 
     final isLoading = ref.watch(authControllerProvider).isLoading;
 
-
-      return Scaffold(
-        body: 
-         Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            image:  const DecorationImage(
-              
-          image: AssetImage('assets/images/login_bg.png'),
-          fit: BoxFit.cover,
-          filterQuality: FilterQuality.none,
-        ),
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/login_bg.png'),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
           ),
-           child: Center(
-            child: 
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                
-                  Image.asset(
-                    'assets/images/logo3.png',
-                    width: 400,
-                    height: 200,
-                    filterQuality: FilterQuality.none,
-                  ),
-           
-                  RetroTextField(
-                    controller: _emailController,
-                    label: 'E-mail',
-                    hintText: 'seuemail@exemplo.com',
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  RetroTextField(
-                    controller: _passwordController,
-                    label: 'Senha',
-                    hintText: '••••••••',
-                    obscureText: true,
-                    errorText: _passwordError,
-                  ),
-           
-                     const SizedBox(height: 30),
-                  if (isLoading)
-                    const CircularProgressIndicator()
-                  else
-                    RetroButton(
-                      width: double.infinity,
-                      title: 'Entrar',
-                      color: theme.primaryPink,
-                      shadowColor: theme.primaryPinkDark,
-                      onTap: _handleLogin,
-                    ),
-              
-                     const SizedBox(height: 20,),
-                     RetroButton(
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/logo3.png',
+                  width: 400,
+                  height: 200,
+                  filterQuality: FilterQuality.none,
+                ),
+
+                RetroTextField(
+                  controller: _emailController,
+                  label: 'E-mail',
+                  hintText: 'seuemail@exemplo.com',
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 16),
+                RetroTextField(
+                  controller: _passwordController,
+                  label: 'Senha',
+                  hintText: '••••••••',
+                  obscureText: true,
+                  errorText: _passwordError,
+                ),
+
+                const SizedBox(height: 30),
+                if (isLoading)
+                  const CircularProgressIndicator()
+                else
+                  RetroButton(
                     width: double.infinity,
-                    title: 'Criar conta', 
-                    color: theme.primaryPinkDark, 
-                    shadowColor: theme.textSecondary, 
-                    onTap: () => context.go('/register')
-                    ),
-                      
-                 
-                ],
-              ),
-            )),
-         ),
-        );
+                    title: 'Entrar',
+                    color: theme.primaryPink,
+                    shadowColor: theme.primaryPinkDark,
+                    onTap: _handleLogin,
+                  ),
+
+                const SizedBox(height: 20),
+                RetroButton(
+                  width: double.infinity,
+                  title: 'Criar conta',
+                  color: theme.primaryPinkDark,
+                  shadowColor: theme.textSecondary,
+                  onTap: () => context.go('/register'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
- 

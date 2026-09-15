@@ -10,7 +10,9 @@ final goalControllerProvider = FutureProvider<Goal>((ref) async {
   return ref.watch(goalRepositoryProvider).getMyGoal();
 });
 
-final weeklyProgressControllerProvider = FutureProvider<WeeklyProgress>((ref) async {
+final weeklyProgressControllerProvider = FutureProvider<WeeklyProgress>((
+  ref,
+) async {
   final user = ref.watch(authControllerProvider).value;
   if (user == null) throw StateError('Sem usuário logado');
   return ref.watch(goalRepositoryProvider).getWeeklyProgress();
