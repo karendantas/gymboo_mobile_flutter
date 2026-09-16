@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/features/activities/presentation/widgets/daily_activity_mission.dart';
 import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracker.dart';
@@ -44,7 +45,10 @@ class Home extends ConsumerWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      PetHudScreen(pet: home.pet),
+                      GestureDetector(
+                        onTap: () => context.push('/pet'),
+                        child: PetHudScreen(pet: home.pet),
+                      ),
                       const SizedBox(height: 20),
                       const DailyActivityMission(),
                       const SizedBox(height: 20),

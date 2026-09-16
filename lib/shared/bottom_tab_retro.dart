@@ -40,7 +40,7 @@ class BottomTabRetro extends StatelessWidget {
                   color: theme.primaryPink,
                   shadowColor: theme.primaryPinkDark,
                   paddingTop: 20,
-                  onTap: () => {},
+                  onTap: () => {context.go('/pet')},
                 ),
 
                 Padding(
