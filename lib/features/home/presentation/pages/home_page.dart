@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/features/activities/presentation/widgets/daily_activity_mission.dart';
 import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracker.dart';
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
+import 'package:gymboo_app/shared/top_detail.dart';
 import 'package:gymboo_app/shared/vertical_fitbox.dart';
 
 class Home extends ConsumerWidget {
@@ -14,25 +14,12 @@ class Home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context).extension<GymbooPalette>()!;
     final homeAsync = ref.watch(homeDataProvider);
 
     return Scaffold(
       body: Column(
         children: [
-          Center(
-            child: Container(
-              width: 100,
-              height: 20,
-              decoration: BoxDecoration(
-                color: theme.backgroundDark,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-              ),
-            ),
-          ),
+          const TopDetail(),
 
           Expanded(
             child: Padding(

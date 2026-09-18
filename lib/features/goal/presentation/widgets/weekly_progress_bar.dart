@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/features/goal/domain/models/weekly_progress.dart';
 
 class WeeklyProgressBar extends StatelessWidget {
   const WeeklyProgressBar({
     super.key,
-    required this.value, // 0.0 a 1.0
+    required this.progress,
     this.height = 16,
-    this.starSize = 30,
+    this.starSize = 50,
   });
 
-  final double value;
+  final WeeklyProgress progress;
+
   final double height;
   final double starSize;
 
   @override
   Widget build(BuildContext context) {
+    final value = progress.completionRate;
     final palette = Theme.of(context).extension<GymbooPalette>()!;
+    final textTheme = Theme.of(context).textTheme;
     final clampedValue = value.clamp(0.0, 1.0);
 
     return LayoutBuilder(
@@ -50,12 +54,26 @@ class WeeklyProgressBar extends StatelessWidget {
 
             Positioned(
               left: (fillWidth - starSize / 2).clamp(0.0, barWidth - starSize),
-              child: Image.asset(
-                'assets/images/star.png',
-                filterQuality: FilterQuality.none,
-                fit: BoxFit.contain,
-                width: starSize,
-                height: starSize,
+              child: Stack(
+                alignment: Alignment.center,
+                fit: StackFit.loose,
+                children: [
+                  Image.asset(
+                    'assets/images/star.png',
+                    filterQuality: FilterQuality.none,
+                    fit: BoxFit.contain,
+                    width: starSize,
+                    height: starSize,
+                  ),
+                  Text(
+                    '${progress.completedDays.length}/${progress.days.length}',
+                    style: textTheme.labelSmall?.copyWith(
+                      fontSize: 7,
+                      letterSpacing: -1,
+                      color: palette.goldAccentDark,
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

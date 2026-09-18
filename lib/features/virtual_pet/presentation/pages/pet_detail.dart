@@ -5,6 +5,7 @@ import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_con
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_skill_card.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
+import 'package:gymboo_app/shared/top_detail.dart';
 
 class PetDetailsPage extends ConsumerWidget {
   const PetDetailsPage({super.key});
@@ -17,39 +18,40 @@ class PetDetailsPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: palette.backgroundOuter,
-      body: petAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(child: Text('Erro ao carregar: $err')),
-        data: (pet) => SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Column(children: [PetHudScreen(pet: pet)]),
-              ),
-              const SizedBox(height: 24),
+      body: Column(
+        children: [
+          const TopDetail(),
 
-              Center(
-                child: Text(
-                  'Habilidades',
-                  style: textTheme.labelLarge?.copyWith(
-                    color: palette.textSecondary,
-                  ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 30),
+              child: petAsync.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (err, _) =>
+                    Center(child: Text('Erro ao carregar: $err')),
+                data: (pet) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(children: [PetHudScreen(pet: pet)]),
+
+                    Expanded(
+                      child: ListView(
+                        children: [
+                          for (final skill in pet.skills) ...[
+                            PetSkillCard(skill: skill),
+                            const SizedBox(height: 16),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 12),
-
-              Column(
-                spacing: 16,
-                children: [
-                  ...pet.skills.map((skill) => PetSkillCard(skill: skill)),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
+
       bottomNavigationBar: const BottomTabRetro(),
     );
   }

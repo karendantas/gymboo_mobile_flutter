@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/features/virtual_pet/domain/models/virtual_pet.dart';
-import 'pet_hud_top_bar.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/widgets/dressed_pet_sprite.dart';
+
 import 'pet_hearts_row.dart';
+import 'pet_hud_top_bar.dart';
 import 'pet_level_bar.dart';
 
 class PetHudScreen extends StatelessWidget {
@@ -52,17 +55,42 @@ class PetHudScreen extends StatelessWidget {
             width: 240,
             child: Stack(
               alignment: Alignment.center,
+              clipBehavior: Clip.none,
               children: [
-                Image.asset(
-                  'assets/images/pet_purple_default.png',
-                  width: 220,
-                  height: 225,
-                  fit: BoxFit.cover,
-                  filterQuality: FilterQuality.none,
+                DressedPetSprite(pet: pet, size: 220),
+                Positioned(
+                  bottom: 20,
+                  right: -20,
+
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => context.push('/pet/wardrobe'),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+
+                      decoration: BoxDecoration(
+                        color: palette.backgroundDark,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(99),
+                        ),
+                      ),
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/hanger_icon.png',
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.contain,
+                          filterQuality: FilterQuality.none,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
+
           PetLevelBar(
             level: pet.level,
             currentXp: pet.xpIntoCurrentLevel,

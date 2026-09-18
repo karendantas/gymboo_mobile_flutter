@@ -40,7 +40,7 @@ class WeeklyGoalTracker extends StatelessWidget {
                     day.dayOfWeek.shortLabel,
                     style: textTheme.labelSmall?.copyWith(
                       color: day.planned
-                          ? theme.primaryPinkDark
+                          ? theme.goldAccentDark
                           : theme.textSecondary,
                       fontWeight: day.planned
                           ? FontWeight.bold
@@ -55,7 +55,8 @@ class WeeklyGoalTracker extends StatelessWidget {
           ),
 
           const SizedBox(height: 10),
-          WeeklyProgressBar(value: progress.completionRate),
+
+          WeeklyProgressBar(progress: progress),
         ],
       ),
     );

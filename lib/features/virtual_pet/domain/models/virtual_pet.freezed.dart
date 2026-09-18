@@ -293,7 +293,7 @@ as double,
 /// @nodoc
 mixin _$VirtualPet {
 
- int get id; String get name; String get type; int get level; int get life; int get points; int get totalXp; List<PetSkill> get skills;
+ int get id; String get name; String get type; String get mood; int get level; int get life; int get points; int get totalXp; List<PetSkill> get skills; List<Reward> get equippedItems;
 /// Create a copy of VirtualPet
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -306,16 +306,16 @@ $VirtualPetCopyWith<VirtualPet> get copyWith => _$VirtualPetCopyWithImpl<Virtual
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type)&&(identical(other.level, level) || other.level == level)&&(identical(other.life, life) || other.life == life)&&(identical(other.points, points) || other.points == points)&&(identical(other.totalXp, totalXp) || other.totalXp == totalXp)&&const DeepCollectionEquality().equals(other.skills, skills));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type)&&(identical(other.mood, mood) || other.mood == mood)&&(identical(other.level, level) || other.level == level)&&(identical(other.life, life) || other.life == life)&&(identical(other.points, points) || other.points == points)&&(identical(other.totalXp, totalXp) || other.totalXp == totalXp)&&const DeepCollectionEquality().equals(other.skills, skills)&&const DeepCollectionEquality().equals(other.equippedItems, equippedItems));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,type,level,life,points,totalXp,const DeepCollectionEquality().hash(skills));
+int get hashCode => Object.hash(runtimeType,id,name,type,mood,level,life,points,totalXp,const DeepCollectionEquality().hash(skills),const DeepCollectionEquality().hash(equippedItems));
 
 @override
 String toString() {
-  return 'VirtualPet(id: $id, name: $name, type: $type, level: $level, life: $life, points: $points, totalXp: $totalXp, skills: $skills)';
+  return 'VirtualPet(id: $id, name: $name, type: $type, mood: $mood, level: $level, life: $life, points: $points, totalXp: $totalXp, skills: $skills, equippedItems: $equippedItems)';
 }
 
 
@@ -326,7 +326,7 @@ abstract mixin class $VirtualPetCopyWith<$Res>  {
   factory $VirtualPetCopyWith(VirtualPet value, $Res Function(VirtualPet) _then) = _$VirtualPetCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String type, int level, int life, int points, int totalXp, List<PetSkill> skills
+ int id, String name, String type, String mood, int level, int life, int points, int totalXp, List<PetSkill> skills, List<Reward> equippedItems
 });
 
 
@@ -343,17 +343,19 @@ class _$VirtualPetCopyWithImpl<$Res>
 
 /// Create a copy of VirtualPet
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? type = null,Object? level = null,Object? life = null,Object? points = null,Object? totalXp = null,Object? skills = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? type = null,Object? mood = null,Object? level = null,Object? life = null,Object? points = null,Object? totalXp = null,Object? skills = null,Object? equippedItems = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,mood: null == mood ? _self.mood : mood // ignore: cast_nullable_to_non_nullable
 as String,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as int,life: null == life ? _self.life : life // ignore: cast_nullable_to_non_nullable
 as int,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,totalXp: null == totalXp ? _self.totalXp : totalXp // ignore: cast_nullable_to_non_nullable
 as int,skills: null == skills ? _self.skills : skills // ignore: cast_nullable_to_non_nullable
-as List<PetSkill>,
+as List<PetSkill>,equippedItems: null == equippedItems ? _self.equippedItems : equippedItems // ignore: cast_nullable_to_non_nullable
+as List<Reward>,
   ));
 }
 
@@ -438,10 +440,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String type,  int level,  int life,  int points,  int totalXp,  List<PetSkill> skills)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String type,  String mood,  int level,  int life,  int points,  int totalXp,  List<PetSkill> skills,  List<Reward> equippedItems)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VirtualPet() when $default != null:
-return $default(_that.id,_that.name,_that.type,_that.level,_that.life,_that.points,_that.totalXp,_that.skills);case _:
+return $default(_that.id,_that.name,_that.type,_that.mood,_that.level,_that.life,_that.points,_that.totalXp,_that.skills,_that.equippedItems);case _:
   return orElse();
 
 }
@@ -459,10 +461,10 @@ return $default(_that.id,_that.name,_that.type,_that.level,_that.life,_that.poin
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String type,  int level,  int life,  int points,  int totalXp,  List<PetSkill> skills)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String type,  String mood,  int level,  int life,  int points,  int totalXp,  List<PetSkill> skills,  List<Reward> equippedItems)  $default,) {final _that = this;
 switch (_that) {
 case _VirtualPet():
-return $default(_that.id,_that.name,_that.type,_that.level,_that.life,_that.points,_that.totalXp,_that.skills);case _:
+return $default(_that.id,_that.name,_that.type,_that.mood,_that.level,_that.life,_that.points,_that.totalXp,_that.skills,_that.equippedItems);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -479,10 +481,10 @@ return $default(_that.id,_that.name,_that.type,_that.level,_that.life,_that.poin
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String type,  int level,  int life,  int points,  int totalXp,  List<PetSkill> skills)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String type,  String mood,  int level,  int life,  int points,  int totalXp,  List<PetSkill> skills,  List<Reward> equippedItems)?  $default,) {final _that = this;
 switch (_that) {
 case _VirtualPet() when $default != null:
-return $default(_that.id,_that.name,_that.type,_that.level,_that.life,_that.points,_that.totalXp,_that.skills);case _:
+return $default(_that.id,_that.name,_that.type,_that.mood,_that.level,_that.life,_that.points,_that.totalXp,_that.skills,_that.equippedItems);case _:
   return null;
 
 }
@@ -494,12 +496,13 @@ return $default(_that.id,_that.name,_that.type,_that.level,_that.life,_that.poin
 @JsonSerializable()
 
 class _VirtualPet extends VirtualPet {
-  const _VirtualPet({required this.id, required this.name, required this.type, required this.level, required this.life, required this.points, required this.totalXp, required final  List<PetSkill> skills}): _skills = skills,super._();
+  const _VirtualPet({required this.id, required this.name, required this.type, required this.mood, required this.level, required this.life, required this.points, required this.totalXp, required final  List<PetSkill> skills, required final  List<Reward> equippedItems}): _skills = skills,_equippedItems = equippedItems,super._();
   factory _VirtualPet.fromJson(Map<String, dynamic> json) => _$VirtualPetFromJson(json);
 
 @override final  int id;
 @override final  String name;
 @override final  String type;
+@override final  String mood;
 @override final  int level;
 @override final  int life;
 @override final  int points;
@@ -509,6 +512,13 @@ class _VirtualPet extends VirtualPet {
   if (_skills is EqualUnmodifiableListView) return _skills;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_skills);
+}
+
+ final  List<Reward> _equippedItems;
+@override List<Reward> get equippedItems {
+  if (_equippedItems is EqualUnmodifiableListView) return _equippedItems;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_equippedItems);
 }
 
 
@@ -525,16 +535,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type)&&(identical(other.level, level) || other.level == level)&&(identical(other.life, life) || other.life == life)&&(identical(other.points, points) || other.points == points)&&(identical(other.totalXp, totalXp) || other.totalXp == totalXp)&&const DeepCollectionEquality().equals(other._skills, _skills));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VirtualPet&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type)&&(identical(other.mood, mood) || other.mood == mood)&&(identical(other.level, level) || other.level == level)&&(identical(other.life, life) || other.life == life)&&(identical(other.points, points) || other.points == points)&&(identical(other.totalXp, totalXp) || other.totalXp == totalXp)&&const DeepCollectionEquality().equals(other._skills, _skills)&&const DeepCollectionEquality().equals(other._equippedItems, _equippedItems));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,type,level,life,points,totalXp,const DeepCollectionEquality().hash(_skills));
+int get hashCode => Object.hash(runtimeType,id,name,type,mood,level,life,points,totalXp,const DeepCollectionEquality().hash(_skills),const DeepCollectionEquality().hash(_equippedItems));
 
 @override
 String toString() {
-  return 'VirtualPet(id: $id, name: $name, type: $type, level: $level, life: $life, points: $points, totalXp: $totalXp, skills: $skills)';
+  return 'VirtualPet(id: $id, name: $name, type: $type, mood: $mood, level: $level, life: $life, points: $points, totalXp: $totalXp, skills: $skills, equippedItems: $equippedItems)';
 }
 
 
@@ -545,7 +555,7 @@ abstract mixin class _$VirtualPetCopyWith<$Res> implements $VirtualPetCopyWith<$
   factory _$VirtualPetCopyWith(_VirtualPet value, $Res Function(_VirtualPet) _then) = __$VirtualPetCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String type, int level, int life, int points, int totalXp, List<PetSkill> skills
+ int id, String name, String type, String mood, int level, int life, int points, int totalXp, List<PetSkill> skills, List<Reward> equippedItems
 });
 
 
@@ -562,17 +572,19 @@ class __$VirtualPetCopyWithImpl<$Res>
 
 /// Create a copy of VirtualPet
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? type = null,Object? level = null,Object? life = null,Object? points = null,Object? totalXp = null,Object? skills = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? type = null,Object? mood = null,Object? level = null,Object? life = null,Object? points = null,Object? totalXp = null,Object? skills = null,Object? equippedItems = null,}) {
   return _then(_VirtualPet(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,mood: null == mood ? _self.mood : mood // ignore: cast_nullable_to_non_nullable
 as String,level: null == level ? _self.level : level // ignore: cast_nullable_to_non_nullable
 as int,life: null == life ? _self.life : life // ignore: cast_nullable_to_non_nullable
 as int,points: null == points ? _self.points : points // ignore: cast_nullable_to_non_nullable
 as int,totalXp: null == totalXp ? _self.totalXp : totalXp // ignore: cast_nullable_to_non_nullable
 as int,skills: null == skills ? _self._skills : skills // ignore: cast_nullable_to_non_nullable
-as List<PetSkill>,
+as List<PetSkill>,equippedItems: null == equippedItems ? _self._equippedItems : equippedItems // ignore: cast_nullable_to_non_nullable
+as List<Reward>,
   ));
 }
 
