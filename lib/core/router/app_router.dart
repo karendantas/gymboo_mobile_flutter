@@ -12,6 +12,8 @@ import 'package:gymboo_app/features/auth/presentation/pages/register_step1_page.
 import 'package:gymboo_app/features/auth/presentation/pages/register_step2_page.dart';
 import 'package:gymboo_app/features/auth/presentation/pages/register_step3_page.dart';
 import 'package:gymboo_app/features/home/presentation/pages/home_page.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_detail.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_wardrobe.dart';
 
 class _GoRouterRefreshNotifier extends ChangeNotifier {
   _GoRouterRefreshNotifier(Ref ref) {
@@ -111,6 +113,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/activities/:id/edit',
         builder: (context, state) =>
             CreateActivityPage(existingActivity: state.extra as Activity?),
+      ),
+      GoRoute(
+        path: '/pet',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: PetDetailsPage()),
+      ),
+      GoRoute(
+        path: '/pet/wardrobe',
+        builder: (context, state) => const PetWardrobePage(),
       ),
     ],
   );

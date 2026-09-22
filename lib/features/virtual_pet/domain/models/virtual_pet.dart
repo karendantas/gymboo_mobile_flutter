@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:gymboo_app/features/virtual_pet/domain/models/reward.dart';
 
 part 'virtual_pet.freezed.dart';
 part 'virtual_pet.g.dart';
@@ -24,11 +25,13 @@ abstract class VirtualPet with _$VirtualPet {
     required int id,
     required String name,
     required String type,
+    required String mood,
     required int level,
     required int life,
     required int points,
     required int totalXp,
     required List<PetSkill> skills,
+    required List<Reward> equippedItems,
   }) = _VirtualPet;
 
   const VirtualPet._();
@@ -42,5 +45,5 @@ abstract class VirtualPet with _$VirtualPet {
   int get xpToNextLevel => xpPerLevel;
   double get levelProgress => xpIntoCurrentLevel / xpPerLevel;
 
-  int get filledHearts => (life / 100 * 5).round().clamp(0, 5);
+  int get filledHearts => (life).clamp(0, 5);
 }

@@ -13,9 +13,8 @@ class BottomTabRetro extends StatelessWidget {
 
     return Container(
       height: 150,
-      decoration: BoxDecoration(
-        color: theme.backgroundOuter,
-        borderRadius: const BorderRadius.only(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(30),
           bottomRight: Radius.circular(30),
         ),
@@ -40,7 +39,7 @@ class BottomTabRetro extends StatelessWidget {
                   color: theme.primaryPink,
                   shadowColor: theme.primaryPinkDark,
                   paddingTop: 20,
-                  onTap: () => {},
+                  onTap: () => {context.go('/pet')},
                 ),
 
                 Padding(

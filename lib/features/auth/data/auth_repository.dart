@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gymboo_app/core/network/dio_client.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:gymboo_app/core/network/dio_client.dart';
 import 'package:gymboo_app/core/storage/secure_storage.dart';
-import '../domain/models/user.dart';
 import 'package:gymboo_app/features/goal/domain/models/weekday.dart';
+
+import '../domain/models/user.dart';
 
 class RegisterPayload {
   const RegisterPayload({

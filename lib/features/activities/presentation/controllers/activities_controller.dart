@@ -1,5 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_controller.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/controllers/reward_controller.dart';
+
 import '../../data/activity_repository.dart';
 import '../../domain/models/activity.dart';
 import '../../domain/models/activity_category.dart';
@@ -38,6 +41,8 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
           );
       await refresh();
       ref.invalidate(homeDataProvider);
+      ref.invalidate(petControllerProvider);
+      ref.invalidate(rewardsControllerProvider);
       return true;
     } catch (_) {
       return false;
@@ -63,6 +68,8 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
           );
       await refresh();
       ref.invalidate(homeDataProvider);
+      ref.invalidate(petControllerProvider);
+      ref.invalidate(rewardsControllerProvider);
       return true;
     } catch (_) {
       return false;
@@ -74,6 +81,8 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
       await ref.read(activityRepositoryProvider).delete(id);
       await refresh();
       ref.invalidate(homeDataProvider);
+      ref.invalidate(activitiesControllerProvider);
+      ref.invalidate(rewardsControllerProvider);
       return true;
     } catch (_) {
       return false;
