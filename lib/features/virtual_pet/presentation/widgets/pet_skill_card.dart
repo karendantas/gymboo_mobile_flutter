@@ -49,13 +49,28 @@ class PetSkillCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(1),
-                    child: LinearProgressIndicator(
-                      value: skill.progress.clamp(0.0, 1.0),
-                      minHeight: 8,
-                      backgroundColor: palette.surface,
-                      valueColor: AlwaysStoppedAnimation(color),
+
+                  Container(
+                    height: 15,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: palette.surface,
+                      borderRadius: BorderRadius.circular(2),
+                      border: Border.all(
+                        color: AlwaysStoppedAnimation(color).value,
+                        width: 2,
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(2),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: skill.progress.clamp(0.0, 1.0),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: AlwaysStoppedAnimation(color).value,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
                     ),
                   ),
                 ],
