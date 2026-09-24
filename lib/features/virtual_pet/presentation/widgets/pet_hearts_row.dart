@@ -24,6 +24,7 @@ class PetHeartsRow extends StatelessWidget {
           width: 24,
           height: 24,
           filterQuality: FilterQuality.none,
+          fit: BoxFit.contain,
         );
       }),
     );

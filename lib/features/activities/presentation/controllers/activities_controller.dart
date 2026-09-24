@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gymboo_app/features/activities/presentation/controllers/daily_mission_controller.dart';
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/reward_controller.dart';
@@ -43,6 +44,7 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
       ref.invalidate(homeDataProvider);
       ref.invalidate(petControllerProvider);
       ref.invalidate(rewardsControllerProvider);
+      ref.invalidate(dailyActivityIsDoneProvider);
       return true;
     } catch (_) {
       return false;

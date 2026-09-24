@@ -27,7 +27,7 @@ class RewardCard extends StatelessWidget {
       child: Opacity(
         opacity: reward.unlocked ? 1.0 : 0.5,
         child: Container(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: reward.equipped
                 ? skillColor.withValues(alpha: 0.15)

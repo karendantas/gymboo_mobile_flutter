@@ -19,10 +19,9 @@ class PetHudScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      margin: const EdgeInsets.only(top: 40),
       decoration: BoxDecoration(
         color: palette.surface,
-        border: Border.all(color: palette.backgroundDark, width: 7),
+        border: Border.all(color: palette.primaryPink, width: 7),
         borderRadius: BorderRadius.circular(8),
         image: const DecorationImage(
           image: AssetImage('assets/images/hud_background.png'),

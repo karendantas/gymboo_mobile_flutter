@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   battery_plus
+  firebase_core
   flutter_secure_storage_windows
   sqlite3_flutter_libs
 )

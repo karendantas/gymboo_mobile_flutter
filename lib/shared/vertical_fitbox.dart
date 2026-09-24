@@ -10,7 +10,8 @@ class VerticalFitBox extends StatefulWidget {
 
 class _VerticalFitBoxState extends State<VerticalFitBox> {
   final GlobalKey _contentKey = GlobalKey();
-  double _scale = 0.9;
+  static double _lastKnownScale = 1.0;
+  late double _scale = _lastKnownScale;
 
   void _recalculate(double maxHeight) {
     final renderBox =
@@ -24,7 +25,10 @@ class _VerticalFitBoxState extends State<VerticalFitBox> {
 
     if ((newScale - _scale).abs() > 0.005) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) setState(() => _scale = newScale);
+        if (mounted) {
+          setState(() => _scale = newScale);
+          _lastKnownScale = newScale;
+        }
       });
     }
   }

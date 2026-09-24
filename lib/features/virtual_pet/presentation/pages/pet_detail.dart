@@ -13,7 +13,6 @@ class PetDetailsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final palette = Theme.of(context).extension<GymbooPalette>()!;
-    final textTheme = Theme.of(context).textTheme;
     final petAsync = ref.watch(petControllerProvider);
 
     return Scaffold(
@@ -21,29 +20,25 @@ class PetDetailsPage extends ConsumerWidget {
       body: Column(
         children: [
           const TopDetail(),
-
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 30),
+              padding: const EdgeInsetsGeometry.only(
+                left: 30,
+                right: 30,
+                top: 50,
+              ),
               child: petAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (err, _) =>
                     Center(child: Text('Erro ao carregar: $err')),
                 data: (pet) => Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Column(children: [PetHudScreen(pet: pet)]),
-
-                    Expanded(
-                      child: ListView(
-                        children: [
-                          for (final skill in pet.skills) ...[
-                            PetSkillCard(skill: skill),
-                            const SizedBox(height: 16),
-                          ],
-                        ],
-                      ),
-                    ),
+                    PetHudScreen(pet: pet),
+                    const SizedBox(height: 16),
+                    for (final skill in pet.skills) ...[
+                      PetSkillCard(skill: skill),
+                      const SizedBox(height: 16),
+                    ],
                   ],
                 ),
               ),

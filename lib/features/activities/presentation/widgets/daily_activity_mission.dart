@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/features/activities/presentation/controllers/daily_mission_controller.dart';
 
-class DailyActivityMission extends StatelessWidget {
+class DailyActivityMission extends ConsumerWidget {
   const DailyActivityMission({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context).extension<GymbooPalette>()!;
     final textTheme = Theme.of(context).textTheme;
+    final isDoneAsync = ref.watch(dailyActivityIsDoneProvider);
+
+    final isDone = isDoneAsync.value ?? false;
 
     return Container(
       decoration: BoxDecoration(
         color: theme.backgroundOuter,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: theme.backgroundDark, width: 4),
+        border: Border.all(color: theme.backgroundDark, width: 3),
         boxShadow: [
           BoxShadow(
             color: theme.backgroundDark,
@@ -43,8 +48,12 @@ class DailyActivityMission extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'Complete sua atividade do dia!',
-                  style: textTheme.labelSmall,
+                  isDone
+                      ? 'Missão concluída hoje!'
+                      : 'Complete sua atividade do dia!',
+                  style: textTheme.labelSmall?.copyWith(
+                    color: theme.primaryPinkDark,
+                  ),
                 ),
               ],
             ),

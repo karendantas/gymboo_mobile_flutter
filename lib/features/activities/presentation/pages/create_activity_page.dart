@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:gymboo_app/shared/retro_input.dart';
-import '../controllers/activities_controller.dart';
+import 'package:gymboo_app/shared/retro_tabbed.dart';
+
 import '../../domain/models/activity.dart';
 import '../../domain/models/activity_category.dart';
 import '../../domain/models/activity_category_display.dart';
+import '../controllers/activities_controller.dart';
 
 class CreateActivityPage extends ConsumerStatefulWidget {
   const CreateActivityPage({super.key, this.existingActivity});
@@ -127,152 +129,156 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          _isEditing ? 'Editar atividade' : 'Nova atividade',
-          style: textTheme.headlineSmall?.copyWith(
-            color: palette.textSecondary,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const Image(
+            image: AssetImage('assets/images/login_bg.png'),
+            fit: BoxFit.cover,
+            filterQuality: FilterQuality.none,
           ),
-        ),
-        centerTitle: true,
-        backgroundColor: palette.backgroundOuter,
-      ),
-      backgroundColor: palette.backgroundOuter,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RetroTextField(
-              controller: _titleController,
-              label: 'Título',
-              hintText: 'Ex: Corrida no parque',
-              errorText: _titleError,
-            ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
 
-            const SizedBox(height: 16),
-
-            RetroTextField(
-              controller: _durationController,
-              label: 'Duração (minutos)',
-              hintText: '30',
-              keyboardType: TextInputType.number,
-              errorText: _durationError,
-            ),
-            const SizedBox(height: 20),
-
-            Text(
-              'Categoria',
-              style: textTheme.labelMedium?.copyWith(
-                color: palette.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: ActivityCategory.values.map((category) {
-                final isSelected = _selectedCategory == category;
-                return GestureDetector(
-                  onTap: () => setState(() => _selectedCategory = category),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isSelected ? palette.primaryPink : palette.input,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: palette.primaryPinkDark,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        category.icon,
-                        const SizedBox(width: 6),
-                        Text(
-                          category.label,
-                          style: textTheme.labelSmall?.copyWith(
-                            color: isSelected
-                                ? Colors.white
-                                : palette.textPrimary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-
-            if (!_isEditing) ...[
-              const SizedBox(height: 20),
-              Text(
-                'Data',
-                style: textTheme.labelMedium?.copyWith(
-                  color: palette.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              GestureDetector(
-                onTap: _pickDate,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    color: palette.input,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: const Color.fromARGB(255, 175, 179, 147),
-                      width: 2,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: palette.primaryPinkDark,
-                        offset: const Offset(0, 4),
-                        blurRadius: 0,
-                      ),
-                    ],
-                  ),
-                  child: Row(
+                children: [
+                  Row(
                     children: [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 16,
-                        color: palette.textPrimary,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${_selectedDate.day.toString().padLeft(2, '0')}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.year}',
-                        style: textTheme.bodyMedium?.copyWith(
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
                           color: palette.textPrimary,
                         ),
+                        onPressed: () => context.pop(),
                       ),
+                      Expanded(
+                        child: Text(
+                          _isEditing ? 'Editar atividade' : 'Nova atividade',
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineSmall?.copyWith(
+                            color: palette.textSecondary,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 48),
                     ],
                   ),
-                ),
-              ),
-            ],
+                  const SizedBox(height: 20),
+                  RetroTabbedField(
+                    label: 'Título',
+                    labelIcon: Icons.edit,
 
-            const SizedBox(height: 32),
-            if (_isSubmitting)
-              const Center(child: CircularProgressIndicator())
-            else
-              RetroButton(
-                title: _isEditing ? 'Salvar alterações' : 'Adicionar atividade',
-                width: double.infinity,
-                color: palette.primaryPink,
-                shadowColor: palette.primaryPinkDark,
-                onTap: _handleSubmit,
+                    hintText: 'Ex: Corrida no parque',
+                    controller: _titleController,
+                    errorText: _titleError,
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  RetroTabbedField(
+                    label: 'Duração (minutos)',
+                    labelIcon: Icons.edit,
+
+                    hintText: '30 minutos',
+                    controller: _durationController,
+                    errorText: _durationError,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+                  const SizedBox(height: 20),
+
+                  RetroTabbedContainer(
+                    label: 'Categoria',
+                    labelIcon: Icons.category,
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: ActivityCategory.values.map((category) {
+                        final isSelected = _selectedCategory == category;
+                        return GestureDetector(
+                          onTap: () =>
+                              setState(() => _selectedCategory = category),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? palette.primaryPink
+                                  : palette.input,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: palette.primaryPinkDark,
+                                width: 2,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                category.icon,
+                                const SizedBox(width: 6),
+                                Text(
+                                  category.label,
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : palette.textPrimary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+
+                  if (!_isEditing) ...[
+                    const SizedBox(height: 20),
+                    RetroTabbedContainer(
+                      label: 'Data',
+                      labelIcon: Icons.calendar_month,
+                      child: GestureDetector(
+                        onTap: _pickDate,
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 10),
+                            Text(
+                              '${_selectedDate.day.toString().padLeft(2, '0')}/'
+                              '${_selectedDate.month.toString().padLeft(2, '0')}/'
+                              '${_selectedDate.year}',
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: palette.textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  const SizedBox(height: 32),
+                  if (_isSubmitting)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    RetroButton(
+                      title: _isEditing
+                          ? 'Salvar alterações'
+                          : 'Adicionar atividade',
+                      width: double.infinity,
+                      color: palette.primaryPink,
+                      shadowColor: palette.primaryPinkDark,
+                      onTap: _handleSubmit,
+                    ),
+                ],
               ),
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
