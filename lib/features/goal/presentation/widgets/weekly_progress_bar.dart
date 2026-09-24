@@ -66,7 +66,7 @@ class WeeklyProgressBar extends StatelessWidget {
                     height: starSize,
                   ),
                   Text(
-                    '${progress.completedDays.length}/${progress.days.length}',
+                    '${progress.completedDays.length}/${progress.plannedDays.length}',
                     style: textTheme.labelSmall?.copyWith(
                       fontSize: 7,
                       letterSpacing: -1,

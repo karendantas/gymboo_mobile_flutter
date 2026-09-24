@@ -7,7 +7,6 @@ import 'package:gymboo_app/features/home/presentation/controllers/home_controlle
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
 import 'package:gymboo_app/shared/top_detail.dart';
-import 'package:gymboo_app/shared/vertical_fitbox.dart';
 
 class Home extends ConsumerWidget {
   const Home({super.key});
@@ -23,25 +22,26 @@ class Home extends ConsumerWidget {
 
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 30),
+              padding: const EdgeInsetsGeometry.only(
+                left: 30,
+                right: 30,
+                top: 50,
+              ),
               child: homeAsync.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (err, stack) =>
                     Center(child: Text('Erro ao carregar dados: $err')),
-                data: (home) => VerticalFitBox(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      GestureDetector(
-                        onTap: () => context.push('/pet'),
-                        child: PetHudScreen(pet: home.pet),
-                      ),
-                      const SizedBox(height: 20),
-                      const DailyActivityMission(),
-                      const SizedBox(height: 20),
-                      WeeklyGoalTracker(progress: home.progress),
-                    ],
-                  ),
+                data: (home) => Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => context.push('/pet'),
+                      child: PetHudScreen(pet: home.pet),
+                    ),
+                    const SizedBox(height: 20),
+                    const DailyActivityMission(),
+                    const SizedBox(height: 20),
+                    WeeklyGoalTracker(progress: home.progress),
+                  ],
                 ),
               ),
             ),

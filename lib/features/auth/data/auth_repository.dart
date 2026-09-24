@@ -67,6 +67,8 @@ class ApiAuthRepository implements AuthRepository {
       '790878229192-nuujild9s6djog7dm08u4m5keh4f5krs.apps.googleusercontent.com';
   bool _googleInitialized = false;
 
+  static const _iosClientid =
+      '790878229192-v570n2lbp84olcscnptok26s8uivpuad.apps.googleusercontent.com';
   Future<void> _ensureGoogleInitialized() async {
     if (_googleInitialized) return;
     await GoogleSignIn.instance.initialize(

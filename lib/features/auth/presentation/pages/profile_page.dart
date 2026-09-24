@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_log_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_log_tile.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:gymboo_app/shared/retro_card.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -24,60 +24,32 @@ class ProfilePage extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Card de identidade
-              RetroCard(
-                color: palette.surface,
-                borderColor: palette.primaryPinkDark,
-                borderWidth: 3,
-                child: Row(
-                  children: [
-                    Container(
-                      width: 56,
-                      height: 56,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: palette.primaryPink,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: palette.primaryPinkDark,
-                          width: 3,
-                        ),
-                      ),
-                      child: Text(
-                        (user?.name.isNotEmpty ?? false)
-                            ? user!.name[0].toUpperCase()
-                            : '?',
-                        style: textTheme.headlineSmall?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user?.name ?? '',
-                            style: textTheme.titleSmall?.copyWith(
-                              color: palette.textPrimary,
-                            ),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            user?.email ?? '',
-                            style: textTheme.labelSmall?.copyWith(
-                              color: palette.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              const SizedBox(height: 20),
+              SvgPicture.asset(
+                'assets/icons/user_icon.svg',
+                width: 64,
+                height: 64,
+                color: palette.primaryPinkDark,
+              ),
+
+              const SizedBox(height: 12),
+
+              Text(
+                user?.name ?? '',
+                style: textTheme.labelLarge?.copyWith(
+                  color: palette.textPrimary,
                 ),
               ),
+              const SizedBox(height: 2),
+              Text(
+                user?.email ?? '',
+                style: textTheme.titleMedium?.copyWith(
+                  color: palette.textSecondary,
+                ),
+              ),
+
               const SizedBox(height: 16),
 
               RetroButton(
@@ -89,7 +61,6 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
 
-              // Cabeçalho do histórico, estilo "placa pixel"
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -142,10 +113,27 @@ class ProfilePage extends ConsumerWidget {
                     return RefreshIndicator(
                       onRefresh: () =>
                           ref.refresh(petLogControllerProvider.future),
-                      child: ListView.builder(
-                        itemCount: logs.length,
-                        itemBuilder: (context, index) =>
-                            PetLogTile(log: logs[index]),
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 12),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: palette.surface,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: palette.divider, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: palette.divider,
+                              offset: const Offset(0, 4),
+                              blurRadius: 0,
+                            ),
+                          ],
+                        ),
+                        child: ListView.builder(
+                          itemCount: logs.length,
+
+                          itemBuilder: (context, index) =>
+                              PetLogTile(log: logs[index]),
+                        ),
                       ),
                     );
                   },

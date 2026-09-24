@@ -12,8 +12,10 @@ class BottomTabRetro extends StatelessWidget {
     final theme = Theme.of(context).extension<GymbooPalette>()!;
 
     return Container(
-      height: 150,
+      height: 120,
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: const BoxDecoration(
+        color: Colors.transparent,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(30),
           bottomRight: Radius.circular(30),

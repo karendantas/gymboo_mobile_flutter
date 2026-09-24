@@ -22,79 +22,64 @@ class PetLogTile extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final color = log.color(palette);
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: palette.surface,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: palette.divider, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: palette.divider,
-            offset: const Offset(0, 4),
-            blurRadius: 0,
-          ), // sombra sólida, sem blur — pixel-art
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 38,
-            height: 38,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: palette.divider, width: 2),
-            ),
-            child: Icon(log.icon, color: Colors.white, size: 18),
+    return Row(
+      children: [
+        Container(
+          width: 38,
+          height: 38,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: palette.divider, width: 2),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  log.description,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: palette.textPrimary,
-                  ),
+          child: Icon(log.icon, color: Colors.white, size: 18),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 12),
+              Text(
+                log.description,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: palette.textPrimary,
                 ),
-                if (log.oldValue != null && log.newValue != null) ...[
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      Text(
-                        '${log.oldValue}',
-                        style: textTheme.labelSmall?.copyWith(
-                          color: palette.textSecondary,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
-                        size: 10,
+              ),
+              if (log.oldValue != null && log.newValue != null) ...[
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Text(
+                      '${log.oldValue}',
+                      style: textTheme.labelSmall?.copyWith(
                         color: palette.textSecondary,
                       ),
-                      Text(
-                        '${log.newValue}',
-                        style: textTheme.labelSmall?.copyWith(
-                          color: color,
-                          fontWeight: FontWeight.bold,
-                        ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      size: 10,
+                      color: palette.textSecondary,
+                    ),
+                    Text(
+                      '${log.newValue}',
+                      style: textTheme.labelSmall?.copyWith(
+                        color: color,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ],
-            ),
+            ],
           ),
-          Text(
-            _formatDate(log.createdAt),
-            style: textTheme.labelSmall?.copyWith(color: palette.textSecondary),
-          ),
-        ],
-      ),
+        ),
+        Text(
+          _formatDate(log.createdAt),
+          style: textTheme.labelSmall?.copyWith(color: palette.textSecondary),
+        ),
+      ],
     );
   }
 }

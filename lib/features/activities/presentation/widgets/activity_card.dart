@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/core/util/category_activity_color.dart';
+
 import '../../domain/models/activity.dart';
 import '../../domain/models/activity_category_display.dart';
 
@@ -29,7 +30,8 @@ class ActivityCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: palette.backgroundOuter,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: palette.backgroundDark, width: 4),
+          border: Border.all(color: palette.backgroundDark, width: 3),
+
           boxShadow: [
             BoxShadow(
               color: palette.backgroundDark,
@@ -57,78 +59,89 @@ class ActivityCard extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        activity.title,
-                        style: textTheme.labelLarge?.copyWith(
-                          color: palette.textSecondary,
-                        ),
-                      ),
-                      Text(
-                        '+${activity.pointsEarned} pts',
-                        style: textTheme.labelMedium?.copyWith(
-                          color: palette.goldAccentDark,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 4),
-
-                  Row(
-                    spacing: 6,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.timer_sharp,
-                        size: 14,
-                        color: palette.textSecondary,
+                      Row(
+                        spacing: 6,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            activity.title,
+                            style: textTheme.labelLarge?.copyWith(
+                              color: palette.textSecondary,
+                            ),
+                          ),
+                          Icon(
+                            Icons.timer_sharp,
+                            size: 16,
+                            color: palette.primaryPinkDark,
+                          ),
+                          Text(
+                            '${activity.durationMinutes} min',
+                            style: textTheme.labelSmall?.copyWith(
+                              color: palette.primaryPinkDark,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        '${activity.durationMinutes} min',
-                        style: textTheme.labelSmall?.copyWith(
-                          color: palette.textSecondary,
+
+                      GestureDetector(
+                        onTap: onDelete,
+                        child: Icon(
+                          Icons.delete_outline,
+                          size: 20,
+                          color: palette.coral,
                         ),
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 12),
-                  Container(
-                    width: 160,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 4,
-                    ),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: getActivityCategoryColor(
-                        activity.category,
-                        palette,
+                  Row(
+                    spacing: 6,
+                    children: [
+                      Container(
+                        width: 160,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: getActivityCategoryColor(
+                            activity.category,
+                            palette,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          activity.category.label,
+                          style: textTheme.labelSmall?.copyWith(
+                            color: palette.textOnDark,
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      activity.category.label,
-                      style: textTheme.labelSmall?.copyWith(
-                        color: palette.textOnDark,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 4,
+                        ),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: palette.goldAccent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '+${activity.pointsEarned} pts',
+                          style: textTheme.labelSmall?.copyWith(
+                            color: palette.goldAccentDark,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: onDelete,
-                  child: Icon(
-                    Icons.delete_outline,
-                    size: 20,
-                    color: palette.coral,
-                  ),
-                ),
-              ],
             ),
           ],
         ),
