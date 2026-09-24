@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymboo_app/core/health/health_service.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/features/activities/domain/models/health_map.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
 import 'package:gymboo_app/shared/retro_tabbed.dart';
 
@@ -121,6 +123,46 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
         ),
       );
     }
+  }
+
+  Future<void> _handleImportFromHealth() async {
+    final health = ref.read(healthServiceProvider);
+    final granted = await health.requestPermissions();
+
+    if (!granted) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Permissão do Health Connect negada')),
+      );
+      return;
+    }
+
+    final workouts = await health.getWorkoutsToday();
+
+    if (workouts.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Nenhuma atividade encontrada hoje no Health Connect'),
+        ),
+      );
+      return;
+    }
+
+    final workout = workouts.first;
+
+    setState(() {
+      _titleController.text = workoutTypeLabel(workout.activityType);
+      _durationController.text = workout.durationMinutes.toString();
+      _selectedCategory = mapHealthExerciseType(workout.activityType);
+    });
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Atividade importada! Confira os dados antes de salvar.'),
+      ),
+    );
   }
 
   @override
@@ -274,6 +316,15 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
                       shadowColor: palette.primaryPinkDark,
                       onTap: _handleSubmit,
                     ),
+
+                  const SizedBox(height: 20),
+                  RetroButton(
+                    title: 'Importar Health Connect',
+                    color: palette.backgroundOuter,
+                    shadowColor: palette.backgroundDark,
+                    width: double.infinity,
+                    onTap: _handleImportFromHealth,
+                  ),
                 ],
               ),
             ),
