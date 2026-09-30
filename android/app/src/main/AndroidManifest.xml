@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="gymboo_app"
+        android:label="Gymboo"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -64,7 +64,11 @@
     </queries>
 
 <uses-permission android:name="android.permission.health.READ_STEPS"/>
+<uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY"/>
 <uses-permission android:name="android.permission.health.READ_EXERCISE"/>
 <uses-permission android:name="android.permission.health.READ_DISTANCE"/>
+<uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
+<uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
 <uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
+<uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
