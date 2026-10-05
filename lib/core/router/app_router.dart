@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/features/activities/domain/models/activity.dart';
 import 'package:gymboo_app/features/activities/presentation/pages/activities_page.dart';
 import 'package:gymboo_app/features/activities/presentation/pages/create_activity_page.dart';
@@ -12,6 +13,7 @@ import 'package:gymboo_app/features/auth/presentation/pages/register_step1_page.
 import 'package:gymboo_app/features/auth/presentation/pages/register_step2_page.dart';
 import 'package:gymboo_app/features/auth/presentation/pages/register_step3_page.dart';
 import 'package:gymboo_app/features/home/presentation/pages/home_page.dart';
+import 'package:gymboo_app/features/minigames/presentation/index.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_detail.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_wardrobe.dart';
 
@@ -23,9 +25,11 @@ class _GoRouterRefreshNotifier extends ChangeNotifier {
 
 final appRouterProvider = Provider<GoRouter>((ref) {
   final refreshNotifier = _GoRouterRefreshNotifier(ref);
+  final navigatorKey = ref.watch(navigatorKeyProvider);
   ref.onDispose(refreshNotifier.dispose);
 
   return GoRouter(
+    navigatorKey: navigatorKey,
     initialLocation: '/onboarding',
     refreshListenable: refreshNotifier,
     redirect: ((context, state) {
@@ -122,6 +126,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/pet/wardrobe',
         builder: (context, state) => const PetWardrobePage(),
+      ),
+      GoRoute(
+        path: '/mini_games',
+        builder: (context, state) => const MiniGames(),
       ),
     ],
   );

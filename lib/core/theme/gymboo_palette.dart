@@ -27,6 +27,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     required this.googleButton,
     required this.googleButtonBorder,
     required this.input,
+    required this.card,
   });
 
   final Color brandPurple;
@@ -52,6 +53,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
   final Color googleButton;
   final Color googleButtonBorder;
   final Color input;
+  final Color card;
 
   List<Color> get petFrameGradient => [primaryPink, primaryPinkDark];
   List<Color> get xpBarFill => [primaryPink, blueAccent];
@@ -81,6 +83,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
     Color? googleButton,
     Color? googleButtonBorder,
     Color? input,
+    Color? card,
   }) {
     return GymbooPalette(
       brandPurple: brandPurple ?? this.brandPurple,
@@ -106,6 +109,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
       googleButton: googleButton ?? this.googleButton,
       googleButtonBorder: googleButtonBorder ?? this.googleButtonBorder,
       input: input ?? this.input,
+      card: card ?? this.card,
     );
   }
 
@@ -148,6 +152,7 @@ class GymbooPalette extends ThemeExtension<GymbooPalette> {
         t,
       )!,
       input: Color.lerp(input, other.input, t)!,
+      card: Color.lerp(card, other.card, t)!,
     );
   }
 }
@@ -190,4 +195,5 @@ const gymbooDefaultPalette = GymbooPalette(
   googleButton: Color(0xFFFFFDF7),
   googleButtonBorder: Color(0xFFD5CDB5),
   input: Color.fromARGB(255, 245, 249, 215),
+  card: Color.fromARGB(255, 255, 219, 227),
 );

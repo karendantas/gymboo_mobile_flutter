@@ -17,7 +17,7 @@ class WeeklyGoalTracker extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: theme.backgroundOuter,
+        color: theme.card,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: theme.backgroundDark, width: 3),
         boxShadow: [

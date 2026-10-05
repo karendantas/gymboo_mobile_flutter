@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/features/activities/presentation/widgets/daily_activity_mission.dart';
 import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracker.dart';
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
@@ -33,10 +32,7 @@ class Home extends ConsumerWidget {
                     Center(child: Text('Erro ao carregar dados: $err')),
                 data: (home) => Column(
                   children: [
-                    GestureDetector(
-                      onTap: () => context.push('/pet'),
-                      child: PetHudScreen(pet: home.pet),
-                    ),
+                    PetHudScreen(pet: home.pet),
                     const SizedBox(height: 20),
                     const DailyActivityMission(),
                     const SizedBox(height: 20),

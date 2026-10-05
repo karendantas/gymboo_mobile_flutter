@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 
 class RetroButton extends StatefulWidget {
@@ -70,9 +69,16 @@ class _RetroButtonState extends State<RetroButton> {
               ? MainAxisSize.min
               : MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (widget.imagePath != null) ...[
-              SvgPicture.asset(widget.imagePath!, width: 20, height: 20),
+              Image.asset(
+                widget.imagePath!,
+                width: 20,
+                height: 20,
+                filterQuality: FilterQuality.none,
+                fit: BoxFit.contain,
+              ),
               const SizedBox(width: 8),
             ],
             Text(

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gymboo_app/core/network/dio_client.dart';
 import 'package:gymboo_app/core/storage/secure_storage.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
+import 'package:gymboo_app/core/toast/toast_service.dart';
 import 'package:gymboo_app/features/goal/domain/models/weekday.dart';
 
 import '../domain/models/user.dart';
@@ -57,24 +59,18 @@ abstract class AuthRepository {
 }
 
 class ApiAuthRepository implements AuthRepository {
-  ApiAuthRepository(this._dio);
+  ApiAuthRepository(this._dio, this._toastService);
   final Dio _dio;
+  final ToastService _toastService;
 
   static const _googleWebClientId =
       '790878229192-ovkq18404gmvb065gqqq241u04oa5u9i.apps.googleusercontent.com';
 
-  static const _googleAndroidClientId =
-      '790878229192-nuujild9s6djog7dm08u4m5keh4f5krs.apps.googleusercontent.com';
   bool _googleInitialized = false;
 
-  static const _iosClientid =
-      '790878229192-v570n2lbp84olcscnptok26s8uivpuad.apps.googleusercontent.com';
   Future<void> _ensureGoogleInitialized() async {
     if (_googleInitialized) return;
-    await GoogleSignIn.instance.initialize(
-      clientId: _googleAndroidClientId,
-      serverClientId: _googleWebClientId,
-    );
+    await GoogleSignIn.instance.initialize(serverClientId: _googleWebClientId);
     _googleInitialized = true;
   }
 
@@ -162,7 +158,8 @@ class ApiAuthRepository implements AuthRepository {
         await SecureStorage.clearToken();
         return null;
       }
-      rethrow;
+      _toastService.error('Não foi possível conectar ao servidor');
+      return null;
     }
   }
 
@@ -173,5 +170,8 @@ class ApiAuthRepository implements AuthRepository {
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return ApiAuthRepository(ref.watch(dioProvider));
+  return ApiAuthRepository(
+    ref.watch(dioProvider),
+    ref.watch(toastServiceProvider),
+  );
 });

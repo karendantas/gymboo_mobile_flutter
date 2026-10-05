@@ -45,6 +45,7 @@ class AuthController extends AsyncNotifier<User?> {
     required int weightKg,
     required List<Weekday> workoutDays,
     required String petName,
+    required String type,
   }) async {
     return _runAuthAction(() async {
       final updatedUser = await ref
@@ -53,7 +54,7 @@ class AuthController extends AsyncNotifier<User?> {
       await ref
           .read(goalRepositoryProvider)
           .updateGoal(workoutDays: workoutDays);
-      await ref.read(petRepositoryProvider).rename(petName);
+      await ref.read(petRepositoryProvider).edit(petName, type);
       return updatedUser;
     });
   }

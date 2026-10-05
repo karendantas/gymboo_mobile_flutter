@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gymboo_app/core/health/health_service.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
+import 'package:gymboo_app/features/activities/domain/models/health_map.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
 import 'package:gymboo_app/shared/retro_tabbed.dart';
 
@@ -98,7 +101,6 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
       final dateStr = _selectedDate.toIso8601String().split('T').first;
       success = await controller.create(
         title: title,
-
         category: _selectedCategory,
         durationMinutes: duration,
         activityDate: dateStr,
@@ -111,16 +113,52 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
     if (success) {
       context.pop();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
+      ref
+          .read(toastServiceProvider)
+          .error(
             _isEditing
                 ? 'Erro ao atualizar atividade'
                 : 'Erro ao criar atividade',
-          ),
-        ),
-      );
+          );
     }
+  }
+
+  Future<void> _handleImportFromHealth() async {
+    final health = ref.read(healthServiceProvider);
+    final granted = await health.requestPermissions();
+
+    if (!granted) {
+      if (!mounted) return;
+      ref
+          .read(toastServiceProvider)
+          .error('Permissão do Health Connect negada');
+
+      return;
+    }
+
+    final workouts = await health.getWorkoutsToday();
+
+    if (workouts.isEmpty) {
+      if (!mounted) return;
+
+      ref
+          .read(toastServiceProvider)
+          .error('Nenhuma atividade encontrada hoje no Health Connect');
+      return;
+    }
+
+    final workout = workouts.first;
+
+    setState(() {
+      _titleController.text = workoutTypeLabel(workout.activityType);
+      _durationController.text = workout.durationMinutes.toString();
+      _selectedCategory = mapHealthExerciseType(workout.activityType);
+    });
+
+    if (!mounted) return;
+    ref
+        .read(toastServiceProvider)
+        .success('Atividade importada! Confira os dados antes de salvar.');
   }
 
   @override
@@ -274,6 +312,15 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
                       shadowColor: palette.primaryPinkDark,
                       onTap: _handleSubmit,
                     ),
+
+                  const SizedBox(height: 20),
+                  RetroButton(
+                    title: 'Importar Health Connect',
+                    color: palette.backgroundOuter,
+                    shadowColor: palette.backgroundDark,
+                    width: double.infinity,
+                    onTap: _handleImportFromHealth,
+                  ),
                 ],
               ),
             ),
