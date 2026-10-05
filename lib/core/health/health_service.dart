@@ -22,6 +22,8 @@ class HealthService {
     HealthDataType.STEPS,
     HealthDataType.WORKOUT,
     HealthDataType.DISTANCE_DELTA,
+    HealthDataType.ACTIVE_ENERGY_BURNED,
+    HealthDataType.TOTAL_CALORIES_BURNED,
   ];
 
   Future<void> configure() async {
