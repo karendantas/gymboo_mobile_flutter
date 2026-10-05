@@ -13,15 +13,16 @@ class DailyActivityMission extends ConsumerWidget {
     final isDoneAsync = ref.watch(dailyActivityIsDoneProvider);
 
     final isDone = isDoneAsync.value ?? false;
-
+    final isDoneColor = isDone ? theme.primaryPinkDark : theme.backgroundDark;
+    final isDoneTextColor = isDone ? theme.input : theme.primaryPink;
     return Container(
       decoration: BoxDecoration(
-        color: theme.backgroundOuter,
+        color: isDone ? theme.primaryPink : theme.card,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: theme.backgroundDark, width: 3),
+        border: Border.all(color: isDoneColor, width: 3),
         boxShadow: [
           BoxShadow(
-            color: theme.backgroundDark,
+            color: isDoneColor,
             offset: const Offset(0, 4),
             blurRadius: 0,
           ),
@@ -43,7 +44,7 @@ class DailyActivityMission extends ConsumerWidget {
                 Text(
                   'MISSÃO DIÁRIA',
                   style: textTheme.labelMedium?.copyWith(
-                    color: theme.primaryPink,
+                    color: isDoneTextColor,
                   ),
                 ),
                 const SizedBox(height: 3),
@@ -51,9 +52,7 @@ class DailyActivityMission extends ConsumerWidget {
                   isDone
                       ? 'Missão concluída hoje!'
                       : 'Complete sua atividade do dia!',
-                  style: textTheme.labelSmall?.copyWith(
-                    color: theme.primaryPinkDark,
-                  ),
+                  style: textTheme.labelSmall?.copyWith(color: isDoneTextColor),
                 ),
               ],
             ),

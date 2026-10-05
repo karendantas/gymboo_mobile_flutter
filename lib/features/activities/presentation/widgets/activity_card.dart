@@ -26,12 +26,11 @@ class ActivityCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
         decoration: BoxDecoration(
-          color: palette.backgroundOuter,
+          color: palette.card,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: palette.backgroundDark, width: 3),
-
           boxShadow: [
             BoxShadow(
               color: palette.backgroundDark,
@@ -43,44 +42,54 @@ class ActivityCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 42,
-              height: 42,
-              alignment: Alignment.center,
+              width: 50,
+              height: 50,
+
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: palette.backgroundDark,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),
               child: activity.category.icon,
             ),
+
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        spacing: 6,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             activity.title,
                             style: textTheme.labelLarge?.copyWith(
-                              color: palette.textSecondary,
+                              color: palette.primaryPink,
                             ),
                           ),
-                          Icon(
-                            Icons.timer_sharp,
-                            size: 16,
-                            color: palette.primaryPinkDark,
-                          ),
-                          Text(
-                            '${activity.durationMinutes} min',
-                            style: textTheme.labelSmall?.copyWith(
-                              color: palette.primaryPinkDark,
-                            ),
+
+                          const SizedBox(height: 8),
+
+                          Row(
+                            spacing: 6,
+                            children: [
+                              Icon(
+                                Icons.timer_sharp,
+                                size: 16,
+                                color: palette.primaryPink,
+                              ),
+                              Text(
+                                '${activity.durationMinutes} min',
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: palette.primaryPinkDark,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -99,28 +108,19 @@ class ActivityCard extends StatelessWidget {
                   const SizedBox(height: 12),
                   Row(
                     spacing: 6,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
-                      Container(
-                        width: 160,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 4,
-                        ),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
+                      Text(
+                        activity.category.label.toUpperCase(),
+                        style: textTheme.labelSmall?.copyWith(
                           color: getActivityCategoryColor(
                             activity.category,
                             palette,
                           ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          activity.category.label,
-                          style: textTheme.labelSmall?.copyWith(
-                            color: palette.textOnDark,
-                          ),
                         ),
                       ),
+
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 6,

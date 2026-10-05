@@ -10,10 +10,10 @@ Color getActivityCategoryColor(
     case ActivityCategory.CARDIO:
       return palette.blueAccent;
     case ActivityCategory.MUSCULACAO:
-      return palette.primaryPink;
+      return palette.primaryPinkDark;
     case ActivityCategory.FLEXIBILIDADE:
-      return palette.goldAccent;
+      return palette.goldAccentDark;
     case ActivityCategory.OUTRO:
-      return palette.cream;
+      return palette.surfaceAlt;
   }
 }

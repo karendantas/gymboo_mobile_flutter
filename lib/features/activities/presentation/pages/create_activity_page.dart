@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/health/health_service.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/features/activities/domain/models/health_map.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
 import 'package:gymboo_app/shared/retro_tabbed.dart';
@@ -100,7 +101,6 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
       final dateStr = _selectedDate.toIso8601String().split('T').first;
       success = await controller.create(
         title: title,
-
         category: _selectedCategory,
         durationMinutes: duration,
         activityDate: dateStr,
@@ -113,15 +113,13 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
     if (success) {
       context.pop();
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
+      ref
+          .read(toastServiceProvider)
+          .error(
             _isEditing
                 ? 'Erro ao atualizar atividade'
                 : 'Erro ao criar atividade',
-          ),
-        ),
-      );
+          );
     }
   }
 
@@ -131,9 +129,10 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
 
     if (!granted) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Permissão do Health Connect negada')),
-      );
+      ref
+          .read(toastServiceProvider)
+          .error('Permissão do Health Connect negada');
+
       return;
     }
 
@@ -141,11 +140,10 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
 
     if (workouts.isEmpty) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Nenhuma atividade encontrada hoje no Health Connect'),
-        ),
-      );
+
+      ref
+          .read(toastServiceProvider)
+          .error('Nenhuma atividade encontrada hoje no Health Connect');
       return;
     }
 
@@ -158,11 +156,9 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
     });
 
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Atividade importada! Confira os dados antes de salvar.'),
-      ),
-    );
+    ref
+        .read(toastServiceProvider)
+        .success('Atividade importada! Confira os dados antes de salvar.');
   }
 
   @override

@@ -37,7 +37,7 @@ class WeeklyProgressBar extends StatelessWidget {
               decoration: BoxDecoration(
                 color: palette.backgroundOuter,
                 borderRadius: BorderRadius.circular(2),
-                border: Border.all(color: palette.primaryPink, width: 2),
+                border: Border.all(color: palette.backgroundDark, width: 2),
               ),
               padding: const EdgeInsets.all(2),
               child: FractionallySizedBox(
@@ -45,7 +45,7 @@ class WeeklyProgressBar extends StatelessWidget {
                 widthFactor: clampedValue,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: palette.primaryPink,
+                    color: palette.backgroundDark,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),

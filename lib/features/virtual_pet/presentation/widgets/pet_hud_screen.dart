@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/features/virtual_pet/domain/models/virtual_pet.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/dressed_pet_sprite.dart';
@@ -49,47 +48,9 @@ class PetHudScreen extends StatelessWidget {
 
           PetHeartsRow(filledHearts: pet.filledHearts),
 
-          SizedBox(
-            height: 280,
-            width: 240,
-            child: Stack(
-              alignment: Alignment.center,
-              clipBehavior: Clip.none,
-              children: [
-                DressedPetSprite(pet: pet, size: 220),
-                Positioned(
-                  bottom: 20,
-                  right: -20,
+          DressedPetSprite(pet: pet, size: 220),
 
-                  child: GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () => context.push('/pet/wardrobe'),
-                    child: Container(
-                      width: 40,
-                      height: 40,
-
-                      decoration: BoxDecoration(
-                        color: palette.backgroundDark,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(99),
-                        ),
-                      ),
-                      child: Center(
-                        child: Image.asset(
-                          'assets/images/hanger_icon.png',
-                          width: 30,
-                          height: 30,
-                          fit: BoxFit.contain,
-                          filterQuality: FilterQuality.none,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
+          const SizedBox(height: 40),
           PetLevelBar(
             level: pet.level,
             currentXp: pet.xpIntoCurrentLevel,

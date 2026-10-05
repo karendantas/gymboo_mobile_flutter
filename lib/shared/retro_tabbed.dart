@@ -113,6 +113,7 @@ class RetroTabbedField extends StatelessWidget {
                 child: TextField(
                   controller: controller,
                   keyboardType: keyboardType,
+
                   inputFormatters: inputFormatters,
                   style: textTheme.bodyMedium?.copyWith(
                     color: palette.textPrimary,

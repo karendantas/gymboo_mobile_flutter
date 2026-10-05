@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/network/dio_client.dart';
+
 import '../domain/models/virtual_pet.dart';
 
 abstract class PetRepository {
   Future<VirtualPet> getMyPet();
-  Future<VirtualPet> rename(String name);
+  Future<VirtualPet> edit(String? name, String? type);
   Future<VirtualPet> interact(String action);
 }
 
@@ -20,8 +21,11 @@ class ApiPetRepository implements PetRepository {
   }
 
   @override
-  Future<VirtualPet> rename(String name) async {
-    final response = await _dio.patch('/api/pet/name', data: {'name': name});
+  Future<VirtualPet> edit(String? name, String? type) async {
+    final response = await _dio.patch(
+      '/api/pet/edit',
+      data: {'name': name, 'type': type},
+    );
     return VirtualPet.fromJson(response.data as Map<String, dynamic>);
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../virtual_pet/data/notification_repository.dart';
+import '../../data/notification_repository.dart';
 import '../../domain/model/app_notification.dart';
 
 class NotificationController extends AsyncNotifier<List<AppNotification>> {
