@@ -4,6 +4,7 @@ import 'package:gymboo_app/features/activities/presentation/widgets/daily_activi
 import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracker.dart';
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_widget_service.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
 import 'package:gymboo_app/shared/top_detail.dart';
 
@@ -13,6 +14,12 @@ class Home extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeAsync = ref.watch(homeDataProvider);
+
+    ref.listen(homeDataProvider, (previous, next) {
+      next.whenData((home) {
+        ref.read(petWidgetServiceProvider).sync(context, home.pet);
+      });
+    });
 
     return Scaffold(
       body: Column(

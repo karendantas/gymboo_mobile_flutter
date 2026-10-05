@@ -6,7 +6,7 @@ import 'package:gymboo_app/core/util/validate.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/registration_form_controller.dart';
 import 'package:gymboo_app/features/auth/presentation/widgets/registration_step_header.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:gymboo_app/shared/retro_input.dart';
+import 'package:gymboo_app/shared/retro_tabbed.dart';
 
 class RegisterStep1Page extends ConsumerStatefulWidget {
   const RegisterStep1Page({super.key});
@@ -112,14 +112,16 @@ class _RegisterStep1PageState extends ConsumerState<RegisterStep1Page> {
                   title: 'REGISTRO',
                   subtitle: 'Vamos começar! Conte um pouco\nsobre você.',
                 ),
-                RetroTextField(
+                RetroTabbedField(
+                  labelIcon: Icons.person,
                   controller: _nameController,
                   label: 'Nome',
                   hintText: 'Seu nome completo',
                   errorText: _nameError,
                 ),
                 const SizedBox(height: 16),
-                RetroTextField(
+                RetroTabbedField(
+                  labelIcon: Icons.email,
                   controller: _emailController,
                   label: 'E-mail',
                   hintText: 'seuemail@exemplo.com',
@@ -127,7 +129,8 @@ class _RegisterStep1PageState extends ConsumerState<RegisterStep1Page> {
                   errorText: _emailError,
                 ),
                 const SizedBox(height: 16),
-                RetroTextField(
+                RetroTabbedField(
+                  labelIcon: Icons.password,
                   controller: _passwordController,
                   label: 'Senha',
                   hintText: '••••••••',
@@ -135,7 +138,8 @@ class _RegisterStep1PageState extends ConsumerState<RegisterStep1Page> {
                   errorText: _passwordError,
                 ),
                 const SizedBox(height: 16),
-                RetroTextField(
+                RetroTabbedField(
+                  labelIcon: Icons.password,
                   controller: _confirmPasswordController,
                   label: 'Confirmar senha',
                   hintText: '••••••••',

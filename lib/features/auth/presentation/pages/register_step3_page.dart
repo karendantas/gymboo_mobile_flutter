@@ -8,7 +8,7 @@ import 'package:gymboo_app/features/auth/presentation/controllers/auth_controlle
 import 'package:gymboo_app/features/auth/presentation/controllers/registration_form_controller.dart';
 import 'package:gymboo_app/features/auth/presentation/widgets/registration_step_header.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:gymboo_app/shared/retro_input.dart';
+import 'package:gymboo_app/shared/retro_tabbed.dart';
 
 class RegisterStep3Page extends ConsumerStatefulWidget {
   const RegisterStep3Page({super.key});
@@ -133,7 +133,8 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
                   subtitle: 'Escolha o nome e a cor\ndo seu Gymboo!',
                 ),
 
-                RetroTextField(
+                RetroTabbedField(
+                  labelIcon: Icons.pets,
                   controller: _petNameController,
                   label: 'Nome do seu Gymboo',
                   hintText: 'Ex: Fofurin, Bolt, Luna...',

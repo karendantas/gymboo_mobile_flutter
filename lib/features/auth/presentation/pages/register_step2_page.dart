@@ -6,7 +6,7 @@ import 'package:gymboo_app/features/auth/presentation/controllers/registration_f
 import 'package:gymboo_app/features/auth/presentation/widgets/registration_step_header.dart';
 import 'package:gymboo_app/features/goal/domain/models/weekday.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:gymboo_app/shared/retro_input.dart';
+import 'package:gymboo_app/shared/retro_tabbed.dart';
 
 class RegisterStep2Page extends ConsumerStatefulWidget {
   const RegisterStep2Page({super.key});
@@ -114,7 +114,8 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
                 Row(
                   children: [
                     Expanded(
-                      child: RetroTextField(
+                      child: RetroTabbedField(
+                        labelIcon: Icons.height,
                         controller: _heightController,
                         label: 'Altura (cm)',
                         hintText: '165',
@@ -125,7 +126,8 @@ class _RegisterStep2PageState extends ConsumerState<RegisterStep2Page> {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: RetroTextField(
+                      child: RetroTabbedField(
+                        labelIcon: Icons.monitor_weight_outlined,
                         controller: _weightController,
                         label: 'Peso (kg)',
                         hintText: '60',
