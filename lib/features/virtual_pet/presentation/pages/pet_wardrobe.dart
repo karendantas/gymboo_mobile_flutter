@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/wardrobe_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 
-import '../controllers/reward_controller.dart';
 import '../widgets/reward_card.dart';
 
 class PetWardrobePage extends ConsumerStatefulWidget {
@@ -19,7 +19,7 @@ class _PetWardrobePageState extends ConsumerState<PetWardrobePage> {
 
   Future<void> _handleTap(String code, bool alreadyEquipped) async {
     setState(() => _loadingCode = code);
-    final controller = ref.read(rewardsControllerProvider.notifier);
+    final controller = ref.read(wardrobeControllerProvider.notifier);
 
     final success = alreadyEquipped
         ? await controller.unequip(code)
@@ -29,9 +29,7 @@ class _PetWardrobePageState extends ConsumerState<PetWardrobePage> {
     setState(() => _loadingCode = null);
 
     if (!success) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Erro ao atualizar item')));
+      ref.watch(toastServiceProvider).error('Erro ao atualizar item');
     }
   }
 
@@ -39,7 +37,7 @@ class _PetWardrobePageState extends ConsumerState<PetWardrobePage> {
   Widget build(BuildContext context) {
     final palette = Theme.of(context).extension<GymbooPalette>()!;
     final textTheme = Theme.of(context).textTheme;
-    final wardrobeAsync = ref.watch(wardrobeDataProvider);
+    final wardrobeAsync = ref.watch(wardrobeControllerProvider);
 
     return Scaffold(
       appBar: AppBar(

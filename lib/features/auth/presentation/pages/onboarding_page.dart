@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/shared/google_button.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
@@ -29,14 +30,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     final palette = Theme.of(context).extension<GymbooPalette>()!;
-
     final textTheme = Theme.of(context).textTheme;
+    final toast = ref.read(toastServiceProvider);
 
     ref.listen<AsyncValue>(authControllerProvider, (previous, next) {
       if (next.hasError && !next.isLoading) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao entrar com Google: ${next.error}')),
-        );
+        toast.error('Erro ao entrar com Google: ${next.error}');
       }
     });
 

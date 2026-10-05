@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/core/util/validate.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
@@ -41,13 +42,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).extension<GymbooPalette>()!;
-    final textTheme = Theme.of(context).textTheme;
+    final toast = ref.read(toastServiceProvider);
 
     ref.listen<AsyncValue>(authControllerProvider, ((previous, next) {
       if (next.hasError && !next.isLoading) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao entrar: ${next.error}')),
-        );
+        toast.error('Erro ao entrar: ${next.error}');
       }
     }));
 

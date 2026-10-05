@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/network/dio_client.dart';
 
-import '../../notifications/domain/model/app_notification.dart';
+import '../domain/model/app_notification.dart';
 
 abstract class NotificationRepository {
   Future<List<AppNotification>> list();

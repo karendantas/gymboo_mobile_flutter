@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/features/auth/data/auth_repository.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/registration_form_controller.dart';
@@ -73,6 +74,7 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
             weightKg: data.weightKg!,
             workoutDays: data.workoutDays.toList(),
             petName: data.petName,
+            type: data.petColor as String,
           );
     } else {
       await ref
@@ -100,12 +102,10 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
     final palette = Theme.of(context).extension<GymbooPalette>()!;
     final textTheme = Theme.of(context).textTheme;
     final isLoading = ref.watch(authControllerProvider).isLoading;
-
+    final toast = ref.watch(toastServiceProvider);
     ref.listen<AsyncValue>(authControllerProvider, (previous, next) {
       if (next.hasError && !next.isLoading) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao cadastrar: ${next.error}')),
-        );
+        toast.error('Erro ao cadastrar: ${next.error}');
       }
     });
 
