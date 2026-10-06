@@ -14,6 +14,7 @@ import 'package:gymboo_app/features/auth/presentation/pages/register_step2_page.
 import 'package:gymboo_app/features/auth/presentation/pages/register_step3_page.dart';
 import 'package:gymboo_app/features/home/presentation/pages/home_page.dart';
 import 'package:gymboo_app/features/minigames/presentation/index.dart';
+import 'package:gymboo_app/features/ranking/presentation/pages/ranking_page.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_detail.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_wardrobe.dart';
 
@@ -130,6 +131,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/mini_games',
         builder: (context, state) => const MiniGames(),
+      ),
+      GoRoute(
+        path: '/ranking',
+        builder: (context, state) => const RankingPage(),
       ),
     ],
   );

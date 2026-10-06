@@ -186,7 +186,7 @@ class ProfilePage extends ConsumerWidget {
               logsAsync.when(
                 loading: () => const Padding(
                   padding: EdgeInsets.all(20),
-                  child: CircularProgressIndicator(),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
                 error: (err, _) => Text(
                   'Erro ao carregar histórico',
@@ -204,7 +204,7 @@ class ProfilePage extends ConsumerWidget {
               notificationsAsync.when(
                 loading: () => const Padding(
                   padding: EdgeInsets.all(20),
-                  child: CircularProgressIndicator(),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
                 error: (err, _) => Text(
                   'Erro ao carregar notificações',

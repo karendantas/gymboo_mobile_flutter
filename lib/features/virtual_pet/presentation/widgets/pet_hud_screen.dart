@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/features/virtual_pet/domain/models/pet_title.dart';
 import 'package:gymboo_app/features/virtual_pet/domain/models/virtual_pet.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/dressed_pet_sprite.dart';
 
@@ -42,6 +43,10 @@ class PetHudScreen extends StatelessWidget {
             style: textTheme.headlineSmall?.copyWith(
               color: palette.textPrimary,
             ),
+          ),
+          Text(
+            petTitleForLevel(pet.level),
+            style: textTheme.labelSmall?.copyWith(color: palette.textSecondary),
           ),
 
           const SizedBox(height: 10),

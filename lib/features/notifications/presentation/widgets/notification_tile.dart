@@ -49,12 +49,16 @@ class NotificationTile extends StatelessWidget {
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        notification.title,
-                        style: textTheme.bodyLarge?.copyWith(
-                          color: palette.textPrimary,
-                          fontWeight: FontWeight.w900,
+                      Expanded(
+                        child: Text(
+                          notification.title,
+
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: palette.textPrimary,
+                            fontWeight: FontWeight.w900,
+                          ),
                         ),
                       ),
                       Text(
