@@ -6,6 +6,7 @@ import 'package:gymboo_app/features/activities/domain/models/activity.dart';
 import 'package:gymboo_app/features/activities/presentation/pages/activities_page.dart';
 import 'package:gymboo_app/features/activities/presentation/pages/create_activity_page.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
+import 'package:gymboo_app/features/auth/presentation/pages/edit_profile.dart';
 import 'package:gymboo_app/features/auth/presentation/pages/login_page.dart';
 import 'package:gymboo_app/features/auth/presentation/pages/onboarding_page.dart';
 import 'package:gymboo_app/features/auth/presentation/pages/profile_page.dart';
@@ -13,6 +14,7 @@ import 'package:gymboo_app/features/auth/presentation/pages/register_step1_page.
 import 'package:gymboo_app/features/auth/presentation/pages/register_step2_page.dart';
 import 'package:gymboo_app/features/auth/presentation/pages/register_step3_page.dart';
 import 'package:gymboo_app/features/home/presentation/pages/home_page.dart';
+import 'package:gymboo_app/features/legal/presentation/pages/terms_page.dart';
 import 'package:gymboo_app/features/minigames/presentation/index.dart';
 import 'package:gymboo_app/features/ranking/presentation/pages/ranking_page.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_detail.dart';
@@ -46,6 +48,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         '/register/goal',
         '/register/pet',
         '/onboarding',
+        '/terms',
       };
       final isPublicRoute = publicRoutes.contains(state.matchedLocation);
 
@@ -106,6 +109,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             const NoTransitionPage(child: ProfilePage()),
       ),
       GoRoute(
+        path: '/profile/edit',
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: EditProfilePage()),
+      ),
+      GoRoute(
         path: '/activities',
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: ActivitiesPage()),
@@ -136,6 +144,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/ranking',
         builder: (context, state) => const RankingPage(),
       ),
+      GoRoute(path: '/terms', builder: (context, state) => const TermsPage()),
     ],
   );
 });

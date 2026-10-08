@@ -26,34 +26,38 @@ class RankingButtonInfo extends StatelessWidget {
           ],
         ),
         child: Expanded(
-          child: Row(
-            children: [
-              Image.asset(
-                'assets/images/trophy.png',
-                width: 40,
-                height: 54,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.none,
-              ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: [
+                Image.asset(
+                  'assets/images/trophy.png',
+                  width: 40,
+                  height: 54,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.none,
+                ),
 
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'RANKING',
-                    style: textTheme.labelMedium?.copyWith(
-                      color: palette.primaryPink,
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'RANKING',
+                      style: textTheme.labelMedium?.copyWith(
+                        color: palette.primaryPink,
+                      ),
                     ),
-                  ),
-                  Text(
-                    'Veja a posicao do seu Gymboo!',
-                    style: textTheme.labelSmall?.copyWith(
-                      color: palette.primaryPink,
+                    Text(
+                      'Veja a posicao do seu Gymboo!',
+                      style: textTheme.labelSmall?.copyWith(
+                        color: palette.primaryPink,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

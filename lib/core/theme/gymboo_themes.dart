@@ -1,6 +1,7 @@
 library;
 
 import 'package:flutter/material.dart';
+
 import 'gymboo_palette.dart';
 import 'gymboo_text_styles.dart';
 
@@ -81,16 +82,36 @@ class AppGymbooTheme {
 }
 
 abstract final class ThemeRegistry {
-  static final defaultPallete = AppGymbooTheme(
+  static final pink = AppGymbooTheme(
     id: 'gymboo_default_pallete',
-    name: 'Fofinho Rosa',
+    name: 'Rosa',
     brightness: Brightness.light,
     palette: gymbooDefaultPalette,
   );
 
-  static final AppGymbooTheme defaultTheme = defaultPallete;
-  static final List<AppGymbooTheme> all = [defaultPallete];
+  static final blue = AppGymbooTheme(
+    id: 'gymboo_blue',
+    name: 'Azul',
+    brightness: Brightness.light,
+    palette: gymbooBluePalette,
+  );
 
+  static final green = AppGymbooTheme(
+    id: 'gymboo_green',
+    name: 'Verde',
+    brightness: Brightness.light,
+    palette: gymbooGreenPalette,
+  );
+
+  static final yellow = AppGymbooTheme(
+    id: 'gymboo_yellow',
+    name: 'Amarelo',
+    brightness: Brightness.light,
+    palette: gymbooYellowPalette,
+  );
+
+  static final AppGymbooTheme defaultTheme = pink;
+  static final List<AppGymbooTheme> all = [pink, blue, green, yellow];
   static AppGymbooTheme byId(String id) =>
       all.firstWhere((t) => t.id == id, orElse: () => defaultTheme);
 }
