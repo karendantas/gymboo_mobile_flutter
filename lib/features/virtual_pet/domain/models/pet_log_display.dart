@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 
 import 'pet_log.dart';
-import 'pet_skill_display.dart';
 
 extension PetLogDisplay on PetLog {
   IconData get icon {

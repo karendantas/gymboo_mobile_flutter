@@ -35,6 +35,7 @@ class DailyActivityMission extends ConsumerWidget {
               'assets/images/star.png',
               width: 50,
               height: 54,
+              fit: BoxFit.contain,
               filterQuality: FilterQuality.none,
             ),
 

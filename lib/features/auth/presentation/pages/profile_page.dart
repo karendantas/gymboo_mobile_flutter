@@ -5,8 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/audio/music_controller.dart';
 import 'package:gymboo_app/core/health/health_service.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
-import 'package:gymboo_app/core/theme/gymboo_themes.dart';
-import 'package:gymboo_app/core/theme/theme_notifier.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/features/auth/presentation/widgets/settings.dart';
 import 'package:gymboo_app/features/notifications/presentation/controller/notification_controller.dart';
@@ -15,6 +13,7 @@ import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_log
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_log_tile.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
 import 'package:gymboo_app/shared/retro_dropdown_panel.dart';
+import 'package:gymboo_app/shared/theme_picker.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -26,7 +25,6 @@ class ProfilePage extends ConsumerWidget {
     final user = ref.watch(authControllerProvider).value;
     final logsAsync = ref.watch(petLogControllerProvider);
     final notificationsAsync = ref.watch(notificationControllerProvider);
-    final currentTheme = ref.watch(themeNotifierProvider);
     final isMuted = ref.watch(musicControllerProvider);
 
     return Scaffold(
@@ -126,54 +124,28 @@ class ProfilePage extends ConsumerWidget {
                   ),
                   SettingsDivider(color: palette.primaryPink),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 12,
-                    ),
-                    child: Row(
+                    padding: const EdgeInsets.all(14),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.palette_outlined,
-                          size: 20,
-                          color: palette.textPrimary,
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Tema',
-                            style: textTheme.bodyMedium?.copyWith(
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.palette_outlined,
+                              size: 20,
                               color: palette.textPrimary,
                             ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: ThemeRegistry.all.map((theme) {
-                            final isSelected = theme.id == currentTheme.id;
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 6),
-                              child: GestureDetector(
-                                onTap: () => ref
-                                    .read(themeNotifierProvider.notifier)
-                                    .setTheme(theme.id),
-                                child: Container(
-                                  width: 26,
-                                  height: 26,
-                                  decoration: BoxDecoration(
-                                    color: theme.previewSwatch.first,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: isSelected
-                                          ? palette.primaryPinkDark
-                                          : Colors.transparent,
-                                      width: 2.5,
-                                    ),
-                                  ),
-                                ),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Tema',
+                              style: textTheme.bodyMedium?.copyWith(
+                                color: palette.textPrimary,
                               ),
-                            );
-                          }).toList(),
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 12),
+                        const ThemePicker(),
                       ],
                     ),
                   ),
@@ -186,7 +158,7 @@ class ProfilePage extends ConsumerWidget {
               logsAsync.when(
                 loading: () => const Padding(
                   padding: EdgeInsets.all(20),
-                  child: CircularProgressIndicator(),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
                 error: (err, _) => Text(
                   'Erro ao carregar histórico',
@@ -204,7 +176,7 @@ class ProfilePage extends ConsumerWidget {
               notificationsAsync.when(
                 loading: () => const Padding(
                   padding: EdgeInsets.all(20),
-                  child: CircularProgressIndicator(),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
                 error: (err, _) => Text(
                   'Erro ao carregar notificações',

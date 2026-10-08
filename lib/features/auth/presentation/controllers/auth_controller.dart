@@ -59,6 +59,17 @@ class AuthController extends AsyncNotifier<User?> {
     });
   }
 
+  Future<void> updateProfile({
+    required String name,
+    required int heightCm,
+    required int weightKg,
+  }) async {
+    final updated = await ref
+        .read(authRepositoryProvider)
+        .completeProfile(name: name, heightCm: heightCm, weightKg: weightKg);
+    state = AsyncData(updated);
+  }
+
   Future<void> logout() async {
     await ref.read(authRepositoryProvider).logout();
     state = const AsyncData(null);
