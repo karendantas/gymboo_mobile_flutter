@@ -13,7 +13,7 @@ _Activity _$ActivityFromJson(Map<String, dynamic> json) => _Activity(
   category: $enumDecode(_$ActivityCategoryEnumMap, json['category']),
   affectedSkill: json['affectedSkill'] as String?,
   durationMinutes: (json['durationMinutes'] as num).toInt(),
-  activityDate: json['activityDate'] as String,
+  activityDate: DateTime.parse(json['activityDate'] as String),
   activityTime: json['activityTime'] as String?,
   pointsEarned: (json['pointsEarned'] as num).toInt(),
 );
@@ -25,7 +25,7 @@ Map<String, dynamic> _$ActivityToJson(_Activity instance) => <String, dynamic>{
   'category': _$ActivityCategoryEnumMap[instance.category]!,
   'affectedSkill': instance.affectedSkill,
   'durationMinutes': instance.durationMinutes,
-  'activityDate': instance.activityDate,
+  'activityDate': instance.activityDate.toIso8601String(),
   'activityTime': instance.activityTime,
   'pointsEarned': instance.pointsEarned,
 };

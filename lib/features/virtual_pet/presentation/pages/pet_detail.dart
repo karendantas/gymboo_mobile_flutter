@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
+import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/registration_form_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/domain/models/virtual_pet.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_controller.dart';
@@ -22,6 +23,8 @@ class PetDetailsPage extends ConsumerStatefulWidget {
 class _PetDetailsPageState extends ConsumerState<PetDetailsPage> {
   PetColorOption? selectedColor;
   final petNameController = TextEditingController();
+
+  bool _isEditing = false;
 
   PetColorOption? colorFromString(String? color) {
     if (color == null) return null;
@@ -50,16 +53,38 @@ class _PetDetailsPageState extends ConsumerState<PetDetailsPage> {
       PetColorOption.yellow: Color(0xFFF7D35C),
     };
 
-    void handleEditPet(VirtualPet pet) {
-      if (petNameController.text.trim() != pet.name) {
-        ref
-            .read(petControllerProvider.notifier)
-            .edit(name: petNameController.text.trim());
+    void handleEditPet(VirtualPet pet) async {
+      if (_isEditing) return;
+
+      final toast = ref.read(toastServiceProvider);
+      final typedName = petNameController.text.trim();
+      final newType = selectedColor?.name;
+
+      final nameChanged = typedName.isNotEmpty && typedName != pet.name;
+      final colorChanged = newType != null && newType != pet.type;
+
+      if (!nameChanged && !colorChanged) {
+        toast.info('Nada foi alterado');
+        return;
       }
-      if (selectedColor?.name != pet.type) {
-        ref
+
+      setState(() => _isEditing = true);
+
+      try {
+        final success = await ref
             .read(petControllerProvider.notifier)
-            .edit(type: selectedColor?.name);
+            .edit(
+              name: nameChanged ? typedName : null,
+              type: colorChanged ? newType : null,
+            );
+        if (!mounted) return;
+        if (success) {
+          toast.success('Gymboo atualizado!');
+        } else {
+          toast.error('Não foi possível atualizar o Gymboo');
+        }
+      } finally {
+        if (mounted) setState(() => _isEditing = false);
       }
     }
 
@@ -180,13 +205,16 @@ class _PetDetailsPageState extends ConsumerState<PetDetailsPage> {
                               ),
 
                               const SizedBox(height: 20),
-                              RetroButton(
-                                title: 'Salvar',
-                                width: double.infinity,
-                                color: palette.primaryPink,
-                                shadowColor: palette.primaryPinkDark,
-                                onTap: () => handleEditPet(pet),
-                              ),
+                              if (_isEditing)
+                                const Center(child: CircularProgressIndicator())
+                              else
+                                RetroButton(
+                                  title: 'Salvar',
+                                  width: double.infinity,
+                                  color: palette.primaryPink,
+                                  shadowColor: palette.primaryPinkDark,
+                                  onTap: () => handleEditPet(pet),
+                                ),
 
                               const SizedBox(height: 30),
                             ],
