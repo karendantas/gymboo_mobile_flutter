@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gymboo_app/features/activities/presentation/controllers/daily_mission_controller.dart';
+import 'package:gymboo_app/features/activities/presentation/controllers/activities_list_controller.dart';
+import 'package:gymboo_app/features/goal/presentation/controllers/goal_controller.dart';
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/wardrobe_controller.dart';
@@ -21,6 +22,14 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
     );
   }
 
+  void _invalidateRelated() {
+    ref.invalidate(activitiesListControllerProvider);
+    ref.invalidate(weeklyProgressControllerProvider);
+    ref.invalidate(homeDataProvider);
+    ref.invalidate(petControllerProvider);
+    ref.invalidate(wardrobeControllerProvider);
+  }
+
   Future<bool> create({
     required String title,
     String? description,
@@ -40,11 +49,8 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
             activityDate: activityDate,
             activityTime: activityTime,
           );
-      await refresh();
-      ref.invalidate(homeDataProvider);
-      ref.invalidate(petControllerProvider);
-      ref.invalidate(wardrobeControllerProvider);
-      ref.invalidate(dailyActivityIsDoneProvider);
+      _invalidateRelated();
+
       return true;
     } catch (_) {
       return false;
@@ -68,10 +74,7 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
             category: category,
             durationMinutes: durationMinutes,
           );
-      await refresh();
-      ref.invalidate(homeDataProvider);
-      ref.invalidate(petControllerProvider);
-      ref.invalidate(wardrobeControllerProvider);
+      _invalidateRelated();
       return true;
     } catch (_) {
       return false;
@@ -81,10 +84,7 @@ class ActivitiesController extends AsyncNotifier<List<Activity>> {
   Future<bool> delete(int id) async {
     try {
       await ref.read(activityRepositoryProvider).delete(id);
-      await refresh();
-      ref.invalidate(homeDataProvider);
-      ref.invalidate(activitiesControllerProvider);
-      ref.invalidate(wardrobeControllerProvider);
+      _invalidateRelated();
 
       return true;
     } catch (_) {

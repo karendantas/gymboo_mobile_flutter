@@ -45,7 +45,7 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
     super.initState();
     if (widget.existingActivity != null) {
       _selectedCategory = widget.existingActivity!.category;
-      _selectedDate = DateTime.parse(widget.existingActivity!.activityDate);
+      _selectedDate = widget.existingActivity!.activityDate;
     }
   }
 
@@ -111,7 +111,7 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
     setState(() => _isSubmitting = false);
 
     if (success) {
-      context.pop();
+      context.go('/activities');
     } else {
       ref
           .read(toastServiceProvider)

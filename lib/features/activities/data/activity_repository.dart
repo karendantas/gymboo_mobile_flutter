@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/core/network/dio_client.dart';
+import 'package:gymboo_app/features/activities/domain/models/activities_filters.dart';
+
 import '../domain/models/activity.dart';
 import '../domain/models/activity_category.dart';
 
@@ -22,6 +24,11 @@ abstract class ActivityRepository {
     required int durationMinutes,
   });
   Future<void> delete(int id);
+  Future<PageResult<Activity>> search({
+    required ActivitiesFilter filter,
+    required int page,
+    required int size,
+  });
 }
 
 class ApiActivityRepository implements ActivityRepository {
@@ -85,6 +92,38 @@ class ApiActivityRepository implements ActivityRepository {
   @override
   Future<void> delete(int id) async {
     await _dio.delete('/api/activities/$id');
+  }
+
+  @override
+  Future<PageResult<Activity>> search({
+    required ActivitiesFilter filter,
+    required int page,
+    required int size,
+  }) async {
+    String fmt(DateTime d) =>
+        '${d.year.toString().padLeft(4, '0')}-'
+        '${d.month.toString().padLeft(2, '0')}-'
+        '${d.day.toString().padLeft(2, '0')}';
+
+    final res = await _dio.get(
+      '/api/activities/search',
+      queryParameters: {
+        if (filter.category != null) 'category': filter.category!.name,
+        if (filter.from != null) 'from': fmt(filter.from!),
+        if (filter.to != null) 'to': fmt(filter.to!),
+        'page': page,
+        'size': size,
+      },
+    );
+
+    final data = res.data as Map<String, dynamic>;
+    return PageResult(
+      items: (data['content'] as List)
+          .map((e) => Activity.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      page: data['page'] as int,
+      last: data['last'] as bool,
+    );
   }
 }
 

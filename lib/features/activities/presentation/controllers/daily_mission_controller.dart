@@ -10,10 +10,9 @@ final dailyActivityIsDoneProvider = FutureProvider<bool>((ref) async {
       '${today.month.toString().padLeft(2, '0')}-'
       '${today.day.toString().padLeft(2, '0')}';
 
-  final todayDetail = progress.days.firstWhere(
-    (day) => day.date == todayStr,
-    orElse: () => progress.days.first,
-  );
+  final todayDetail = progress.days
+      .where((day) => day.date == todayStr)
+      .firstOrNull;
 
-  return todayDetail.completed;
+  return todayDetail?.completed ?? false;
 });

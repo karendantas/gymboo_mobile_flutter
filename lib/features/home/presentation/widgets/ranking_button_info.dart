@@ -13,6 +13,7 @@ class RankingButtonInfo extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.go('/ranking'),
       child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: palette.card,
           borderRadius: BorderRadius.circular(8),
@@ -25,40 +26,36 @@ class RankingButtonInfo extends StatelessWidget {
             ),
           ],
         ),
-        child: Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/images/trophy.png',
-                  width: 40,
-                  height: 54,
-                  fit: BoxFit.contain,
-                  filterQuality: FilterQuality.none,
-                ),
 
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'RANKING',
-                      style: textTheme.labelMedium?.copyWith(
-                        color: palette.primaryPink,
-                      ),
-                    ),
-                    Text(
-                      'Veja a posicao do seu Gymboo!',
-                      style: textTheme.labelSmall?.copyWith(
-                        color: palette.primaryPink,
-                      ),
-                    ),
-                  ],
+        child: Row(
+          children: [
+            Image.asset(
+              'assets/images/trophy.png',
+              width: 40,
+              height: 54,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.none,
+            ),
+
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'RANKING',
+                  style: textTheme.labelMedium?.copyWith(
+                    color: palette.primaryPink,
+                  ),
+                ),
+                Text(
+                  'Veja a posicao do seu Gymboo!',
+                  style: textTheme.labelSmall?.copyWith(
+                    color: palette.primaryPink,
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

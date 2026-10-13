@@ -18,8 +18,8 @@ class RankingTile extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: entry.currentUser
-            ? palette.primaryPink.withValues(alpha: 0.15)
-            : palette.surface,
+            ? palette.input.withValues(alpha: 0.4)
+            : palette.input,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: entry.currentUser ? palette.primaryPinkDark : palette.divider,
@@ -27,7 +27,7 @@ class RankingTile extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: palette.divider,
+            color: palette.primaryPink,
             offset: const Offset(0, 4),
             blurRadius: 0,
           ),
