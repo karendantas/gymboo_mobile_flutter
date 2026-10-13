@@ -182,9 +182,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            // TODO: abrir termos de uso
-                          },
+                          onTap: () => context.push('/terms'),
+
                           child: Text(
                             'Termos de Uso',
                             style: textTheme.labelSmall?.copyWith(

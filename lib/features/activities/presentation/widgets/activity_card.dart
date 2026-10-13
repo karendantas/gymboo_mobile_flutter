@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
 import 'package:gymboo_app/core/util/category_activity_color.dart';
+import 'package:gymboo_app/core/util/date_format.dart';
 
 import '../../domain/models/activity.dart';
 import '../../domain/models/activity_category_display.dart';
@@ -85,6 +86,23 @@ class ActivityCard extends StatelessWidget {
                               ),
                               Text(
                                 '${activity.durationMinutes} min',
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: palette.primaryPinkDark,
+                                ),
+                              ),
+                              Text(
+                                '-',
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: palette.primaryPinkDark,
+                                ),
+                              ),
+                              Icon(
+                                Icons.date_range_sharp,
+                                size: 16,
+                                color: palette.primaryPink,
+                              ),
+                              Text(
+                                formatShortDate(activity.activityDate),
                                 style: textTheme.labelSmall?.copyWith(
                                   color: palette.primaryPinkDark,
                                 ),

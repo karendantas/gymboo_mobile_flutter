@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'activity_category.dart';
 
 part 'activity.freezed.dart';
@@ -13,7 +14,7 @@ abstract class Activity with _$Activity {
     required ActivityCategory category,
     String? affectedSkill,
     required int durationMinutes,
-    required String activityDate,
+    required DateTime activityDate,
     String? activityTime,
     required int pointsEarned,
   }) = _Activity;

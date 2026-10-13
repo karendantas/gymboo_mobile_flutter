@@ -197,3 +197,42 @@ const gymbooDefaultPalette = GymbooPalette(
   input: Color.fromARGB(255, 245, 249, 215),
   card: Color.fromARGB(255, 255, 219, 227),
 );
+
+// ---- Azul ----
+final gymbooBluePalette = gymbooDefaultPalette.copyWith(
+  brandPurple: const Color(0xFF24456B),
+  brandPurpleLight: const Color(0xFF3B72B8),
+  primaryPink: const Color(0xFF5399E9),
+  primaryPinkDark: const Color(0xFF3A6FB5),
+  backgroundOuter: const Color(0xFFC2DAF4),
+  backgroundDark: const Color(0xFF81AFE4),
+  card: const Color(0xFFD6E9FF),
+  textPrimary: const Color(0xFF14263D),
+  textSecondary: const Color(0xFF24456B),
+);
+
+// ---- Verde ----
+final gymbooGreenPalette = gymbooDefaultPalette.copyWith(
+  brandPurple: const Color(0xFF1C5438),
+  brandPurpleLight: const Color(0xFF2E8A58),
+  primaryPink: const Color(0xFF3BA566),
+  primaryPinkDark: const Color(0xFF217347),
+  backgroundOuter: const Color(0xFFBAE8C9),
+  backgroundDark: const Color(0xFF72CA97),
+  card: const Color(0xFFDEF7E7),
+  textPrimary: const Color(0xFF10281C),
+  textSecondary: const Color(0xFF1C5438),
+);
+
+// ---- Amarelo (mostarda: amarelo puro com texto branco fica ilegível) ----
+final gymbooYellowPalette = gymbooDefaultPalette.copyWith(
+  brandPurple: const Color(0xFF66401A),
+  brandPurpleLight: const Color(0xFFB0701A),
+  primaryPink: const Color(0xFFD08A14),
+  primaryPinkDark: const Color(0xFF9C5F0F),
+  backgroundOuter: const Color(0xFFFCE29A),
+  backgroundDark: const Color(0xFFF0BF4C),
+  card: const Color(0xFFFFF3C9),
+  textPrimary: const Color(0xFF3A2410),
+  textSecondary: const Color(0xFF66401A),
+);

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Activity {
 
- int get id; String get title; String? get description; ActivityCategory get category; String? get affectedSkill; int get durationMinutes; String get activityDate; String? get activityTime; int get pointsEarned;
+ int get id; String get title; String? get description; ActivityCategory get category; String? get affectedSkill; int get durationMinutes; DateTime get activityDate; String? get activityTime; int get pointsEarned;
 /// Create a copy of Activity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ActivityCopyWith<$Res>  {
   factory $ActivityCopyWith(Activity value, $Res Function(Activity) _then) = _$ActivityCopyWithImpl;
 @useResult
 $Res call({
- int id, String title, String? description, ActivityCategory category, String? affectedSkill, int durationMinutes, String activityDate, String? activityTime, int pointsEarned
+ int id, String title, String? description, ActivityCategory category, String? affectedSkill, int durationMinutes, DateTime activityDate, String? activityTime, int pointsEarned
 });
 
 
@@ -74,7 +74,7 @@ as String?,category: null == category ? _self.category : category // ignore: cas
 as ActivityCategory,affectedSkill: freezed == affectedSkill ? _self.affectedSkill : affectedSkill // ignore: cast_nullable_to_non_nullable
 as String?,durationMinutes: null == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
 as int,activityDate: null == activityDate ? _self.activityDate : activityDate // ignore: cast_nullable_to_non_nullable
-as String,activityTime: freezed == activityTime ? _self.activityTime : activityTime // ignore: cast_nullable_to_non_nullable
+as DateTime,activityTime: freezed == activityTime ? _self.activityTime : activityTime // ignore: cast_nullable_to_non_nullable
 as String?,pointsEarned: null == pointsEarned ? _self.pointsEarned : pointsEarned // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  String activityDate,  String? activityTime,  int pointsEarned)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  DateTime activityDate,  String? activityTime,  int pointsEarned)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Activity() when $default != null:
 return $default(_that.id,_that.title,_that.description,_that.category,_that.affectedSkill,_that.durationMinutes,_that.activityDate,_that.activityTime,_that.pointsEarned);case _:
@@ -182,7 +182,7 @@ return $default(_that.id,_that.title,_that.description,_that.category,_that.affe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  String activityDate,  String? activityTime,  int pointsEarned)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  DateTime activityDate,  String? activityTime,  int pointsEarned)  $default,) {final _that = this;
 switch (_that) {
 case _Activity():
 return $default(_that.id,_that.title,_that.description,_that.category,_that.affectedSkill,_that.durationMinutes,_that.activityDate,_that.activityTime,_that.pointsEarned);case _:
@@ -202,7 +202,7 @@ return $default(_that.id,_that.title,_that.description,_that.category,_that.affe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  String activityDate,  String? activityTime,  int pointsEarned)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String title,  String? description,  ActivityCategory category,  String? affectedSkill,  int durationMinutes,  DateTime activityDate,  String? activityTime,  int pointsEarned)?  $default,) {final _that = this;
 switch (_that) {
 case _Activity() when $default != null:
 return $default(_that.id,_that.title,_that.description,_that.category,_that.affectedSkill,_that.durationMinutes,_that.activityDate,_that.activityTime,_that.pointsEarned);case _:
@@ -226,7 +226,7 @@ class _Activity implements Activity {
 @override final  ActivityCategory category;
 @override final  String? affectedSkill;
 @override final  int durationMinutes;
-@override final  String activityDate;
+@override final  DateTime activityDate;
 @override final  String? activityTime;
 @override final  int pointsEarned;
 
@@ -263,7 +263,7 @@ abstract mixin class _$ActivityCopyWith<$Res> implements $ActivityCopyWith<$Res>
   factory _$ActivityCopyWith(_Activity value, $Res Function(_Activity) _then) = __$ActivityCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String title, String? description, ActivityCategory category, String? affectedSkill, int durationMinutes, String activityDate, String? activityTime, int pointsEarned
+ int id, String title, String? description, ActivityCategory category, String? affectedSkill, int durationMinutes, DateTime activityDate, String? activityTime, int pointsEarned
 });
 
 
@@ -289,7 +289,7 @@ as String?,category: null == category ? _self.category : category // ignore: cas
 as ActivityCategory,affectedSkill: freezed == affectedSkill ? _self.affectedSkill : affectedSkill // ignore: cast_nullable_to_non_nullable
 as String?,durationMinutes: null == durationMinutes ? _self.durationMinutes : durationMinutes // ignore: cast_nullable_to_non_nullable
 as int,activityDate: null == activityDate ? _self.activityDate : activityDate // ignore: cast_nullable_to_non_nullable
-as String,activityTime: freezed == activityTime ? _self.activityTime : activityTime // ignore: cast_nullable_to_non_nullable
+as DateTime,activityTime: freezed == activityTime ? _self.activityTime : activityTime // ignore: cast_nullable_to_non_nullable
 as String?,pointsEarned: null == pointsEarned ? _self.pointsEarned : pointsEarned // ignore: cast_nullable_to_non_nullable
 as int,
   ));
