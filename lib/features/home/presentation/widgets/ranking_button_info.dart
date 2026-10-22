@@ -38,22 +38,25 @@ class RankingButtonInfo extends StatelessWidget {
             ),
 
             const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'RANKING',
-                  style: textTheme.labelMedium?.copyWith(
-                    color: palette.primaryPink,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'RANKING',
+                    style: textTheme.labelMedium?.copyWith(
+                      color: palette.primaryPink,
+                    ),
                   ),
-                ),
-                Text(
-                  'Veja a posicao do seu Gymboo!',
-                  style: textTheme.labelSmall?.copyWith(
-                    color: palette.primaryPink,
+                  Text(
+                    'Veja a posicao do seu Gymboo!',
+                    style: textTheme.labelSmall?.copyWith(
+                      color: palette.primaryPink,
+                    ),
+                    softWrap: true,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

@@ -17,6 +17,7 @@ import 'package:gymboo_app/features/home/presentation/pages/home_page.dart';
 import 'package:gymboo_app/features/jump_rope_minigame/presentation/pages/jump_rope_page.dart';
 import 'package:gymboo_app/features/legal/presentation/pages/terms_page.dart';
 import 'package:gymboo_app/features/ranking/presentation/pages/ranking_page.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/pages/edit_pet_data.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_detail.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/pages/pet_wardrobe.dart';
 
@@ -135,6 +136,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/pet/wardrobe',
         builder: (context, state) => const PetWardrobePage(),
+      ),
+      GoRoute(
+        path: '/edit/pet',
+        builder: (context, state) => const EditPetPage(),
       ),
       GoRoute(
         path: '/jump-rope',

@@ -9,7 +9,9 @@ import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_con
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_widget_service.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
+import 'package:gymboo_app/shared/fit_or_scroll.dart';
 import 'package:gymboo_app/shared/pet_warning_modal.dart';
+import 'package:gymboo_app/shared/scale_to_screen.dart';
 import 'package:gymboo_app/shared/top_detail.dart';
 
 class Home extends ConsumerStatefulWidget {
@@ -47,47 +49,56 @@ class _HomeState extends ConsumerState<Home> {
       if (home != null) _maybeShowWarning(home.pet);
     });
     return Scaffold(
-      body: Column(
-        children: [
-          const TopDetail(),
-
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsetsGeometry.only(
-                left: 30,
-                right: 30,
-                top: 50,
-              ),
-              child: homeAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, stack) =>
-                    Center(child: Text('Erro ao carregar dados: $err')),
-                data: (home) => Column(
-                  children: [
-                    PetHudScreen(pet: home.pet),
-                    const SizedBox(height: 20),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const DailyActivityMission(),
-                            const SizedBox(height: 20),
-                            WeeklyGoalTracker(progress: home.progress),
-                            const SizedBox(height: 20),
-                            const RankingButtonInfo(),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+      body: FitOrScroll(
+        minHeight: 700,
+        builder: (context, pageScrolls) {
+          final content = Padding(
+            padding: const EdgeInsets.fromLTRB(30, 30, 30, 16),
+            child: homeAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, stack) =>
+                  Center(child: Text('Erro ao carregar dados: $err')),
+              data: (home) => _buildBody(home, pageScrolls),
             ),
-          ),
-        ],
+          );
+
+          return Column(
+            mainAxisSize: pageScrolls ? MainAxisSize.min : MainAxisSize.max,
+            children: [
+              const TopDetail(),
+              if (pageScrolls) content else Expanded(child: content),
+            ],
+          );
+        },
       ),
 
       bottomNavigationBar: const BottomTabRetro(),
     );
   }
+}
+
+Widget _buildBody(HomeData home, bool pageScrolls) {
+  const gap = 20.0;
+
+  final cards = Column(
+    children: [
+      const DailyActivityMission(),
+      const SizedBox(height: gap),
+      WeeklyGoalTracker(progress: home.progress),
+      const SizedBox(height: gap),
+      const RankingButtonInfo(),
+    ],
+  );
+
+  return Column(
+    mainAxisSize: pageScrolls ? MainAxisSize.min : MainAxisSize.max,
+    children: [
+      ScaleToScreen(child: PetHudScreen(pet: home.pet)),
+      const SizedBox(height: gap),
+      if (pageScrolls)
+        cards // rola junto com a página
+      else
+        Expanded(child: SingleChildScrollView(child: cards)), // rola só aqui
+    ],
+  );
 }

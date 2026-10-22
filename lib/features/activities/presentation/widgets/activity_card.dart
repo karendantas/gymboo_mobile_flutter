@@ -64,52 +64,57 @@ class ActivityCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            activity.title,
-                            style: textTheme.labelLarge?.copyWith(
-                              color: palette.primaryPink,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              activity.title,
+                              style: textTheme.labelLarge?.copyWith(
+                                color: palette.primaryPink,
+                              ),
+
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
 
-                          const SizedBox(height: 8),
+                            const SizedBox(height: 8),
 
-                          Row(
-                            spacing: 6,
-                            children: [
-                              Icon(
-                                Icons.timer_sharp,
-                                size: 16,
-                                color: palette.primaryPink,
-                              ),
-                              Text(
-                                '${activity.durationMinutes} min',
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: palette.primaryPinkDark,
+                            Row(
+                              spacing: 6,
+                              children: [
+                                Icon(
+                                  Icons.timer_sharp,
+                                  size: 16,
+                                  color: palette.primaryPink,
                                 ),
-                              ),
-                              Text(
-                                '-',
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: palette.primaryPinkDark,
+                                Text(
+                                  '${activity.durationMinutes} min',
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: palette.primaryPinkDark,
+                                  ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.date_range_sharp,
-                                size: 16,
-                                color: palette.primaryPink,
-                              ),
-                              Text(
-                                formatShortDate(activity.activityDate),
-                                style: textTheme.labelSmall?.copyWith(
-                                  color: palette.primaryPinkDark,
+                                Text(
+                                  '-',
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: palette.primaryPinkDark,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                Icon(
+                                  Icons.date_range_sharp,
+                                  size: 16,
+                                  color: palette.primaryPink,
+                                ),
+                                Text(
+                                  formatShortDate(activity.activityDate),
+                                  style: textTheme.labelSmall?.copyWith(
+                                    color: palette.primaryPinkDark,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
 
                       GestureDetector(

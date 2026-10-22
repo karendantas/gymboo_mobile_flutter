@@ -228,7 +228,7 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
                     label: 'Duração (minutos)',
                     labelIcon: Icons.edit,
 
-                    hintText: '30 minutos',
+                    hintText: 'Ex: 30',
                     controller: _durationController,
                     errorText: _durationError,
                     keyboardType: TextInputType.number,

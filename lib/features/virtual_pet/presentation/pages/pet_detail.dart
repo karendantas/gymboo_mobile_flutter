@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gymboo_app/core/theme/gymboo_palette.dart';
-import 'package:gymboo_app/core/toast/toast_provider.dart';
-import 'package:gymboo_app/features/auth/presentation/controllers/registration_form_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/domain/models/virtual_pet.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_skill_card.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
+import 'package:gymboo_app/shared/fit_or_scroll.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:gymboo_app/shared/retro_tabbed.dart';
+import 'package:gymboo_app/shared/scale_to_screen.dart';
 import 'package:gymboo_app/shared/top_detail.dart';
 
 class PetDetailsPage extends ConsumerStatefulWidget {
@@ -21,213 +20,105 @@ class PetDetailsPage extends ConsumerStatefulWidget {
 }
 
 class _PetDetailsPageState extends ConsumerState<PetDetailsPage> {
-  PetColorOption? selectedColor;
-  final petNameController = TextEditingController();
+  Widget _buildDetails(VirtualPet pet, bool pageScrolls) {
+    final palette = Theme.of(context).extension<GymbooPalette>()!;
+    final textStyle = Theme.of(context).textTheme;
 
-  bool _isEditing = false;
+    final cards = Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: RetroButton(
+                title: 'Roupas',
+                imagePath: 'assets/images/hanger_icon.png',
+                color: palette.primaryPink,
+                shadowColor: palette.primaryPinkDark,
+                onTap: () => context.push('/pet/wardrobe'),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: RetroButton(
+                title: 'Jogos',
+                imagePath: 'assets/images/controller.png',
+                color: palette.primaryPink,
+                shadowColor: palette.primaryPinkDark,
+                onTap: () => context.go('/jump-rope'),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 30),
 
-  PetColorOption? colorFromString(String? color) {
-    if (color == null) return null;
+        Text(
+          'HABILIDADES',
+          style: textStyle.labelLarge?.copyWith(color: palette.primaryPinkDark),
+        ),
+        const SizedBox(height: 10),
+        for (final skill in pet.skills) ...[
+          PetSkillCard(skill: skill),
+          const SizedBox(height: 15),
+        ],
 
-    return PetColorOption.values.firstWhere(
-      (option) => option.name == color,
-      orElse: () => PetColorOption.purple,
+        const SizedBox(height: 20),
+        RetroButton(
+          title: 'Editar Gymboo',
+          width: double.infinity,
+          color: palette.primaryPink,
+          shadowColor: palette.primaryPinkDark,
+          onTap: () => context.push('/edit/pet'),
+        ),
+
+        const SizedBox(height: 30),
+      ],
     );
-  }
-
-  @override
-  void dispose() {
-    petNameController.dispose();
-    super.dispose();
+    return Column(
+      mainAxisSize: pageScrolls ? MainAxisSize.min : MainAxisSize.max,
+      children: [
+        ScaleToScreen(child: PetHudScreen(pet: pet)),
+        const SizedBox(height: 16),
+        if (pageScrolls)
+          cards
+        else
+          Expanded(child: SingleChildScrollView(child: cards)),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final palette = Theme.of(context).extension<GymbooPalette>()!;
-    final textStyle = Theme.of(context).textTheme;
     final petAsync = ref.watch(petControllerProvider);
-
-    const colorSwatches = {
-      PetColorOption.purple: Color.fromARGB(255, 181, 143, 243),
-      PetColorOption.green: Color(0xFF8FD98F),
-      PetColorOption.yellow: Color(0xFFF7D35C),
-    };
-
-    void handleEditPet(VirtualPet pet) async {
-      if (_isEditing) return;
-
-      final toast = ref.read(toastServiceProvider);
-      final typedName = petNameController.text.trim();
-      final newType = selectedColor?.name;
-
-      final nameChanged = typedName.isNotEmpty && typedName != pet.name;
-      final colorChanged = newType != null && newType != pet.type;
-
-      if (!nameChanged && !colorChanged) {
-        toast.info('Nada foi alterado');
-        return;
-      }
-
-      setState(() => _isEditing = true);
-
-      try {
-        final success = await ref
-            .read(petControllerProvider.notifier)
-            .edit(
-              name: nameChanged ? typedName : null,
-              type: colorChanged ? newType : null,
-            );
-        if (!mounted) return;
-        if (success) {
-          toast.success('Gymboo atualizado!');
-        } else {
-          toast.error('Não foi possível atualizar o Gymboo');
-        }
-      } finally {
-        if (mounted) setState(() => _isEditing = false);
-      }
-    }
 
     return Scaffold(
       backgroundColor: palette.backgroundOuter,
-      body: Column(
-        children: [
-          const TopDetail(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsetsGeometry.only(
-                left: 30,
-                right: 30,
-                top: 50,
-              ),
-              child: petAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (err, _) =>
-                    Center(child: Text('Erro ao carregar: $err')),
-                data: (pet) {
-                  selectedColor ??= colorFromString(pet.type);
-
-                  return Column(
-                    children: [
-                      PetHudScreen(pet: pet),
-                      const SizedBox(height: 16),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: RetroButton(
-                                      title: 'Roupas',
-                                      imagePath:
-                                          'assets/images/hanger_icon.png',
-                                      color: palette.primaryPink,
-                                      shadowColor: palette.primaryPinkDark,
-                                      onTap: () =>
-                                          context.push('/pet/wardrobe'),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: RetroButton(
-                                      title: 'Jogos',
-                                      imagePath: 'assets/images/controller.png',
-                                      color: palette.primaryPink,
-                                      shadowColor: palette.primaryPinkDark,
-                                      onTap: () => context.go('/jump-rope'),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 30),
-
-                              Text(
-                                'HABILIDADES',
-                                style: textStyle.labelLarge?.copyWith(
-                                  color: palette.primaryPinkDark,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              for (final skill in pet.skills) ...[
-                                PetSkillCard(skill: skill),
-                                const SizedBox(height: 15),
-                              ],
-
-                              const SizedBox(height: 20),
-                              Text(
-                                'PERSONALIZAR',
-                                style: textStyle.labelLarge?.copyWith(
-                                  color: palette.primaryPinkDark,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              RetroTabbedField(
-                                label: 'Renomear pet',
-                                labelIcon: Icons.edit,
-                                hintText: pet.name,
-                                controller: petNameController,
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: PetColorOption.values.map((option) {
-                                  final isSelected = selectedColor == option;
-                                  return GestureDetector(
-                                    onTap: () =>
-                                        setState(() => selectedColor = option),
-                                    child: Container(
-                                      width: 56,
-                                      height: 56,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: colorSwatches[option],
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: isSelected
-                                              ? palette.primaryPinkDark
-                                              : Colors.transparent,
-                                          width: 3,
-                                        ),
-                                      ),
-                                      child: isSelected
-                                          ? const Icon(
-                                              Icons.check,
-                                              color: Colors.white,
-                                              size: 20,
-                                            )
-                                          : null,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-
-                              const SizedBox(height: 20),
-                              if (_isEditing)
-                                const Center(child: CircularProgressIndicator())
-                              else
-                                RetroButton(
-                                  title: 'Salvar',
-                                  width: double.infinity,
-                                  color: palette.primaryPink,
-                                  shadowColor: palette.primaryPinkDark,
-                                  onTap: () => handleEditPet(pet),
-                                ),
-
-                              const SizedBox(height: 30),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
+      body: FitOrScroll(
+        minHeight: 700,
+        builder: (context, pageScrolls) {
+          final content = Padding(
+            padding: const EdgeInsetsGeometry.only(
+              left: 30,
+              right: 30,
+              top: 50,
             ),
-          ),
-        ],
+            child: petAsync.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (err, _) => Center(child: Text('Erro ao carregar: $err')),
+              data: (pet) {
+                return _buildDetails(pet, pageScrolls);
+              },
+            ),
+          );
+
+          return Column(
+            mainAxisSize: pageScrolls ? MainAxisSize.min : MainAxisSize.max,
+            children: [
+              const TopDetail(),
+              if (pageScrolls) content else Expanded(child: content),
+            ],
+          );
+        },
       ),
 
       bottomNavigationBar: const BottomTabRetro(),
