@@ -135,7 +135,7 @@ class _PetDetailsPageState extends ConsumerState<PetDetailsPage> {
                                       imagePath: 'assets/images/controller.png',
                                       color: palette.primaryPink,
                                       shadowColor: palette.primaryPinkDark,
-                                      onTap: () => context.go('/mini_games'),
+                                      onTap: () => context.go('/jump-rope'),
                                     ),
                                   ),
                                 ],

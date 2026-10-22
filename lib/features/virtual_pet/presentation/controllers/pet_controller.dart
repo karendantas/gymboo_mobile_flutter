@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
+import 'package:gymboo_app/features/ranking/data/ranking_repository.dart';
 
 import '../../data/pet_repository.dart';
 import '../../domain/models/virtual_pet.dart';
@@ -27,6 +28,7 @@ class PetController extends AsyncNotifier<VirtualPet> {
       await ref.read(petRepositoryProvider).edit(name, type);
       ref.invalidateSelf();
       ref.invalidate(homeDataProvider);
+      ref.invalidate(rankingProvider);
       return true;
     } catch (e) {
       return false;

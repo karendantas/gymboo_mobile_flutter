@@ -74,7 +74,7 @@ class _RegisterStep3PageState extends ConsumerState<RegisterStep3Page> {
             weightKg: data.weightKg!,
             workoutDays: data.workoutDays.toList(),
             petName: data.petName,
-            type: data.petColor as String,
+            type: data.petColor.name,
           );
     } else {
       await ref

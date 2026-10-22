@@ -31,6 +31,7 @@ class PetWidgetCard extends StatelessWidget {
           children: [
             DressedPetSprite(pet: pet, size: 130),
             const SizedBox(height: 8),
+
             Row(
               mainAxisSize: MainAxisSize.min,
               children: List.generate(5, (i) {

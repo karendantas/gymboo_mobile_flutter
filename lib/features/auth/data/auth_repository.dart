@@ -56,6 +56,7 @@ abstract class AuthRepository {
   Future<User> loginWithGoogle();
   Future<User?> restoreSession();
   Future<void> logout();
+  Future<void> deleteAccount();
 }
 
 class ApiAuthRepository implements AuthRepository {
@@ -166,6 +167,11 @@ class ApiAuthRepository implements AuthRepository {
   @override
   Future<void> logout() async {
     await SecureStorage.clearToken();
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    await _dio.delete('/users/me');
   }
 }
 

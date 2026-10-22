@@ -79,6 +79,13 @@ class AuthController extends AsyncNotifier<User?> {
     state = const AsyncData(null);
     resetUserScopedProviders(ref);
   }
+
+  Future<void> deleteAccount() async {
+    await ref.read(authRepositoryProvider).deleteAccount();
+    await ref.read(petWidgetServiceProvider).clear();
+    state = const AsyncData(null);
+    resetUserScopedProviders(ref);
+  }
 }
 
 final authControllerProvider = AsyncNotifierProvider<AuthController, User?>(
