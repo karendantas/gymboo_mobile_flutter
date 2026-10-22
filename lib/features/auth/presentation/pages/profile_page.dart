@@ -27,6 +27,30 @@ class ProfilePage extends ConsumerWidget {
     final notificationsAsync = ref.watch(notificationControllerProvider);
     final isMuted = ref.watch(musicControllerProvider);
 
+    Future<void> deleteAccount() async {
+      final ok = await showDialog<bool>(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: const Text('Excluir conta'),
+          content: const Text(
+            'Isso apaga sua conta, seu pet e todas as atividades. Não dá para desfazer.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Excluir'),
+            ),
+          ],
+        ),
+      );
+      if (ok != true) return;
+      await ref.read(authControllerProvider.notifier).deleteAccount();
+    }
+
     return Scaffold(
       backgroundColor: palette.backgroundOuter,
       body: SafeArea(
@@ -216,10 +240,25 @@ class ProfilePage extends ConsumerWidget {
                 ),
               ),
 
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: deleteAccount,
+                child: Row(
+                  spacing: 6,
+                  children: [
+                    const Icon(Icons.dangerous_outlined, color: Colors.red),
+                    Text(
+                      'Deletar conta',
+                      style: textTheme.labelMedium?.copyWith(color: Colors.red),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 30),
               Center(
                 child: Text(
-                  'Gymboo v1.0.0',
+                  'Gymboo v1.0.1',
                   style: textTheme.labelSmall?.copyWith(
                     color: palette.textSecondary,
                   ),

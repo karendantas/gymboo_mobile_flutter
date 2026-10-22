@@ -91,6 +91,15 @@ class _PodiumSpot extends StatelessWidget {
                 : palette.textSecondary,
           ),
         ),
+        Text(
+          '${e.totalXp.toString()} xp',
+
+          style: textTheme.labelSmall?.copyWith(
+            color: e.currentUser
+                ? palette.primaryPinkDark
+                : palette.textSecondary,
+          ),
+        ),
         const SizedBox(height: 6),
         Container(
           height: blockHeight,

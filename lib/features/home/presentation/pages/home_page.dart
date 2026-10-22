@@ -5,7 +5,9 @@ import 'package:gymboo_app/features/goal/presentation/widgets/weekly_goal_tracke
 import 'package:gymboo_app/features/home/presentation/controllers/home_controller.dart';
 import 'package:gymboo_app/features/home/presentation/widgets/ranking_button_info.dart';
 import 'package:gymboo_app/features/virtual_pet/domain/models/virtual_pet.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/controllers/pet_controller.dart';
 import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_hud_screen.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_widget_service.dart';
 import 'package:gymboo_app/shared/bottom_tab_retro.dart';
 import 'package:gymboo_app/shared/pet_warning_modal.dart';
 import 'package:gymboo_app/shared/top_detail.dart';
@@ -31,6 +33,13 @@ class _HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
     final homeAsync = ref.watch(homeDataProvider);
+
+    ref.listen(petControllerProvider, (prev, next) {
+      final pet = next.value;
+      if (pet != null) {
+        ref.read(petWidgetServiceProvider).sync(context, pet);
+      }
+    });
 
     ref.listen(homeDataProvider, (previous, next) async {
       if (next.isLoading) return;

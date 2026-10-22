@@ -6,7 +6,7 @@ import 'package:gymboo_app/core/toast/toast_provider.dart';
 import 'package:gymboo_app/core/util/validate.dart';
 import 'package:gymboo_app/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:gymboo_app/shared/retro_button.dart';
-import 'package:gymboo_app/shared/retro_input.dart';
+import 'package:gymboo_app/shared/retro_tabbed.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -76,14 +76,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   filterQuality: FilterQuality.none,
                 ),
 
-                RetroTextField(
+                RetroTabbedField(
+                  labelIcon: Icons.email,
                   controller: _emailController,
                   label: 'E-mail',
                   hintText: 'seuemail@exemplo.com',
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 16),
-                RetroTextField(
+                RetroTabbedField(
+                  labelIcon: Icons.password,
                   controller: _passwordController,
                   label: 'Senha',
                   hintText: '••••••••',

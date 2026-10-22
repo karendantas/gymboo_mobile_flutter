@@ -4,6 +4,7 @@ import 'package:gymboo_app/core/session/session_reset.dart';
 import 'package:gymboo_app/features/goal/data/goal_repository.dart';
 import 'package:gymboo_app/features/goal/domain/models/weekday.dart';
 import 'package:gymboo_app/features/virtual_pet/data/pet_repository.dart';
+import 'package:gymboo_app/features/virtual_pet/presentation/widgets/pet_widget_service.dart';
 
 import '../../data/auth_repository.dart';
 import '../../domain/models/user.dart';
@@ -74,6 +75,14 @@ class AuthController extends AsyncNotifier<User?> {
 
   Future<void> logout() async {
     await ref.read(authRepositoryProvider).logout();
+    await ref.read(petWidgetServiceProvider).clear();
+    state = const AsyncData(null);
+    resetUserScopedProviders(ref);
+  }
+
+  Future<void> deleteAccount() async {
+    await ref.read(authRepositoryProvider).deleteAccount();
+    await ref.read(petWidgetServiceProvider).clear();
     state = const AsyncData(null);
     resetUserScopedProviders(ref);
   }

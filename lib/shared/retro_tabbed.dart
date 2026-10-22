@@ -76,6 +76,7 @@ class RetroTabbedField extends StatelessWidget {
     this.errorText,
     this.keyboardType,
     this.inputFormatters,
+    this.obscureText,
   });
 
   final String label;
@@ -86,6 +87,7 @@ class RetroTabbedField extends StatelessWidget {
   final String? errorText;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final bool? obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +113,7 @@ class RetroTabbedField extends StatelessWidget {
               ],
               Expanded(
                 child: TextField(
+                  obscureText: obscureText ?? false,
                   controller: controller,
                   keyboardType: keyboardType,
 

@@ -161,6 +161,14 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
         .success('Atividade importada! Confira os dados antes de salvar.');
   }
 
+  void goBack(BuildContext context) {
+    if (context.canPop()) {
+      context.pop();
+    } else {
+      context.go('/home');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final palette = Theme.of(context).extension<GymbooPalette>()!;
@@ -190,7 +198,7 @@ class _CreateActivityPageState extends ConsumerState<CreateActivityPage> {
                           Icons.arrow_back,
                           color: palette.textPrimary,
                         ),
-                        onPressed: () => context.pop(),
+                        onPressed: () => goBack(context),
                       ),
                       Expanded(
                         child: Text(
